@@ -12,8 +12,11 @@ class SearchInputGroup(models.Model):
     input group to categorise search inputs
     """
 
-    # input group name to store the display title. ex: Search Parameters, Time Constraints, etc.
+    # name of the input group
     name = models.CharField(max_length=255, null=False, blank=False, unique=True)
+
+    # input group name to store the display title. ex: Search Parameters, Time Constraints, etc.
+    display_name = models.CharField(max_length=255, null=False, blank=False, unique=True)
 
     # just to store information about the input group to render in the UI template
     description = models.TextField(null=True, blank=True)
@@ -25,9 +28,9 @@ class SearchInputGroup(models.Model):
     active = models.BooleanField(default=True, null=False, blank=False)
 
     def __str__(self):
-        return '{display_order}. {name} ({active})'.format(
+        return '{display_order}. {display_name} ({active})'.format(
             display_order=self.display_order,
-            name=self.name,
+            display_name=self.display_name,
             active='Active' if self.active else 'Inactive'
         )
 
@@ -40,6 +43,9 @@ class SearchInput(models.Model):
     # determines under which group the input will be rendered,
     # null = True would put it to others
     search_input_group = models.ForeignKey(SearchInputGroup, on_delete=models.CASCADE, null=True, blank=True)
+
+    # name of the input
+    name = models.CharField(max_length=255, null=False, blank=False)
 
     # display name to show in the template
     display_name = models.CharField(max_length=255, null=False, blank=False)
@@ -83,13 +89,14 @@ class SearchInput(models.Model):
 
     class Meta:
         unique_together = (
+            ('search_input_group', 'name', ),
             ('search_input_group', 'display_order', ),
         )
 
     def __str__(self):
-        return '{display_order}. {name} ({active})'.format(
+        return '{display_order}. {display_name} ({active})'.format(
             display_order=self.display_order,
-            name=self.display_name,
+            display_name=self.display_name,
             active='Active' if self.active else 'Inactive'
         )
 
@@ -103,10 +110,10 @@ class SearchInputOption(models.Model):
     search_input = models.ForeignKey(SearchInput, on_delete=models.CASCADE, blank=False, null=False)
 
     # option name (value in UI)
-    option_name = models.CharField(max_length=255, blank=False, null=False)
+    name = models.CharField(max_length=255, blank=False, null=False)
 
     # option display to show in UI
-    option_display_name = models.CharField(max_length=255, blank=False, null=False)
+    display_name = models.CharField(max_length=255, blank=False, null=False)
 
     # order to define in which order this input option would be displayed
     display_order = models.SmallIntegerField(null=False, blank=False)
@@ -116,13 +123,13 @@ class SearchInputOption(models.Model):
 
     class Meta:
         unique_together = (
-            ('search_input', 'option_name', ),
+            ('search_input', 'name', ),
             ('search_input', 'display_order', ),
         )
 
     def __str__(self):
-        return '{display_order}. {name} ({active})'.format(
+        return '{display_order}. {display_name} ({active})'.format(
             display_order=self.display_order,
-            name=self.option_display_name,
+            display_name=self.display_name,
             active='Active' if self.active else 'Inactive'
         )

@@ -9,17 +9,18 @@ def insert(apps, schema_editor):
     SearchInputGroup = apps.get_model('mwasurveyweb', 'SearchInputGroup')
 
     initial_search_input_info = [
-        ('Observation Info Constraints', '', 0),
-        ('Pointing Constraints', '', 1),
-        ('Time Constraints', '', 2),
-        ('Observing Mode Constraints', '', 3),
+        ('observation_info', 'Observation Info Constraints', '', 0),
+        ('pointing', 'Pointing Constraints', '', 1),
+        ('time', 'Time Constraints', '', 2),
+        ('observing_mode', 'Observing Mode Constraints', '', 3),
     ]
 
     for search_input_info in initial_search_input_info:
         SearchInputGroup.objects.create(
             name=search_input_info[0],
-            description=search_input_info[1],
-            display_order=search_input_info[2],
+            display_name=search_input_info[1],
+            description=search_input_info[2],
+            display_order=search_input_info[3],
         )
 
 

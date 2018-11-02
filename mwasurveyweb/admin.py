@@ -13,7 +13,7 @@ from .models import (
 @admin.register(SearchInputGroup)
 class SearchInputGroup(admin.ModelAdmin):
     list_display = (
-        'name',
+        'display_name',
         'description',
         'display_order',
         'active',
@@ -28,6 +28,9 @@ class SearchInput(admin.ModelAdmin):
         'table_name',
         'field_name',
         'field_type',
+        'initial_value',
+        'placeholder',
+        'required',
         'display_order',
         'active',
     )

@@ -1,0 +1,45 @@
+{% load template_filters %}
+
+{% for key, fieldset in form.fieldsets.items %}
+    <!-- start fieldset -->
+    <div class="row">
+        <div class="col col-lg-4 col-md-4 col-sm-6 col-sx-6 col-12 input-title">{{ fieldset.title }}</div>
+        {% if fieldset.fields|length == 1 %}
+            {% for field_name in fieldset.fields %}
+                {% for field in form %}
+                    {% if field_name == field.name %}
+                        <div class="col col-lg-8 col-md-8 col-sm-6 col-sx-6 col-12">
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% elif fieldset.fields|length == 2 %}
+            <div class="col col-lg-8 col-md-8 col-sm-6 col-sx-6 col-12">
+                {% for field_name in fieldset.fields %}
+                    {% for field in form %}
+                        {% if field_name == field.name %}
+                            <div class="row field
+                    {% if field.field.required %}required{% endif %}
+                    {% if field.errors %}error{% endif %}
+                    div-{{ field.name }}">
+                                <!-- Label -->
+                                <label class="col col-lg-4 col-md-4 col-sm-6 col-sx-6 col-12 control-label"
+                                       for="{{ field.auto_id }}">
+                                    {{ field.label }}
+                                </label>
+                                <!-- Field -->
+                                <div class="col col-lg-8 col-md-8 col-sm-6 col-sx-6 col-12">
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <!-- end fieldset -->
+{% endfor %}
