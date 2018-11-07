@@ -1,6 +1,10 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
+{% block additional_styles %}
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/form.css' %}"/>
+{% endblock additional_styles %}
+
 {% block page_header %}
     Search
 {% endblock page_header %}
@@ -14,8 +18,10 @@
         <div class="col-md-12">
             {% csrf_token %}
             {% include 'snippets/messages.html' %}
-            {% for form_data in search_forms %}
 
+            <ul class="row search-forms">
+            {% for form_data in search_forms %}
+                <li class="col col-lg-6 col-md-12 col-sm-12 col-sx-12 col-12 search-form">
                 {% if form_data.title %}
                     <div class="form-title">
                         {{ form_data.title }}
@@ -33,8 +39,9 @@
                         {% include 'mwasurveyweb/search/search_form.html' %}
                     </div>
                 {% endwith %}
-
+                </li>
             {% endfor %}
+            </ul>
 
             <div class="row">
                 <div class="buttons col-md-12 text-md-right">
