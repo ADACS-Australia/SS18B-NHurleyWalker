@@ -2,13 +2,13 @@
 Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
-from django.core.exceptions import EmptyResultSet
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from ...forms.search_parameter import SearchParameterForm
 from ...forms.search import SearchForm
-from ...utility.search import SearchResults
+from ...utility.search import SearchQuery
 from ...models import (
     SearchInputGroup,
     SearchInput,
@@ -31,10 +31,8 @@ def search(request):
             'form': SearchParameterForm(
                 request.POST,
                 name='search_parameter',
-                prefix='search_parameter',
             ) if request.method == 'POST' else SearchParameterForm(
                 name='search_parameter',
-                prefix='search_parameter',
             ),
         }),
     ]
@@ -54,10 +52,8 @@ def search(request):
                 'form': SearchForm(
                     request.POST,
                     name=input_group.name,
-                    prefix=input_group.name,
                 ) if request.method == 'POST' else SearchForm(
                     name=input_group.name,
-                    prefix=input_group.name,
                 ),
             })
         )
@@ -66,10 +62,15 @@ def search(request):
     search_results = None
 
     if request.method == 'POST':
+
         try:
-            search_results_object = SearchResults(search_forms)
-            search_results = search_results_object.list_all()
-        except EmptyResultSet:
+            search_query = SearchQuery(search_forms)
+            query = search_query.get_query()
+        except ValidationError:
+            query = request.session.get('query', None)
+
+        if query:
+            # ToDo
             pass
 
     return render(

@@ -68,7 +68,7 @@ def get_field_properties(group_name):
         fieldsets_fields = []
 
         for index, field in enumerate(fields):
-            field_name = '{input_name}__{number}'.format(
+            field_name = '{group_name}__{input_name}__{number}'.format(
                 group_name=group_name,
                 input_name=search_input.name,
                 number=str(index),
