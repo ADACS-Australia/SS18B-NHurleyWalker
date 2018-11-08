@@ -3,10 +3,8 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
 import logging
-from collections import OrderedDict
 
 from .dynamic.form import DynamicForm
-from .dynamic import field
 from .utility.utils import get_field_properties
 
 

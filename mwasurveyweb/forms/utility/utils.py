@@ -8,9 +8,7 @@ from ...constants import *
 from ..dynamic import field as dynamic_field
 
 from ...models import (
-    SearchInputGroup,
     SearchInput,
-    SearchInputOption,
 )
 
 
@@ -70,10 +68,16 @@ def get_field_properties(group_name):
         fieldsets_fields = []
 
         for index, field in enumerate(fields):
-            field_name = search_input.name + '_' + str(index)
+            field_name = '{input_name}__{number}'.format(
+                group_name=group_name,
+                input_name=search_input.name,
+                number=str(index),
+            )
+
             field_properties.update({
                 field_name: field,
             })
+
             fieldsets_fields.append(field_name)
 
         fieldsets.update({
