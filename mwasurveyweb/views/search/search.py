@@ -72,13 +72,13 @@ def search(request):
             query_values = None
 
         if query:
-            get_search_results(query, query_values)
+            search_results = list(get_search_results(query, query_values))
 
     return render(
         request,
         "mwasurveyweb/search/search.html",
         {
             'search_forms': search_forms,
-            'search_results': search_results,
+            'search_results': search_results[0],
         }
     )

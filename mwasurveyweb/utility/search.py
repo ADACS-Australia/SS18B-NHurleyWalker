@@ -20,7 +20,11 @@ from ..forms.search import SearchForm
 class SearchQuery(object):
 
     def _generate_query(self):
-        self.query = 'SELECT * FROM observation WHERE '
+
+        # forming the subquery for the total count
+        self.query_count = 'SELECT count(*) total ' \
+                           'FROM {0} ' \
+                           'WHERE '.format('observation')
 
         temp_query_condition = []
         for db_search_parameter in self.database_search_parameters:
@@ -33,7 +37,26 @@ class SearchQuery(object):
             temp_query_condition.append(temp_query_part)
             self.query_values.append(db_search_parameter.get('value'))
 
+        # subquery formation done
+        self.query_count = self.query_count + ' AND '.join(temp_query_condition)
+
+        self.query = 'SELECT ' \
+                     '{0}.obs_id, ' \
+                     '{0}.projectid, ' \
+                     '{0}.obsname, ' \
+                     '{0}.starttime, ' \
+                     '{0}.ra_pointing, ' \
+                     '{0}.dec_pointing, ' \
+                     '{0}.duration_sec, ' \
+                     '{0}.creator, ' \
+                     'subtable.total ' \
+                     'FROM {0}, ({1}) subtable ' \
+                     'WHERE '.format('observation', self.query_count)
+
         self.query = self.query + ' AND '.join(temp_query_condition)
+
+        # add up search parameters here
+        self.query = self.query + self.search_parameters
 
     def _enlist_database_search_parameter(self, key, value):
         input_properties = key.split('__')
@@ -66,6 +89,21 @@ class SearchQuery(object):
             )
         )
 
+    def _process_search_parameters(self, cleaned_data):
+
+        limit = 100
+        order_by = 'ASC'
+
+        for key, value in cleaned_data.items():
+
+            if key == 'results_per_page':
+                limit = value
+
+            if key == 'descending':
+                order_by = 'DESC' if value else 'ASC'
+
+        self.search_parameters = self.search_parameters.format(order_by=order_by, limit=limit)
+
     def _process_query(self):
 
         for search_form in self.search_forms:
@@ -75,7 +113,7 @@ class SearchQuery(object):
 
             # handling search parameter form
             if type(form) is SearchParameterForm:
-                pass
+                self._process_search_parameters(cleaned_data)
 
             # handling database search forms
             if type(form) is SearchForm:
@@ -89,8 +127,10 @@ class SearchQuery(object):
     def __init__(self, search_forms):
         self.search_forms = search_forms
         self.query = None
+        self.query_count = None
         self.query_values = []
         self.database_search_parameters = []
+        self.search_parameters = ' ORDER BY obs_id {order_by} LIMIT {limit}'
 
         if check_forms_validity(search_forms):
             self._process_query()

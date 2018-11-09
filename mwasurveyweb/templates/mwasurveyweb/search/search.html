@@ -57,21 +57,22 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">Name</th>
-                <th>{% if drafts %}Creation{% else %}Launch{% endif %} Time</th>
-                <th>Last Updated</th>
-                {% if not drafts and not public and not deleted %}
-                    <th>Status</th>{% endif %}
-                {% if public or admin_view %}
-                    <th>Owner</th>{% endif %}
+                <th scope="col">Obs ID</th>
+                <th>Project ID</th>
+                <th>Obs Name</th>
+                <th>Start Time</th>
+                <th>RA Pointing</th>
+                <th>Dec Pointing</th>
+                <th>Duration</th>
+                <th>Creator</th>
                 <th>Action(s)</th>
             </tr>
             </thead>
             <tbody>
-            {% for mwasurvey_object in jobs %}
-                <tr class="text-{{ mwasurvey_object.job.status }}">
+            {% for result in search_results %}
+                <tr class="text-primary">
                     <th scope="col" class="job-name"><a
-                            href="{% url 'job' mwasurvey_object.job.id %}">{{ mwasurvey_object.job.name }}</a></th>
+                            href="">{{ result.obs_id }}</a></th>
                     <td>{% if drafts %}{{ mwasurvey_object.job.creation_time }}{% else %}
                         {{ mwasurvey_object.job.job_pending_time }}{% endif %}</td>
                     <td>{{ mwasurvey_object.job.last_updated }}</td>
@@ -80,80 +81,12 @@
                     {% if public or admin_view %}
                         <td>{{ mwasurvey_object.job.user.display_name }}</td>{% endif %}
                     <td>
-                        {% if 'delete' in mwasurvey_object.job_actions %}
-                            <a class="text-danger delete-job" data-toggle="modal" data-target="#deleteJob"
-                               href="{% url 'delete_job' mwasurvey_object.job.id %}">Delete <i
-                                    class="fas fa-trash-alt"></i></a>
-                        {% endif %}
-                        {% if 'edit' in mwasurvey_object.job_actions %}
-                            <a class="text-primary" href="{% url 'edit_job' mwasurvey_object.job.id %}">Edit <i
-                                    class="fas fa-edit"></i></a>
-                        {% endif %}
-                        {% if 'cancel' in mwasurvey_object.job_actions %}
-                            <a class="text-dark cancel-job" data-toggle="modal" data-target="#cancelJob"
-                               href="{% url 'cancel_job' mwasurvey_object.job.id %}">Cancel <i
-                                    class="far fa-stop-circle"></i></a>
-                        {% endif %}
-                        {% if 'copy' in mwasurvey_object.job_actions %}
-                            <a class="text-info" href="{% url 'copy_job' mwasurvey_object.job.id %}">Copy <i
-                                    class="fas fa-clone"></i></a>
-                        {% endif %}
+                        View
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    </div>
-
-    <!-- Modal cancel job -->
-    <div class="modal fade" id="cancelJob" tabindex="-1" role="dialog"
-         aria-labelledby="cancelJobTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cancelJobLongTitle">Cancel Job</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>You are about to cancel the job named:</p>
-                    <p class="job-name"></p>
-                    <p>This means that, the job will stop processing and no further output will be generated. </p>
-                    <p>Are you sure, you want to proceed?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">Not Now</button>
-                    <a class="btn btn-dark cancel" href="">Cancel</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal delete job -->
-    <div class="modal fade" id="deleteJob" tabindex="-1" role="dialog"
-         aria-labelledby="deleteJobTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteJobLongTitle">Delete Job</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>You are about to delete the job named:</p>
-                    <p class="job-name"></p>
-                    <p>This means that, everything related to the job and its data will
-                        be deleted, and you will not be able to revert this process later. </p>
-                    <p>Are you sure, you want to proceed?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">Not Now</button>
-                    <a class="btn btn-danger delete" href="">Delete</a>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="row">
