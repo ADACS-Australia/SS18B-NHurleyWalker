@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from ...forms.search_parameter import SearchParameterForm
 from ...forms.search import SearchForm
 from ...utility.search import SearchQuery
+from ...utility.utils import get_search_results
 from ...models import (
     SearchInputGroup,
     SearchInput,
@@ -65,13 +66,13 @@ def search(request):
 
         try:
             search_query = SearchQuery(search_forms)
-            query = search_query.get_query()
+            query, query_values = search_query.get_query()
         except ValidationError:
             query = request.session.get('query', None)
+            query_values = None
 
         if query:
-            # ToDo
-            pass
+            get_search_results(query, query_values)
 
     return render(
         request,

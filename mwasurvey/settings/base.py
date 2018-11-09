@@ -191,3 +191,6 @@ LOGGING = {
 ROOT_SUBDIRECTORY_PATH = ''
 
 SITE_URL = ''
+
+
+GLEAM_DATABASE_PATH = os.path.join(BASE_DIR, '..', 'GLEAM-X.sqlite')

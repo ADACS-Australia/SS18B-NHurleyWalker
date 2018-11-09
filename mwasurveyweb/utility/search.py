@@ -4,8 +4,11 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 
 from django.core.exceptions import ValidationError
 
-from ..constants import *
-from .utils import check_forms_validity
+from .utils import (
+    check_forms_validity,
+    get_operator_by_field_type,
+)
+
 from ..models import (
     SearchInput,
 )
@@ -16,21 +19,21 @@ from ..forms.search import SearchForm
 
 class SearchQuery(object):
 
-    query = None
-    database_search_parameters = []
-
     def _generate_query(self):
-        self.query = 'SELECT * FROM observation WHERE'
+        self.query = 'SELECT * FROM observation WHERE '
 
-    def _get_operator_by_field_type(self, field_type, index=None):
-        if field_type == TEXT:
-            return 'LIKE'
+        temp_query_condition = []
+        for db_search_parameter in self.database_search_parameters:
 
-        if field_type == RANGE:
-            if index == 0:
-                return '>='
-            if index == 1:
-                return '<='
+            temp_query_part = '(' + db_search_parameter.get('table')
+            temp_query_part += '.' + db_search_parameter.get('field')
+            temp_query_part += ' ' + db_search_parameter.get('operator')
+            temp_query_part += ' ?)'
+
+            temp_query_condition.append(temp_query_part)
+            self.query_values.append(db_search_parameter.get('value'))
+
+        self.query = self.query + ' AND '.join(temp_query_condition)
 
     def _enlist_database_search_parameter(self, key, value):
         input_properties = key.split('__')
@@ -52,7 +55,7 @@ class SearchQuery(object):
         except IndexError:
             index = None
 
-        operator = self._get_operator_by_field_type(search_input.field_type, index)
+        operator = get_operator_by_field_type(search_input.field_type, index)
 
         self.database_search_parameters.append(
             dict(
@@ -81,10 +84,16 @@ class SearchQuery(object):
                         self._enlist_database_search_parameter(key, value)
 
     def get_query(self):
-        return self.query
+        return self.query, self.query_values
 
     def __init__(self, search_forms):
         self.search_forms = search_forms
+        self.query = None
+        self.query_values = []
+        self.database_search_parameters = []
 
         if check_forms_validity(search_forms):
             self._process_query()
+            self._generate_query()
+        else:
+            raise ValidationError('Invalid input parameters')

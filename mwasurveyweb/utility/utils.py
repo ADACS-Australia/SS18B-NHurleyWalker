@@ -2,6 +2,12 @@
 Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
+import sqlite3
+
+from django.conf import settings
+
+from ..constants import *
+
 
 def check_forms_validity(search_forms):
     """
@@ -16,3 +22,26 @@ def check_forms_validity(search_forms):
             return False
 
     return True
+
+
+def get_operator_by_field_type(field_type, index=None):
+    if field_type == TEXT:
+        return 'LIKE'
+
+    if field_type == NUMBER:
+        return '='
+
+    if field_type == RANGE:
+        if index == '0':
+            return '>='
+        if index == '1':
+            return '<='
+
+
+def get_search_results(query, query_values):
+
+    conn = sqlite3.connect(settings.GLEAM_DATABASE_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute(query, query_values)
+    print(cursor.fetchone())
