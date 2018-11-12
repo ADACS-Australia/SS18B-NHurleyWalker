@@ -23,8 +23,7 @@ class SearchQuery(object):
 
         # forming the subquery for the total count
         self.query_count = 'SELECT count(*) total ' \
-                           'FROM {0} ' \
-                           'WHERE '.format('observation')
+                           'FROM {0} '.format('observation')
 
         temp_query_condition = []
         for db_search_parameter in self.database_search_parameters:
@@ -38,7 +37,8 @@ class SearchQuery(object):
             self.query_values.append(db_search_parameter.get('value'))
 
         # subquery formation done
-        self.query_count = self.query_count + ' AND '.join(temp_query_condition)
+        if temp_query_condition:
+            self.query_count = self.query_count + 'WHERE ' + ' AND '.join(temp_query_condition)
 
         self.query = 'SELECT ' \
                      '{0}.obs_id, ' \
@@ -50,10 +50,10 @@ class SearchQuery(object):
                      '{0}.duration_sec, ' \
                      '{0}.creator, ' \
                      'subtable.total ' \
-                     'FROM {0}, ({1}) subtable ' \
-                     'WHERE '.format('observation', self.query_count)
+                     'FROM {0}, ({1}) subtable '.format('observation', self.query_count)
 
-        self.query = self.query + ' AND '.join(temp_query_condition)
+        if temp_query_condition:
+            self.query = self.query + 'WHERE ' + ' AND '.join(temp_query_condition)
 
         # add up search parameters here
         self.query = self.query + self.search_parameters

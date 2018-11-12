@@ -2,6 +2,10 @@
 Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
+import pickle
+import codecs
+import re
+
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -24,6 +28,47 @@ def search(request):
     :param request: Django request object.
     :return: Rendered template
     """
+
+    if request.method == 'GET':
+        page = request.GET.get('page', None)
+
+        if page:
+            # pagination is happening
+
+            try:
+                query = request.session['query']
+                query_values = pickle.loads(codecs.decode(request.session['query_values'].encode(), "base64"))
+                limit = request.session['limit']
+                offset = (int(page) - 1) * int(limit)
+
+                pattern = ' OFFSET \d+'
+                replace_with = ' OFFSET {}'.format(str(offset))
+
+                query = re.sub(pattern, replace_with, query)
+
+                search_results = list(get_search_results(query, query_values))[0]
+                total = search_results[0]['total']
+
+                paginator = Paginator(start_index=offset + 1, total=total, per_page=limit)
+
+                return render(
+                    request,
+                    "mwasurveyweb/search/search.html",
+                    {
+                        'search_forms': None,
+                        'search_results': search_results,
+                        'paginator': paginator,
+                    }
+                )
+            except (KeyError, AttributeError):
+                request.session['query'] = None
+                request.session['query_values'] = None
+                request.session['limit'] = None
+
+        else:
+            request.session['query'] = None
+            request.session['query_values'] = None
+            request.session['limit'] = None
 
     # generating search forms
     search_forms = [
@@ -62,9 +107,6 @@ def search(request):
 
     # dealing with search results
     search_results = None
-    total = None
-    start_index = None
-    end_index = None
     paginator = None
 
     if request.method == 'POST':
@@ -72,20 +114,25 @@ def search(request):
         try:
             search_query = SearchQuery(search_forms)
             query, query_values, limit, offset = search_query.get_query()
+            request.session['query'] = query
+            request.session['query_values'] = codecs.encode(pickle.dumps(query_values), "base64").decode()
+            request.session['limit'] = limit
         except ValidationError:
-            query = request.session.get('query', None)
+            query = None
             query_values = None
             limit = None
             offset = None
 
         if query:
+            search_forms = None
             search_results = list(get_search_results(query, query_values))[0]
-            total = search_results[0]['total']
 
-            start_index = offset + 1
-            end_index = offset + (total if total < limit else limit)
+            try:
+                total = search_results[0]['total']
+            except IndexError:
+                total = 0
 
-            paginator = Paginator(start_index=start_index, total=total, per_page=limit)
+            paginator = Paginator(start_index=offset + 1, total=total, per_page=limit)
 
     return render(
         request,
@@ -93,9 +140,6 @@ def search(request):
         {
             'search_forms': search_forms,
             'search_results': search_results,
-            'total': total,
-            'start_index': start_index,
-            'end_index': end_index,
             'paginator': paginator,
         }
     )

@@ -13,6 +13,8 @@
 {% block content %}
     {{ block.super }}
 
+    {% if search_forms %}
+
     <form class="form-row" method="post" enctype="multipart/form-data">
         {{ form.media }}
         <div class="col-md-12">
@@ -53,7 +55,9 @@
         </div>
     </form>
 
-    <div >({{ start_index }} - {{ end_index }})/{{ total }}</div>
+    {% elif paginator.total > 0 %}
+
+    <div >({{ paginator.start_index }} - {{ paginator.end_index }})/{{ paginator.total }}</div>
 
     <div class="job-list table-responsive">
         <table class="table">
@@ -123,4 +127,7 @@
             </div>
         </div>
     </div>
+    {% else %}
+        <div >No records found matching the search parameters!!</div>
+    {% endif %}
 {% endblock content %}

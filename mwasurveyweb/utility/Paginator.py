@@ -7,6 +7,14 @@ import math
 
 class Paginator(object):
     def __init__(self, start_index, total, per_page):
+        self.start_index = start_index
+        self.total = total
+        self.end_index = self.start_index - 1 + per_page
+
+        # update for last page
+        if self.total < self.end_index:
+            self.end_index = self.total
+
         self.has_next = False
         self.has_previous = False
 
