@@ -91,18 +91,17 @@ class SearchQuery(object):
 
     def _process_search_parameters(self, cleaned_data):
 
-        limit = 100
         order_by = 'ASC'
 
         for key, value in cleaned_data.items():
 
             if key == 'results_per_page':
-                limit = value
+                self.limit = value
 
             if key == 'descending':
                 order_by = 'DESC' if value else 'ASC'
 
-        self.search_parameters = self.search_parameters.format(order_by=order_by, limit=limit)
+        self.search_parameters = self.search_parameters.format(order_by=order_by, limit=self.limit, offset=self.offset)
 
     def _process_query(self):
 
@@ -122,15 +121,17 @@ class SearchQuery(object):
                         self._enlist_database_search_parameter(key, value)
 
     def get_query(self):
-        return self.query, self.query_values
+        return self.query, self.query_values, self.limit, self.offset
 
     def __init__(self, search_forms):
         self.search_forms = search_forms
         self.query = None
         self.query_count = None
         self.query_values = []
+        self.limit = 100
+        self.offset = 0
         self.database_search_parameters = []
-        self.search_parameters = ' ORDER BY obs_id {order_by} LIMIT {limit}'
+        self.search_parameters = ' ORDER BY obs_id {order_by} LIMIT {limit} OFFSET {offset}'
 
         if check_forms_validity(search_forms):
             self._process_query()

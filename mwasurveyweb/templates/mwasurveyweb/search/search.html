@@ -53,6 +53,8 @@
         </div>
     </form>
 
+    <div >({{ start_index }} - {{ end_index }})/{{ total }}</div>
+
     <div class="job-list table-responsive">
         <table class="table">
             <thead>
@@ -63,23 +65,21 @@
                 <th>Start Time</th>
                 <th>RA Pointing</th>
                 <th>Dec Pointing</th>
-                <th>Duration</th>
                 <th>Creator</th>
                 <th>Action(s)</th>
             </tr>
             </thead>
             <tbody>
             {% for result in search_results %}
-                <tr class="text-primary">
+                <tr class="text-dark">
                     <th scope="col" class="job-name"><a
                             href="">{{ result.obs_id }}</a></th>
-                    <td>{% if drafts %}{{ mwasurvey_object.job.creation_time }}{% else %}
-                        {{ mwasurvey_object.job.job_pending_time }}{% endif %}</td>
-                    <td>{{ mwasurvey_object.job.last_updated }}</td>
-                    {% if not drafts and not public and not deleted %}
-                        <td>{{ mwasurvey_object.job.status_display }}</td>{% endif %}
-                    {% if public or admin_view %}
-                        <td>{{ mwasurvey_object.job.user.display_name }}</td>{% endif %}
+                    <td>{{ result.projectid }}</td>
+                    <td>{{ result.obsname }}</td>
+                    <td>{{ result.starttime }}</td>
+                    <td>{{ result.ra_pointing }}</td>
+                    <td>{{ result.dec_pointing }}</td>
+                    <td>{{ result.creator }}</td>
                     <td>
                         View
                     </td>
@@ -93,30 +93,30 @@
         <div class="col-md-12 text-center">
             <div class="pagination">
 
-                {% if jobs.has_previous %}
+                {% if paginator.has_previous %}
                     <a class="pagination-action" href="?page=1">
                         <i class="fa fa-angle-double-left" aria-hidden="true"></i>
                     </a>
-                    <a class="pagination-action" href="?page={{ jobs.previous_page_number }}">
+                    <a class="pagination-action" href="?page={{ paginator.previous_page_number }}">
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                     </a>
                 {% endif %}
 
-                {% for num in jobs.paginator.page_range %}
+                {% for num in paginator.page_range %}
 
-                    {% if jobs.number == num %}
-                        <span class="pagination-number pagination-current">{{ num }} of {{ jobs.paginator.num_pages }}</span>
-                    {% elif num > jobs.number|add:'-3' and num < jobs.number|add:'3' %}
+                    {% if paginator.current_page == num %}
+                        <span class="pagination-number pagination-current">{{ num }} of {{ paginator.num_pages }}</span>
+                    {% elif num > paginator.current_page|add:'-3' and num < paginator.current_page|add:'3' %}
                         <a class="pagination-number" href="?page={{ num }}">{{ num }}</a>
                     {% endif %}
 
                 {% endfor %}
 
-                {% if jobs.has_next %}
-                    <a class="pagination-action" href="?page={{ jobs.next_page_number }}">
+                {% if paginator.has_next %}
+                    <a class="pagination-action" href="?page={{ paginator.next_page_number }}">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
-                    <a class="pagination-action" href="?page={{ jobs.paginator.num_pages }}">
+                    <a class="pagination-action" href="?page={{ paginator.num_pages }}">
                         <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                     </a>
                 {% endif %}
