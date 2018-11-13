@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block additional_styles %}
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/styles.css' %}"/>
     <link rel="stylesheet" href="{% static 'mwasurveyweb/style/form.css' %}"/>
 {% endblock additional_styles %}
 
@@ -57,7 +58,7 @@
 
     {% elif paginator.total > 0 %}
 
-    <div >({{ paginator.start_index }} - {{ paginator.end_index }})/{{ paginator.total }}</div>
+    {% include 'mwasurveyweb/snippets/number-display.html' %}
 
     <div class="job-list table-responsive">
         <table class="table">
@@ -93,40 +94,7 @@
         </table>
     </div>
 
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <div class="pagination">
-
-                {% if paginator.has_previous %}
-                    <a class="pagination-action" href="?page=1">
-                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-                    </a>
-                    <a class="pagination-action" href="?page={{ paginator.previous_page_number }}">
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    </a>
-                {% endif %}
-
-                {% for num in paginator.page_range %}
-
-                    {% if paginator.current_page == num %}
-                        <span class="pagination-number pagination-current">{{ num }} of {{ paginator.num_pages }}</span>
-                    {% elif num > paginator.current_page|add:'-3' and num < paginator.current_page|add:'3' %}
-                        <a class="pagination-number" href="?page={{ num }}">{{ num }}</a>
-                    {% endif %}
-
-                {% endfor %}
-
-                {% if paginator.has_next %}
-                    <a class="pagination-action" href="?page={{ paginator.next_page_number }}">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
-                    <a class="pagination-action" href="?page={{ paginator.num_pages }}">
-                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    {% include 'mwasurveyweb/snippets/pagination.html' %}
     {% else %}
         <div >No records found matching the search parameters!!</div>
     {% endif %}

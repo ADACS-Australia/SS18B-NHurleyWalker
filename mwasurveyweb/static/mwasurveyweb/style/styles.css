@@ -1,5 +1,5 @@
 .pagination {
-    text-align: center;
+    text-align: right;
     margin-top: 1em;
     display: block;
 }
@@ -29,6 +29,19 @@
     color: darkgreen;
 }
 
+.display-number {
+    margin: 0 0.1em;
+    display: inline-block;
+}
+
+.display-number .text {
+    color: darkolivegreen;
+}
+
+.display-number .number {
+    color: saddlebrown;
+    font-weight: bold;
+}
 
 .job-list {
     font-size: small;

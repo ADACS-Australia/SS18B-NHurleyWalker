@@ -40,15 +40,18 @@ def get_operator_by_field_type(field_type, index=None):
 
 def get_search_results(query, query_values):
 
-    conn = sqlite3.connect(settings.GLEAM_DATABASE_PATH)
+    try:
 
-    conn.row_factory = sqlite3.Row
+        conn = sqlite3.connect(settings.GLEAM_DATABASE_PATH)
 
-    cursor = conn.cursor()
+        conn.row_factory = sqlite3.Row
 
-    # to handle subquery for total object count, values need to be duplicated in order
-    values = query_values + query_values
+        cursor = conn.cursor()
 
-    results = cursor.execute(query, values).fetchall()
+        # to handle subquery for total object count, values need to be duplicated in order
+        values = query_values + query_values
 
-    return results,
+        return cursor.execute(query, values).fetchall(),
+
+    except sqlite3.Error:
+        return []

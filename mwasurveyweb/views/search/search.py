@@ -8,6 +8,7 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from ...utility.Paginator import Paginator
@@ -30,16 +31,23 @@ def search(request):
     """
 
     if request.method == 'GET':
-        page = request.GET.get('page', None)
+
+        try:
+            page = int(request.GET.get('page', None))
+        except (TypeError, ValueError):
+            page = None
 
         if page:
             # pagination is happening
+
+            if page < 1:
+                return redirect(reverse('search') + '?page=1')
 
             try:
                 query = request.session['query']
                 query_values = pickle.loads(codecs.decode(request.session['query_values'].encode(), "base64"))
                 limit = request.session['limit']
-                offset = (int(page) - 1) * int(limit)
+                offset = (page - 1) * int(limit)
 
                 pattern = ' OFFSET \d+'
                 replace_with = ' OFFSET {}'.format(str(offset))
@@ -47,7 +55,11 @@ def search(request):
                 query = re.sub(pattern, replace_with, query)
 
                 search_results = list(get_search_results(query, query_values))[0]
-                total = search_results[0]['total']
+
+                try:
+                    total = search_results[0]['total']
+                except IndexError:
+                    total = 0
 
                 paginator = Paginator(start_index=offset + 1, total=total, per_page=limit)
 
