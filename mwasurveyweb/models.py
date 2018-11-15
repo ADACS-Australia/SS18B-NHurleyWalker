@@ -7,6 +7,31 @@ from django.db import models
 from .constants import *
 
 
+class SearchPage(models.Model):
+    """
+    Search Page to define search on various database tables
+    """
+
+    # name of the search page
+    name = models.CharField(max_length=255, null=False, blank=False, unique=True)
+
+    # display title on the search page
+    display_name = models.CharField(max_length=255, null=False, blank=False, unique=True)
+
+    # order to define in which order this would be displayed in the menu
+    display_order = models.SmallIntegerField(unique=True, null=False, blank=False)
+
+    # marks whether active or not
+    active = models.BooleanField(default=True, null=False, blank=False)
+
+    def __str__(self):
+        return '{display_order}. {display_name} ({active})'.format(
+            display_order=self.display_order,
+            display_name=self.display_name,
+            active='Active' if self.active else 'Inactive'
+        )
+
+
 class SearchInputGroup(models.Model):
     """
     input group to categorise search inputs
@@ -42,7 +67,7 @@ class SearchInput(models.Model):
 
     # determines under which group the input will be rendered,
     # null = True would put it to others
-    search_input_group = models.ForeignKey(SearchInputGroup, on_delete=models.CASCADE, null=True, blank=True)
+    search_input_group = models.ForeignKey(SearchInputGroup, on_delete=models.CASCADE, null=False, blank=False)
 
     # name of the input
     name = models.CharField(max_length=255, null=False, blank=False)
@@ -63,10 +88,14 @@ class SearchInput(models.Model):
     FIELD_TYPE_CHOICES = [
         (TEXT, TEXT_DISPLAY),
         (NUMBER, NUMBER_DISPLAY),
+        (MIN_NUMBER, MIN_NUMBER_DISPLAY),
+        (MAX_NUMBER, MAX_NUMBER_DISPLAY),
         (CHECKBOX, CHECKBOX_DISPLAY),
+        (RADIUS, RADIUS_DISPLAY),
         (RANGE, RANGE_DISPLAY),
         (SELECT, SELECT_DISPLAY),
         (DATE, DATE_DISPLAY),
+        (DATE_RANGE, DATE_RANGE_DISPLAY),
     ]
 
     # field type to define how the input will be rendered in the UI
@@ -89,8 +118,8 @@ class SearchInput(models.Model):
 
     class Meta:
         unique_together = (
-            ('search_input_group', 'name', ),
-            ('search_input_group', 'display_order', ),
+            ('search_input_group', 'name',),
+            ('search_input_group', 'display_order',),
         )
 
     def __str__(self):
@@ -123,13 +152,40 @@ class SearchInputOption(models.Model):
 
     class Meta:
         unique_together = (
-            ('search_input', 'name', ),
-            ('search_input', 'display_order', ),
+            ('search_input', 'name',),
+            ('search_input', 'display_order',),
         )
 
     def __str__(self):
         return '{display_order}. {display_name} ({active})'.format(
             display_order=self.display_order,
             display_name=self.display_name,
+            active='Active' if self.active else 'Inactive'
+        )
+
+
+class SearchPageInputGroup(models.Model):
+    """
+    Defines which input groups will be present on which search page
+    """
+
+    # search page
+    search_page = models.ForeignKey(SearchPage, on_delete=models.CASCADE, blank=False, null=False, )
+
+    # search input group
+    search_input_group = models.ForeignKey(SearchInputGroup, on_delete=models.CASCADE, blank=False, null=False, )
+
+    # marks whether active or not
+    active = models.BooleanField(default=True, null=False, blank=False)
+
+    class Meta:
+        unique_together = (
+            ('search_page', 'search_input_group',),
+        )
+
+    def __str__(self):
+        return '{search_page}. {search_input_group} ({active})'.format(
+            search_page=self.search_page,
+            search_input_group=self.search_input_group,
             active='Active' if self.active else 'Inactive'
         )

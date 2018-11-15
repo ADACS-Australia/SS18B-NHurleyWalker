@@ -9,19 +9,24 @@ def insert(apps, schema_editor):
     SearchInputGroup = apps.get_model('mwasurveyweb', 'SearchInputGroup')
 
     initial_search_input_info = [
-        ('observation_info', 'Observation Info Constraints', '', 0),
-        ('pointing', 'Pointing Constraints', '', 1),
-        ('time', 'Time Constraints', '', 2),
-        ('observing_mode', 'Observing Mode Constraints', '', 3),
+        ('observation_info', 'Observation Info Constraints', ''),
+        ('pointing', 'Pointing Constraints', ''),
+        ('time', 'Time Constraints', ''),
+        ('observing_mode', 'Observing Mode Constraints', ''),
     ]
+
+    display_order = 0
 
     for search_input_info in initial_search_input_info:
         SearchInputGroup.objects.create(
             name=search_input_info[0],
             display_name=search_input_info[1],
             description=search_input_info[2],
-            display_order=search_input_info[3],
+            display_order=display_order,
         )
+
+        # update display order
+        display_order += 1
 
 
 def revert(apps, schema_editor):
@@ -33,7 +38,7 @@ def revert(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mwasurveyweb', '0001_initial'),
+        ('mwasurveyweb', '0002_insert_search_pages'),
     ]
 
     operations = [

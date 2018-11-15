@@ -15,3 +15,9 @@
     font-weight: 600;
     font-size: large;
 }
+
+span.highlight {
+    color: #dc3545;
+    font-weight: 600;
+    font-size: x-large;
+}
