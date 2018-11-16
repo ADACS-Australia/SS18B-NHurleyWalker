@@ -16,86 +16,85 @@
 
     {% if search_forms %}
 
-    <form class="form-row" method="post" enctype="multipart/form-data">
-        {{ form.media }}
-        <div class="col-md-12">
-            {% csrf_token %}
-            {% include 'snippets/messages.html' %}
+        <form class="form-row" method="post" enctype="multipart/form-data">
+            {{ form.media }}
+            <div class="col-md-12">
+                {% csrf_token %}
+                {% include 'snippets/messages.html' %}
 
-            <ul class="row search-forms">
-            {% for form_data in search_forms %}
-                <li class="col col-lg-6 col-md-12 col-sm-12 col-sx-12 col-12 search-form">
-                {% if form_data.title %}
-                    <div class="form-title">
-                        {{ form_data.title }}
+                <ul class="row search-forms">
+                    {% for form_data in search_forms %}
+                        <li class="col col-lg-6 col-md-12 col-sm-12 col-sx-12 col-12 search-form">
+                            {% if form_data.title %}
+                                <div class="form-title">
+                                    {{ form_data.title }}
+                                </div>
+                            {% endif %}
+
+                            {% if form_data.description %}
+                                <div class="form-description">
+                                    {{ form_data.description }}
+                                </div>
+                            {% endif %}
+
+                            {% with form_data.form as form %}
+                                <div class="form-body">
+                                    {% include 'mwasurveyweb/search/search_form.html' %}
+                                </div>
+                            {% endwith %}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="row">
+                    <div class="buttons col-md-12 text-md-right">
+                        <input class="btn btn-warning" type="reset" tabindex="101" value="Reset"/>
+                        <input class="btn btn-success" type="submit" tabindex="100" value="Search"/>
                     </div>
-                {% endif %}
-
-                {% if form_data.description %}
-                    <div class="form-description">
-                        {{ form_data.description }}
-                    </div>
-                {% endif %}
-
-                {% with form_data.form as form %}
-                    <div class="form-body">
-                        {% include 'mwasurveyweb/search/search_form.html' %}
-                    </div>
-                {% endwith %}
-                </li>
-            {% endfor %}
-            </ul>
-
-            <div class="row">
-                <div class="buttons col-md-12 text-md-right">
-                    <input class="btn btn-warning" type="reset" tabindex="101" value="Reset"/>
-                    <input class="btn btn-success" type="submit" tabindex="100" value="Search"/>
                 </div>
-            </div>
 
-        </div>
-    </form>
+            </div>
+        </form>
 
     {% elif paginator.total > 0 %}
 
-    {% include 'mwasurveyweb/snippets/number-display.html' %}
+        {% include 'mwasurveyweb/snippets/number-display.html' %}
 
-    <div class="job-list table-responsive">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Obs ID</th>
-                <th>Project ID</th>
-                <th>Obs Name</th>
-                <th>Start Time</th>
-                <th>RA Pointing</th>
-                <th>Dec Pointing</th>
-                <th>Creator</th>
-                <th>Action(s)</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for result in search_results %}
-                <tr class="text-dark">
-                    <th scope="col" class="job-name"><a
-                            href="">{{ result.obs_id }}</a></th>
-                    <td>{{ result.projectid }}</td>
-                    <td>{{ result.obsname }}</td>
-                    <td>{{ result.starttime }}</td>
-                    <td>{{ result.ra_pointing }}</td>
-                    <td>{{ result.dec_pointing }}</td>
-                    <td>{{ result.creator }}</td>
-                    <td>
-                        <a href="">View</a>
-                    </td>
+        <div class="job-list table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for header in display_headers %}
+                        {% if forloop.counter == 1 %}
+                            <th scope="col">{{ header }}</th>
+                        {% else %}
+                        <th>{{ header }}</th>
+                        {% endif %}
+                    {% endfor %}
+                    <th>Action(s)</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                {% for result in search_results %}
+                    <tr class="text-dark">
+                        {% for item in result %}
+                            {% if forloop.counter == 1 %}
+                                <th scope="col" class="job-name"><a href="">{{ item }}</a></th>
+                            {% elif not forloop.last %}
+                                <td>{{ item }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>
+                            <a href="">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-    {% include 'mwasurveyweb/snippets/pagination.html' %}
+        {% include 'mwasurveyweb/snippets/pagination.html' %}
     {% else %}
-        <div >No records found matching the search parameters!!</div>
+        <div>No records found matching the search parameters!!</div>
     {% endif %}
 {% endblock content %}

@@ -3,6 +3,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 
 from .utils import (
     check_forms_validity,
@@ -11,6 +12,7 @@ from .utils import (
 
 from ..models import (
     SearchInput,
+    SearchPageDisplayColumn,
 )
 
 from ..forms.search_parameter import SearchParameterForm
@@ -18,16 +20,14 @@ from ..forms.search import SearchForm
 
 
 class SearchQuery(object):
-
-    def _generate_query(self):
+    def _generate_query(self, form_type):
 
         # forming the subquery for the total count
         self.query_count = 'SELECT count(*) total ' \
-                           'FROM {0} '.format('observation')
+                           'FROM {0} '.format(form_type)
 
         temp_query_condition = []
         for db_search_parameter in self.database_search_parameters:
-
             temp_query_part = '(' + db_search_parameter.get('table')
             temp_query_part += '.' + db_search_parameter.get('field')
             temp_query_part += ' ' + db_search_parameter.get('operator')
@@ -40,23 +40,33 @@ class SearchQuery(object):
         if temp_query_condition:
             self.query_count = self.query_count + 'WHERE ' + ' AND '.join(temp_query_condition)
 
-        self.query = 'SELECT ' \
-                     '{0}.obs_id, ' \
-                     '{0}.projectid, ' \
-                     '{0}.obsname, ' \
-                     '{0}.starttime, ' \
-                     '{0}.ra_pointing, ' \
-                     '{0}.dec_pointing, ' \
-                     '{0}.duration_sec, ' \
-                     '{0}.creator, ' \
+        # query select information
+        table_columns = SearchPageDisplayColumn.objects.filter(Q(active=True), Q(search_page__name=form_type)) \
+            .order_by('display_order')
+
+        self.display_headers = []
+
+        query_substring = ''
+
+        for table_column in table_columns:
+            self.display_headers.append(table_column.field_name)
+            query_substring += '{table_name}.{field_name}, '.format(
+                table_name=table_column.table_name,
+                field_name=table_column.field_name,
+            )
+
+        self.query = 'SELECT {select_fields}' \
                      'subtable.total ' \
-                     'FROM {0}, ({1}) subtable '.format('observation', self.query_count)
+                     'FROM {table}, ({query_count}) subtable '.format(select_fields=query_substring,
+                                                                      table=form_type,
+                                                                      query_count=self.query_count,
+                                                                      )
 
         if temp_query_condition:
             self.query = self.query + 'WHERE ' + ' AND '.join(temp_query_condition)
 
         # add up search parameters here
-        self.query = self.query + self.search_parameters
+        self.query = self.query + self.search_parameter_order_by + self.search_parameter_limit
 
     def _enlist_database_search_parameter(self, key, value):
         input_properties = key.split('__')
@@ -101,7 +111,8 @@ class SearchQuery(object):
             if key == 'descending':
                 order_by = 'DESC' if value else 'ASC'
 
-        self.search_parameters = self.search_parameters.format(order_by=order_by, limit=self.limit, offset=self.offset)
+        self.search_parameter_order_by = self.search_parameter_order_by.format(order_by=order_by)
+        self.search_parameter_limit = self.search_parameter_limit.format(limit=self.limit, offset=self.offset)
 
     def _process_query(self):
 
@@ -121,9 +132,9 @@ class SearchQuery(object):
                         self._enlist_database_search_parameter(key, value)
 
     def get_query(self):
-        return self.query, self.query_values, self.limit, self.offset
+        return self.query, self.query_values, self.limit, self.offset, self.display_headers
 
-    def __init__(self, search_forms):
+    def __init__(self, search_forms, form_type):
         self.search_forms = search_forms
         self.query = None
         self.query_count = None
@@ -131,10 +142,12 @@ class SearchQuery(object):
         self.limit = 100
         self.offset = 0
         self.database_search_parameters = []
-        self.search_parameters = ' ORDER BY obs_id {order_by} LIMIT {limit} OFFSET {offset}'
+        self.display_headers = []
+        self.search_parameter_order_by = ' ORDER BY obs_id {order_by}'
+        self.search_parameter_limit = ' LIMIT {limit} OFFSET {offset}'
 
         if check_forms_validity(search_forms):
             self._process_query()
-            self._generate_query()
+            self._generate_query(form_type)
         else:
             raise ValidationError('Invalid input parameters')

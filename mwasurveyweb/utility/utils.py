@@ -38,13 +38,15 @@ def get_operator_by_field_type(field_type, index=None):
             return '<='
 
 
+def get_search_page_type(path_info):
+    return path_info.replace('/', '').replace('search_', '')
+
+
 def get_search_results(query, query_values):
 
     try:
 
         conn = sqlite3.connect(settings.GLEAM_DATABASE_PATH)
-
-        conn.row_factory = sqlite3.Row
 
         cursor = conn.cursor()
 

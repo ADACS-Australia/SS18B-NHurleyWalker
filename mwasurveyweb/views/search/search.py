@@ -10,15 +10,20 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 from ...utility.Paginator import Paginator
 from ...forms.search_parameter import SearchParameterForm
 from ...forms.search import SearchForm
 from ...utility.search import SearchQuery
-from ...utility.utils import get_search_results
+from ...utility.utils import (
+    get_search_results,
+    get_search_page_type,
+)
 from ...models import (
     SearchInputGroup,
     SearchInput,
+    SearchPageInputGroup,
 )
 
 
@@ -29,6 +34,8 @@ def search(request):
     :param request: Django request object.
     :return: Rendered template
     """
+
+    form_type = get_search_page_type(request.path_info)
 
     if request.method == 'GET':
 
@@ -41,11 +48,12 @@ def search(request):
             # pagination is happening
 
             if page < 1:
-                return redirect(reverse('search') + '?page=1')
+                return redirect(reverse('search_' + form_type) + '?page=1')
 
             try:
                 query = request.session['query']
                 query_values = pickle.loads(codecs.decode(request.session['query_values'].encode(), "base64"))
+                display_headers = pickle.loads(codecs.decode(request.session['display_headers'].encode(), "base64"))
                 limit = request.session['limit']
                 offset = (page - 1) * int(limit)
 
@@ -57,7 +65,7 @@ def search(request):
                 search_results = list(get_search_results(query, query_values))[0]
 
                 try:
-                    total = search_results[0]['total']
+                    total = search_results[0][-1]
                 except IndexError:
                     total = 0
 
@@ -69,6 +77,7 @@ def search(request):
                     {
                         'search_forms': None,
                         'search_results': search_results,
+                        'display_headers': display_headers,
                         'paginator': paginator,
                     }
                 )
@@ -96,10 +105,18 @@ def search(request):
         }),
     ]
 
-    input_groups = SearchInputGroup.objects.filter(active=True) \
+    input_groups = SearchInputGroup.objects.filter(Q(active=True), ) \
         .order_by('display_order')
 
     for input_group in input_groups:
+
+        if not SearchPageInputGroup.objects.filter(
+                search_page__name=form_type,
+                search_input_group=input_group,
+                active=True,
+        ) \
+                .exists():
+            continue
 
         if not SearchInput.objects.filter(active=True, search_input_group=input_group).exists():
             continue
@@ -120,14 +137,16 @@ def search(request):
     # dealing with search results
     search_results = None
     paginator = None
+    display_headers = None
 
     if request.method == 'POST':
 
         try:
-            search_query = SearchQuery(search_forms)
-            query, query_values, limit, offset = search_query.get_query()
+            search_query = SearchQuery(search_forms, form_type)
+            query, query_values, limit, offset, display_headers = search_query.get_query()
             request.session['query'] = query
             request.session['query_values'] = codecs.encode(pickle.dumps(query_values), "base64").decode()
+            request.session['display_headers'] = codecs.encode(pickle.dumps(display_headers), "base64").decode()
             request.session['limit'] = limit
         except ValidationError:
             query = None
@@ -140,7 +159,7 @@ def search(request):
             search_results = list(get_search_results(query, query_values))[0]
 
             try:
-                total = search_results[0]['total']
+                total = search_results[0][-1]
             except IndexError:
                 total = 0
 
@@ -152,6 +171,7 @@ def search(request):
         {
             'search_forms': search_forms,
             'search_results': search_results,
+            'display_headers': display_headers,
             'paginator': paginator,
         }
     )

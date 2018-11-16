@@ -189,3 +189,38 @@ class SearchPageInputGroup(models.Model):
             search_input_group=self.search_input_group,
             active='Active' if self.active else 'Inactive'
         )
+
+
+class SearchPageDisplayColumn(models.Model):
+    """
+    Defines which field columns are to be shown in the result page
+    """
+
+    # search page
+    search_page = models.ForeignKey(SearchPage, on_delete=models.CASCADE, blank=False, null=False, )
+
+    # table name in the actual database for searching
+    table_name = models.CharField(max_length=255, null=False, blank=False)
+
+    # field name in the table in the actual database for searching
+    field_name = models.CharField(max_length=255, null=False, blank=False)
+
+    # order to define in which order this input option would be displayed
+    display_order = models.SmallIntegerField(null=False, blank=False)
+
+    # marks whether active or not
+    active = models.BooleanField(default=True, null=False, blank=False)
+
+    class Meta:
+        unique_together = (
+            ('search_page', 'table_name', 'field_name',),
+            ('search_page', 'display_order',),
+        )
+
+    def __str__(self):
+        return '{search_page}. {table_name}.{field_name} ({active})'.format(
+            search_page=self.search_page,
+            table_name=self.table_name,
+            field_name=self.field_name,
+            active='Active' if self.active else 'Inactive'
+        )

@@ -10,6 +10,7 @@ from .models import (
     SearchInput,
     SearchInputOption,
     SearchPageInputGroup,
+    SearchPageDisplayColumn,
 )
 
 
@@ -63,5 +64,16 @@ class SearchPageInputGroup(admin.ModelAdmin):
     list_display = (
         'search_page',
         'search_input_group',
+        'active',
+    )
+
+
+@admin.register(SearchPageDisplayColumn)
+class SearchPageDisplayColumn(admin.ModelAdmin):
+    list_display = (
+        'search_page',
+        'table_name',
+        'field_name',
+        'display_order',
         'active',
     )
