@@ -4,7 +4,13 @@
 {% block additional_styles %}
     <link rel="stylesheet" href="{% static 'mwasurveyweb/style/styles.css' %}"/>
     <link rel="stylesheet" href="{% static 'mwasurveyweb/style/form.css' %}"/>
+    <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 {% endblock additional_styles %}
+
+{% block additional_javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js" type="text/javascript"></script>
+
+{% endblock additional_javascript %}
 
 {% block page_header %}
     Search
@@ -68,7 +74,7 @@
                         {% if forloop.counter == 1 %}
                             <th scope="col">{{ header }}</th>
                         {% else %}
-                        <th>{{ header }}</th>
+                            <th>{{ header }}</th>
                         {% endif %}
                     {% endfor %}
                     <th>Action(s)</th>

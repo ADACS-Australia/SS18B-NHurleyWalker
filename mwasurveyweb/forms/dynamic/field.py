@@ -27,6 +27,8 @@ TEXT_AREA = 'text-area'
 SELECT = 'select'
 RADIO = 'radio'
 CHECKBOX = 'checkbox'
+DATE = 'date'
+DATETIME = 'datetime'
 
 
 class CustomCharField(forms.CharField):
@@ -332,4 +334,25 @@ def get_multiple_choices_input(label, required, choices=None, initial=None):
         choices=choices,
         initial=initial,
         required=required,
+    )
+
+
+def get_date_input(label, required=False, initial=None, extra_class=None):
+    """
+    Method to get a date field
+    :param label: String label of the field
+    :param required: Boolean to define whether the input is required or not
+    :param initial: Default input value for the field (checked or not)
+    :param extra_class: extra css class for styling
+    :return: A date field
+    """
+    return forms.DateField(
+        label=label,
+        required=required,
+        initial=initial,
+        widget=forms.DateInput(
+            attrs={
+                'class': extra_class if extra_class else '',
+            }
+        ),
     )

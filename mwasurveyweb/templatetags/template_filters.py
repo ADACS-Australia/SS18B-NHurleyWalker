@@ -16,3 +16,8 @@ def get_item(dictionary, key):
     :return: Object that corresponds to the key in the dictionary
     """
     return dictionary.get(key, None)
+
+
+@register.filter
+def field_type(field):
+    return field.field.widget.__class__.__name__

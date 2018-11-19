@@ -16,6 +16,7 @@ from .field import (
     get_zero_to_pi_input,
     get_zero_to_2pi_input,
     get_float_input,
+    get_date_input,
     POSITIVE_INTEGER,
     FLOAT,
     POSITIVE_FLOAT,
@@ -27,6 +28,7 @@ from .field import (
     TEXT_AREA,
     SELECT,
     CHECKBOX,
+    DATE,
 )
 
 
@@ -142,4 +144,12 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     choices=properties.get('choices'),
+                )
+
+            elif properties.get('type') == DATE:
+                self.fields[name] = get_date_input(
+                    label=properties.get('label', name),
+                    initial=properties.get('initial', None),
+                    required=properties.get('required', False),
+                    extra_class=properties.get('extra_class', 'date-picker'),
                 )

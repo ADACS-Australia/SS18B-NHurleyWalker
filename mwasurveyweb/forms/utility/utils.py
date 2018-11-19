@@ -47,6 +47,48 @@ def get_fields(search_input):
         })
         fields.append(input_properties_max)
 
+    elif search_input.field_type == RADIUS:
+        input_properties_position = dict()
+        input_properties_position.update({
+            'label': 'Position',
+            'type': dynamic_field.FLOAT,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value,
+        })
+        fields.append(input_properties_position)
+
+        input_properties_plus_minus = dict()
+        input_properties_plus_minus.update({
+            'label': '+/-',
+            'type': dynamic_field.FLOAT,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value,
+        })
+        fields.append(input_properties_plus_minus)
+
+    elif search_input.field_type == DATE_RANGE:
+        input_properties_min = dict()
+        input_properties_min.update({
+            'label': 'From',
+            'type': dynamic_field.DATE,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value,
+        })
+        fields.append(input_properties_min)
+
+        input_properties_max = dict()
+        input_properties_max.update({
+            'label': 'To',
+            'type': dynamic_field.DATE,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value,
+        })
+        fields.append(input_properties_max)
+
     return fields
 
 
