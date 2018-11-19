@@ -27,70 +27,30 @@ from ...models import (
 )
 
 
-@login_required
-def search(request):
-    """
-    Render the search view.
-    :param request: Django request object.
-    :return: Rendered template
-    """
+def set_session_search_attributes(request, query, query_values, display_headers, limit):
+    request.session['query'] = query
+    request.session['query_values'] = codecs.encode(pickle.dumps(query_values), "base64").decode()
+    request.session['display_headers'] = codecs.encode(pickle.dumps(display_headers), "base64").decode()
+    request.session['limit'] = limit
 
-    form_type = get_search_page_type(request.path_info)
 
-    if request.method == 'GET':
+def reset_session_search_attributes(request):
+    request.session['query'] = None
+    request.session['query_values'] = None
+    request.session['display_headers'] = None
+    request.session['limit'] = None
 
-        try:
-            page = int(request.GET.get('page', None))
-        except (TypeError, ValueError):
-            page = None
 
-        if page:
-            # pagination is happening
+def get_search_attributes_from_session(request):
+    query = request.session['query']
+    query_values = pickle.loads(codecs.decode(request.session['query_values'].encode(), "base64"))
+    display_headers = pickle.loads(codecs.decode(request.session['display_headers'].encode(), "base64"))
+    limit = request.session['limit']
 
-            if page < 1:
-                return redirect(reverse('search_' + form_type) + '?page=1')
+    return query, query_values, display_headers, limit
 
-            try:
-                query = request.session['query']
-                query_values = pickle.loads(codecs.decode(request.session['query_values'].encode(), "base64"))
-                display_headers = pickle.loads(codecs.decode(request.session['display_headers'].encode(), "base64"))
-                limit = request.session['limit']
-                offset = (page - 1) * int(limit)
 
-                pattern = ' OFFSET \d+'
-                replace_with = ' OFFSET {}'.format(str(offset))
-
-                query = re.sub(pattern, replace_with, query)
-
-                search_results = list(get_search_results(query, query_values))[0]
-
-                try:
-                    total = search_results[0][-1]
-                except IndexError:
-                    total = 0
-
-                paginator = Paginator(start_index=offset + 1, total=total, per_page=limit)
-
-                return render(
-                    request,
-                    "mwasurveyweb/search/search.html",
-                    {
-                        'search_forms': None,
-                        'search_results': search_results,
-                        'display_headers': display_headers,
-                        'paginator': paginator,
-                    }
-                )
-            except (KeyError, AttributeError):
-                request.session['query'] = None
-                request.session['query_values'] = None
-                request.session['limit'] = None
-
-        else:
-            request.session['query'] = None
-            request.session['query_values'] = None
-            request.session['limit'] = None
-
+def build_search_forms(request, form_type):
     # generating search forms
     search_forms = [
         dict({
@@ -134,6 +94,68 @@ def search(request):
             })
         )
 
+    return search_forms
+
+
+@login_required
+def search(request):
+    """
+    Render the search view.
+    :param request: Django request object.
+    :return: Rendered template
+    """
+
+    form_type = get_search_page_type(request.path_info)
+
+    if request.method == 'GET':
+
+        try:
+            page = int(request.GET.get('page', None))
+        except (TypeError, ValueError):
+            page = None
+
+        if page:
+            # pagination is happening
+
+            if page < 1:
+                return redirect(reverse('search_' + form_type) + '?page=1')
+
+            try:
+                query, query_values, display_headers, limit = get_search_attributes_from_session(request)
+                offset = (page - 1) * int(limit)
+
+                pattern = ' OFFSET \d+'
+                replace_with = ' OFFSET {}'.format(str(offset))
+
+                query = re.sub(pattern, replace_with, query)
+
+                search_results = list(get_search_results(query, query_values))[0]
+
+                try:
+                    total = search_results[0][-1]
+                except IndexError:
+                    total = 0
+
+                paginator = Paginator(start_index=offset + 1, total=total, per_page=limit)
+
+                return render(
+                    request,
+                    "mwasurveyweb/search/search.html",
+                    {
+                        'search_forms': None,
+                        'search_results': search_results,
+                        'display_headers': display_headers,
+                        'paginator': paginator,
+                    }
+                )
+            except (KeyError, AttributeError):
+                reset_session_search_attributes(request)
+
+        else:
+            reset_session_search_attributes(request)
+
+    search_forms = build_search_forms(request, form_type)
+
     # dealing with search results
     search_results = None
     paginator = None
@@ -144,10 +166,7 @@ def search(request):
         try:
             search_query = SearchQuery(search_forms, form_type)
             query, query_values, limit, offset, display_headers = search_query.get_query()
-            request.session['query'] = query
-            request.session['query_values'] = codecs.encode(pickle.dumps(query_values), "base64").decode()
-            request.session['display_headers'] = codecs.encode(pickle.dumps(display_headers), "base64").decode()
-            request.session['limit'] = limit
+            set_session_search_attributes(request, query, query_values, display_headers, limit)
         except ValidationError:
             query = None
             query_values = None
