@@ -17,6 +17,8 @@ from .field import (
     get_zero_to_2pi_input,
     get_float_input,
     get_date_input,
+    get_integer_input,
+    INTEGER,
     POSITIVE_INTEGER,
     FLOAT,
     POSITIVE_FLOAT,
@@ -98,6 +100,15 @@ class DynamicForm(forms.Form):
 
             elif properties.get('type') == ZERO_TO_2PI:
                 self.fields[name] = get_zero_to_2pi_input(
+                    label=properties.get('label', name),
+                    placeholder=properties.get('placeholder', None),
+                    initial=properties.get('initial', None),
+                    required=properties.get('required', False),
+                    validators=properties.get('validators', ()),
+                )
+
+            elif properties.get('type') == INTEGER:
+                self.fields[name] = get_integer_input(
                     label=properties.get('label', name),
                     placeholder=properties.get('placeholder', None),
                     initial=properties.get('initial', None),

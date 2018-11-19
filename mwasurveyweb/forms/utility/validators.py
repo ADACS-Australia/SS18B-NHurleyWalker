@@ -21,6 +21,20 @@ def validate_positive_float(value):
         raise ValidationError(_("Must be a float number"))
 
 
+def validate_integer(value):
+    """
+    Validates a value whether it is a integer number
+    :param value: value to validate
+    :return: Nothing
+    """
+    try:
+        int_val = int(value)
+        if int_val != value:
+            raise ValidationError(_("Must be a whole number"))
+    except ValueError:
+        raise ValidationError(_("Must be a number"))
+
+
 def validate_positive_integer(value):
     """
     Validates a value whether it is a positive integer number

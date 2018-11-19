@@ -26,6 +26,38 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
+    elif search_input.field_type == NUMBER:
+        input_properties = dict()
+        input_properties.update({
+            'label': '',
+            'type': dynamic_field.INTEGER,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value,
+        })
+        fields.append(input_properties)
+
+    elif search_input.field_type == MAX_NUMBER:
+        input_properties = dict()
+        input_properties.update({
+            'label': '',
+            'type': dynamic_field.INTEGER,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value,
+        })
+        fields.append(input_properties)
+
+    elif search_input.field_type == CHECKBOX:
+        input_properties = dict()
+        input_properties.update({
+            'label': '',
+            'type': dynamic_field.CHECKBOX,
+            'initial': search_input.initial_value,
+            'required': search_input.required,
+        })
+        fields.append(input_properties)
+
     elif search_input.field_type == RANGE:
         input_properties_min = dict()
         input_properties_min.update({
@@ -61,7 +93,7 @@ def get_fields(search_input):
         input_properties_plus_minus = dict()
         input_properties_plus_minus.update({
             'label': '+/-',
-            'type': dynamic_field.FLOAT,
+            'type': dynamic_field.POSITIVE_FLOAT,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
             'initial': search_input.initial_value,
