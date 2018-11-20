@@ -9,7 +9,19 @@ from ..dynamic import field as dynamic_field
 
 from ...models import (
     SearchInput,
+    SearchInputOption,
 )
+
+
+def get_choices_for_input(search_input):
+    choices = []
+
+    options = SearchInputOption.objects.filter(search_input=search_input)
+
+    for option in options:
+        choices.append([option.name, option.display_name])
+
+    return choices
 
 
 def get_fields(search_input):
@@ -48,12 +60,34 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
+    elif search_input.field_type == MAX_ABSOLUTE_NUMBER:
+        input_properties = dict()
+        input_properties.update({
+            'label': '',
+            'type': dynamic_field.POSITIVE_INTEGER,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value,
+        })
+        fields.append(input_properties)
+
     elif search_input.field_type == CHECKBOX:
         input_properties = dict()
         input_properties.update({
             'label': '',
             'type': dynamic_field.CHECKBOX,
             'initial': search_input.initial_value,
+            'required': search_input.required,
+        })
+        fields.append(input_properties)
+
+    elif search_input.field_type == SELECT:
+        input_properties = dict()
+        input_properties.update({
+            'label': '',
+            'type': dynamic_field.SELECT,
+            'initial': search_input.initial_value,
+            'choices': get_choices_for_input(search_input),
             'required': search_input.required,
         })
         fields.append(input_properties)

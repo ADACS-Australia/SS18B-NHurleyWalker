@@ -298,12 +298,13 @@ def get_positive_integer_input(label, required, placeholder=None, initial=None, 
     )
 
 
-def get_select_input(label, choices=None, initial=None, extra_class=None):
+def get_select_input(label, choices=None, initial=None, required=None, extra_class=None):
     """
     Method to get a choice field with bootstrap theme
     :param label: String label of the field
     :param choices: List of choices to be rendered with the field
     :param initial: Default input value for the field
+    :param required: Boolean to define whether the field is required or not
     :param extra_class: extra css class for styling
     :return: A custom select field
     """
@@ -315,9 +316,9 @@ def get_select_input(label, choices=None, initial=None, extra_class=None):
                 'class': 'form-control' + (' ' + extra_class if extra_class else ''),
             }
         ),
-        choices=choices,
+        choices=choices if choices else [],
         initial=initial,
-
+        required=required,
     )
 
 
