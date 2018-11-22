@@ -16,6 +16,11 @@ from ...models import (
 def get_choices_for_input(search_input):
     choices = []
 
+    if not search_input.required:
+        choices.append(
+            ['', 'None'],
+        )
+
     options = SearchInputOption.objects.filter(search_input=search_input)
 
     for option in options:
@@ -195,5 +200,5 @@ def get_field_properties(group_name):
             })
         })
 
-    # returning fieldset and field properties
+    # returning fieldsets and field properties
     return fieldsets, field_properties
