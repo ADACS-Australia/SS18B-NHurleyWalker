@@ -32,7 +32,7 @@ def get_choices_for_input(search_input):
 def get_fields(search_input):
     fields = []
 
-    if search_input.field_type == TEXT:
+    if search_input.input_type == TEXT:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -43,7 +43,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.field_type == NUMBER:
+    elif search_input.input_type == NUMBER:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -54,7 +54,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.field_type == MAX_NUMBER:
+    elif search_input.input_type == MAX_NUMBER:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -65,7 +65,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.field_type == MAX_ABSOLUTE_NUMBER:
+    elif search_input.input_type == MAX_ABSOLUTE_NUMBER:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -76,7 +76,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.field_type == CHECKBOX:
+    elif search_input.input_type == CHECKBOX:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -86,7 +86,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.field_type == SELECT:
+    elif search_input.input_type == SELECT:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -97,7 +97,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.field_type == RANGE:
+    elif search_input.input_type == RANGE:
         input_properties_min = dict()
         input_properties_min.update({
             'label': 'Min',
@@ -118,7 +118,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties_max)
 
-    elif search_input.field_type == RADIUS:
+    elif search_input.input_type == RADIUS:
         input_properties_position = dict()
         input_properties_position.update({
             'label': 'Position',
@@ -139,7 +139,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties_plus_minus)
 
-    elif search_input.field_type == DATE_RANGE:
+    elif search_input.input_type == DATE_RANGE:
         input_properties_min = dict()
         input_properties_min.update({
             'label': 'From',

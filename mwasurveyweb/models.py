@@ -84,8 +84,27 @@ class SearchInput(models.Model):
     # field name in the table in the actual database for searching
     field_name = models.CharField(max_length=255, null=False, blank=False)
 
+    # field types that are used in the database
+    INT = 'Integer'
+    TEXT = 'Text'
+    FLOAT = 'Float'
+    BOOL = 'Bool'
+    TEXTTIME = 'Text(Time)'
+
     # field type choices
     FIELD_TYPE_CHOICES = [
+        (INT, INT),
+        (TEXT, TEXT),
+        (FLOAT, FLOAT),
+        (BOOL, BOOL),
+        (TEXTTIME, TEXTTIME),
+    ]
+
+    # field type in the actual database for searching
+    field_type = models.CharField(max_length=50, choices=FIELD_TYPE_CHOICES, blank=False, null=False, default=TEXT)
+
+    # input type choices
+    INPUT_TYPE_CHOICES = [
         (TEXT, TEXT_DISPLAY),
         (NUMBER, NUMBER_DISPLAY),
         (MIN_NUMBER, MIN_NUMBER_DISPLAY),
@@ -99,8 +118,8 @@ class SearchInput(models.Model):
         (DATE_RANGE, DATE_RANGE_DISPLAY),
     ]
 
-    # field type to define how the input will be rendered in the UI
-    field_type = models.CharField(max_length=50, choices=FIELD_TYPE_CHOICES, blank=False, default=TEXT)
+    # input type to define how the input will be rendered in the UI
+    input_type = models.CharField(max_length=50, choices=INPUT_TYPE_CHOICES, blank=False, null=False, default=TEXT)
 
     # initial value to be rendered in the input field
     initial_value = models.CharField(max_length=255, blank=True, null=True)

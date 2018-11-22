@@ -5,6 +5,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 from django.db import migrations
 
 from mwasurveyweb.constants import *
+from mwasurveyweb.models import SearchInput as SInput
 
 
 def insert(apps, schema_editor):
@@ -24,16 +25,16 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('observation_name', 'Observation Name', 'observation', 'obsname', TEXT, None, None, False, ''),
-            ('creator', 'Creator', 'observation', 'creator', TEXT, None, None, False, ''),
-            ('calibration', 'Calibration', 'observation', 'calibration', CHECKBOX, None, None, False, 'Check to find observations flagged as calibrators.'),
-            ('calibrators', 'Calibrators', 'observation', 'calibrators', TEXT, None, None, False, ''),
-            ('cal_obs_id', 'CAL OBS ID', 'observation', 'cal_obs_id', NUMBER, None, None, False, ''),
-            ('peelsrcs', 'peelsrcs', 'observation', 'peelsrcs', TEXT, None, None, False, ''),
-            ('ion_phs_peak', 'ion phs peak', 'observation', 'ion_phs_peak', MAX_NUMBER, '20', None, False, ''),
-            ('ion_phs_std', 'ion phs std', 'observation', 'ion_phs_std', MAX_NUMBER, '90', None, False, ''),
-            ('archived', 'Archived?', 'observation', 'archived', CHECKBOX, None, None, False, ''),
-            ('status', 'Status', 'observation', 'status', SELECT, None, None, False, ''),
+            ('observation_name', 'Observation Name', 'observation', 'obsname', SInput.TEXT, TEXT, None, None, False, ''),
+            ('creator', 'Creator', 'observation', 'creator', SInput.TEXT, TEXT, None, None, False, ''),
+            ('calibration', 'Calibration', 'observation', 'calibration', SInput.BOOL, CHECKBOX, None, None, False, 'Check to find observations flagged as calibrators.'),
+            ('calibrators', 'Calibrators', 'observation', 'calibrators', SInput.TEXT, TEXT, None, None, False, ''),
+            ('cal_obs_id', 'CAL OBS ID', 'observation', 'cal_obs_id', SInput.INT, NUMBER, None, None, False, ''),
+            ('peelsrcs', 'peelsrcs', 'observation', 'peelsrcs', SInput.TEXT, TEXT, None, None, False, ''),
+            ('ion_phs_peak', 'ion phs peak', 'observation', 'ion_phs_peak', SInput.INT, MAX_NUMBER, '20', None, False, ''),
+            ('ion_phs_std', 'ion phs std', 'observation', 'ion_phs_std', SInput.INT, MAX_NUMBER, '90', None, False, ''),
+            ('archived', 'Archived?', 'observation', 'archived', SInput.BOOL, CHECKBOX, None, None, False, ''),
+            ('status', 'Status', 'observation', 'status', SInput.TEXT, SELECT, None, None, False, ''),
         ]
 
         display_order = 0
@@ -46,10 +47,11 @@ def insert(apps, schema_editor):
                 table_name=search_input_info[2],
                 field_name=search_input_info[3],
                 field_type=search_input_info[4],
-                initial_value=search_input_info[5],
-                placeholder=search_input_info[6],
-                required=search_input_info[7],
-                input_info=search_input_info[8],
+                input_type=search_input_info[5],
+                initial_value=search_input_info[6],
+                placeholder=search_input_info[7],
+                required=search_input_info[8],
+                input_info=search_input_info[9],
                 display_order=display_order,
             )
 
@@ -66,10 +68,10 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('ra', 'RA in deg', 'observation', 'ra_pointing', RADIUS, None, None, False, ''),
-            ('dec', 'Dec in deg', 'observation', 'dec_pointing', RADIUS, None, None, False, ''),
-            ('elevation', 'Elevation in deg', 'observation', 'elevation_pointing', RANGE, None, None, False, ''),
-            ('azimuth', 'Azimuth in deg', 'observation', 'azimuth_pointing', RANGE, None, None, False, ''),
+            ('ra', 'RA in deg', 'observation', 'ra_pointing', SInput.FLOAT, RADIUS, None, None, False, ''),
+            ('dec', 'Dec in deg', 'observation', 'dec_pointing', SInput.FLOAT, RADIUS, None, None, False, ''),
+            ('elevation', 'Elevation in deg', 'observation', 'elevation_pointing', SInput.FLOAT, RANGE, None, None, False, ''),
+            ('azimuth', 'Azimuth in deg', 'observation', 'azimuth_pointing', SInput.FLOAT, RANGE, None, None, False, ''),
         ]
 
         display_order = 0
@@ -82,10 +84,11 @@ def insert(apps, schema_editor):
                 table_name=search_input_info[2],
                 field_name=search_input_info[3],
                 field_type=search_input_info[4],
-                initial_value=search_input_info[5],
-                placeholder=search_input_info[6],
-                required=search_input_info[7],
-                input_info=search_input_info[8],
+                input_type=search_input_info[5],
+                initial_value=search_input_info[6],
+                placeholder=search_input_info[7],
+                required=search_input_info[8],
+                input_info=search_input_info[9],
                 display_order=display_order,
             )
 
@@ -102,10 +105,9 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('start_time_gps', 'Starttime in GPS seconds', 'observation', 'starttime', RANGE, None, None, False, ''),
-            ('start_time', 'Starttime in UTC', 'observation', 'starttime', DATE_RANGE, None, None, False, ''),
-            ('obs_duration', 'Obs duration, in seconds', 'observation', 'duration_sec', RANGE, None, None, False, ''),
-            ('future', 'Future', 'observation', 'starttime', CHECKBOX, None, None, False, 'Check to find observations in the future, rather than the past.'),
+            ('start_time_gps', 'Starttime in GPS seconds', 'observation', 'starttime', SInput.TEXTTIME, RANGE, None, None, False, ''),
+            ('start_time', 'Starttime in UTC', 'observation', 'starttime', SInput.TEXTTIME, DATE_RANGE, None, None, False, ''),
+            ('obs_duration', 'Obs duration, in seconds', 'observation', 'duration_sec', SInput.INT, RANGE, None, None, False, ''),
         ]
 
         display_order = 0
@@ -118,10 +120,11 @@ def insert(apps, schema_editor):
                 table_name=search_input_info[2],
                 field_name=search_input_info[3],
                 field_type=search_input_info[4],
-                initial_value=search_input_info[5],
-                placeholder=search_input_info[6],
-                required=search_input_info[7],
-                input_info=search_input_info[8],
+                input_type=search_input_info[5],
+                initial_value=search_input_info[6],
+                placeholder=search_input_info[7],
+                required=search_input_info[8],
+                input_info=search_input_info[9],
                 display_order=display_order,
             )
 
@@ -139,7 +142,7 @@ def insert(apps, schema_editor):
 
         initial_search_input_info = [
             (
-            'cenchan', 'Central Channel Number', 'observation', 'cenchan', SELECT, '121', None, False, ''),
+            'cenchan', 'Central Channel Number', 'observation', 'cenchan', SInput.INT, SELECT, '121', None, False, ''),
         ]
 
         display_order = 0
@@ -152,10 +155,11 @@ def insert(apps, schema_editor):
                 table_name=search_input_info[2],
                 field_name=search_input_info[3],
                 field_type=search_input_info[4],
-                initial_value=search_input_info[5],
-                placeholder=search_input_info[6],
-                required=search_input_info[7],
-                input_info=search_input_info[8],
+                input_type=search_input_info[5],
+                initial_value=search_input_info[6],
+                placeholder=search_input_info[7],
+                required=search_input_info[8],
+                input_info=search_input_info[9],
                 display_order=display_order,
             )
 

@@ -41,6 +41,7 @@ class SearchInput(admin.ModelAdmin):
         'table_name',
         'field_name',
         'field_type',
+        'input_type',
         'initial_value',
         'placeholder',
         'required',

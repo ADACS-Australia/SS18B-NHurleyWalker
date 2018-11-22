@@ -37,6 +37,15 @@ def get_operator_by_field_type(field_type, index=None):
         if index == '1':
             return '<='
 
+    if field_type == MIN_NUMBER:
+        return '>='
+
+    if field_type == MAX_NUMBER:
+        return '<='
+
+    if field_type == SELECT:
+        return '='
+
 
 def get_search_page_type(path_info):
     return path_info.replace('/', '').replace('search_', '')
