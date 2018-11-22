@@ -7,7 +7,7 @@ from django.db.models import Q
 
 from .utils import (
     check_forms_validity,
-    get_operator_by_field_type,
+    get_operator_by_input_type,
 )
 
 from ..models import (
@@ -28,13 +28,16 @@ class SearchQuery(object):
 
         temp_query_condition = []
         for db_search_parameter in self.database_search_parameters:
-            temp_query_part = '(' + db_search_parameter.get('table')
-            temp_query_part += '.' + db_search_parameter.get('field')
-            temp_query_part += ' ' + db_search_parameter.get('operator')
-            temp_query_part += ' ?)'
+            try:
+                temp_query_part = '(' + db_search_parameter.get('table')
+                temp_query_part += '.' + db_search_parameter.get('field')
+                temp_query_part += ' ' + db_search_parameter.get('operator')
+                temp_query_part += ' ?)'
 
-            temp_query_condition.append(temp_query_part)
-            self.query_values.append(db_search_parameter.get('value'))
+                temp_query_condition.append(temp_query_part)
+                self.query_values.append(db_search_parameter.get('value'))
+            except:
+                pass
 
         # subquery formation done
         if temp_query_condition:
@@ -88,14 +91,28 @@ class SearchQuery(object):
         except IndexError:
             index = None
 
-        operator = get_operator_by_field_type(search_input.field_type, index)
+        value_type_casted = None
+
+        try:
+            if search_input.field_type == SearchInput.INT:
+                value_type_casted = int(value)
+            elif search_input.field_type == SearchInput.FLOAT:
+                value_type_casted = float(value)
+            elif search_input.field_type == SearchInput.BOOL:
+                value_type_casted = True if value else False
+            else:
+                value_type_casted = value
+        except (TypeError, ValueError):
+            pass
+
+        operator = get_operator_by_input_type(search_input.input_type, index)
 
         self.database_search_parameters.append(
             dict(
                 table=table,
                 field=field,
                 operator=operator,
-                value=value,
+                value=value_type_casted,
             )
         )
 

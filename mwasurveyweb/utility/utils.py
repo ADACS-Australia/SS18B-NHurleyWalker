@@ -24,26 +24,26 @@ def check_forms_validity(search_forms):
     return True
 
 
-def get_operator_by_field_type(field_type, index=None):
-    if field_type == TEXT:
+def get_operator_by_input_type(input_type, index=None):
+    if input_type == TEXT:
         return 'LIKE'
 
-    if field_type == NUMBER:
+    if input_type == NUMBER:
         return '='
 
-    if field_type == RANGE:
+    if input_type == RANGE:
         if index == '0':
             return '>='
         if index == '1':
             return '<='
 
-    if field_type == MIN_NUMBER:
+    if input_type == MIN_NUMBER:
         return '>='
 
-    if field_type == MAX_NUMBER:
+    if input_type == MAX_NUMBER:
         return '<='
 
-    if field_type == SELECT:
+    if input_type == SELECT:
         return '='
 
 

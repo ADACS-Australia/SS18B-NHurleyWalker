@@ -29,10 +29,10 @@ def insert(apps, schema_editor):
             ('creator', 'Creator', 'observation', 'creator', SInput.TEXT, TEXT, None, None, False, ''),
             ('calibration', 'Calibration', 'observation', 'calibration', SInput.BOOL, CHECKBOX, None, None, False, 'Check to find observations flagged as calibrators.'),
             ('calibrators', 'Calibrators', 'observation', 'calibrators', SInput.TEXT, TEXT, None, None, False, ''),
-            ('cal_obs_id', 'CAL OBS ID', 'observation', 'cal_obs_id', SInput.INT, NUMBER, None, None, False, ''),
-            ('peelsrcs', 'peelsrcs', 'observation', 'peelsrcs', SInput.TEXT, TEXT, None, None, False, ''),
-            ('ion_phs_peak', 'ion phs peak', 'observation', 'ion_phs_peak', SInput.INT, MAX_NUMBER, '20', None, False, ''),
-            ('ion_phs_std', 'ion phs std', 'observation', 'ion_phs_std', SInput.INT, MAX_NUMBER, '90', None, False, ''),
+            ('cal_obs_id', 'Calibration Observation ID', 'observation', 'cal_obs_id', SInput.INT, NUMBER, None, None, False, ''),
+            ('peelsrcs', 'Peel Sources', 'observation', 'peelsrcs', SInput.TEXT, TEXT, None, None, False, ''),
+            ('ion_phs_peak', 'Ionosphere Phase Peak (Absolute)', 'observation', 'ion_phs_peak', SInput.INT, MAX_ABSOLUTE_NUMBER, '20', None, False, ''),
+            ('ion_phs_std', 'Ionosphere Phase Standard', 'observation', 'ion_phs_std', SInput.INT, MAX_NUMBER, '90', None, False, ''),
             ('archived', 'Archived?', 'observation', 'archived', SInput.BOOL, CHECKBOX, None, None, False, ''),
             ('status', 'Status', 'observation', 'status', SInput.TEXT, SELECT, None, None, False, ''),
         ]
@@ -141,8 +141,7 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            (
-            'cenchan', 'Central Channel Number', 'observation', 'cenchan', SInput.INT, SELECT, '121', None, False, ''),
+            ('cenchan', 'Central Channel Number', 'observation', 'cenchan', SInput.INT, SELECT, '121', None, False, ''),
         ]
 
         display_order = 0
