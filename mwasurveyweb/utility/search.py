@@ -7,7 +7,7 @@ from django.db.models import Q
 
 from .utils import (
     check_forms_validity,
-    get_operator_by_input_type,
+    get_value_and_operators,
 )
 
 from ..models import (
@@ -82,7 +82,7 @@ class SearchQuery(object):
         # add up search parameters here
         self.query = self.query + self.search_parameter_order_by + self.search_parameter_limit
 
-    def _enlist_database_search_parameter(self, key, value):
+    def _enlist_database_search_parameter(self, key, value, search_form):
         input_properties = key.split('__')
 
         try:
@@ -97,26 +97,12 @@ class SearchQuery(object):
         table = search_input.table_name
         field = search_input.field_name
 
-        try:
-            index = input_properties[2]
-        except IndexError:
-            index = None
-
-        value_type_casted = None
-
-        try:
-            if search_input.field_type == SearchInput.INT:
-                value_type_casted = int(value)
-            elif search_input.field_type == SearchInput.FLOAT:
-                value_type_casted = float(value)
-            elif search_input.field_type == SearchInput.BOOL:
-                value_type_casted = 1 if value else 0
-            else:
-                value_type_casted = value
-        except (TypeError, ValueError):
-            pass
-
-        operator, field_operator = get_operator_by_input_type(search_input.input_type, index)
+        value_adjusted, operator, field_operator = get_value_and_operators(
+            value=value,
+            search_input=search_input,
+            search_form=search_form,
+            input_properties=input_properties,
+        )
 
         self.database_search_parameters.append(
             dict(
@@ -124,7 +110,7 @@ class SearchQuery(object):
                 field=field,
                 field_operator=field_operator,
                 operator=operator,
-                value=value_type_casted,
+                value=value_adjusted,
             )
         )
 
@@ -158,7 +144,7 @@ class SearchQuery(object):
             if type(form) is SearchForm:
                 for key, value in cleaned_data.items():
                     if value:
-                        self._enlist_database_search_parameter(key, value)
+                        self._enlist_database_search_parameter(key, value, search_form)
 
     def get_query(self):
         return self.query, self.query_values, self.limit, self.offset, self.display_headers
