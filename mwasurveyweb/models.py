@@ -225,6 +225,9 @@ class SearchPageDisplayColumn(models.Model):
     # field name in the table in the actual database for searching
     field_name = models.CharField(max_length=255, null=False, blank=False)
 
+    # display name that is shown in the UI for this field
+    display_name = models.CharField(max_length=255, null=False, blank=False)
+
     # order to define in which order this input option would be displayed
     display_order = models.SmallIntegerField(null=False, blank=False)
 

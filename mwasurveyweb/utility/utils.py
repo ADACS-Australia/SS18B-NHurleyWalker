@@ -65,4 +65,4 @@ def get_search_results(query, query_values):
         return cursor.execute(query, values).fetchall(),
 
     except sqlite3.Error:
-        return []
+        return [[]]

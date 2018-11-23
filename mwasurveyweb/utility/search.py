@@ -52,7 +52,7 @@ class SearchQuery(object):
         query_substring = ''
 
         for table_column in table_columns:
-            self.display_headers.append(table_column.field_name)
+            self.display_headers.append(table_column.display_name)
             query_substring += '{table_name}.{field_name}, '.format(
                 table_name=table_column.table_name,
                 field_name=table_column.field_name,
