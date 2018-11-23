@@ -25,26 +25,38 @@ def check_forms_validity(search_forms):
 
 
 def get_operator_by_input_type(input_type, index=None):
+    operator = None
+    field_operator = None
+
     if input_type == TEXT:
-        return 'LIKE'
+        operator = 'LIKE'
 
-    if input_type == NUMBER:
-        return '='
+    elif input_type == NUMBER:
+        operator = '='
 
-    if input_type == RANGE:
+    elif input_type == RANGE:
         if index == '0':
-            return '>='
+            operator = '>='
         if index == '1':
-            return '<='
+            operator = '<='
 
-    if input_type == MIN_NUMBER:
-        return '>='
+    elif input_type == MIN_NUMBER:
+        operator = '>='
 
-    if input_type == MAX_NUMBER:
-        return '<='
+    elif input_type == MAX_NUMBER:
+        operator = '<='
 
-    if input_type == SELECT:
-        return '='
+    elif input_type == MAX_ABSOLUTE_NUMBER:
+        operator = '<='
+        field_operator = 'ABS'
+
+    elif input_type == SELECT:
+        operator = '='
+
+    elif input_type == CHECKBOX:
+        operator = '='
+
+    return operator, field_operator
 
 
 def get_search_page_type(path_info):

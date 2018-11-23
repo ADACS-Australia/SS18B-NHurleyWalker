@@ -29,10 +29,19 @@ class SearchQuery(object):
         temp_query_condition = []
         for db_search_parameter in self.database_search_parameters:
             try:
-                temp_query_part = '(' + db_search_parameter.get('table')
-                temp_query_part += '.' + db_search_parameter.get('field')
-                temp_query_part += ' ' + db_search_parameter.get('operator')
-                temp_query_part += ' ?)'
+                if db_search_parameter.get('field_operator', None):
+                    temp_query_part = '({field_operator}({table}.{field}) {operator} ?)'.format(
+                        field_operator=db_search_parameter.get('field_operator'),
+                        table=db_search_parameter.get('table'),
+                        field=db_search_parameter.get('field'),
+                        operator=db_search_parameter.get('operator'),
+                    )
+                else:
+                    temp_query_part = '({table}.{field} {operator} ?)'.format(
+                        table=db_search_parameter.get('table'),
+                        field=db_search_parameter.get('field'),
+                        operator=db_search_parameter.get('operator'),
+                    )
 
                 temp_query_condition.append(temp_query_part)
                 self.query_values.append(db_search_parameter.get('value'))
@@ -60,10 +69,12 @@ class SearchQuery(object):
 
         self.query = 'SELECT {select_fields}' \
                      'subtable.total ' \
-                     'FROM {table}, ({query_count}) subtable '.format(select_fields=query_substring,
-                                                                      table=form_type,
-                                                                      query_count=self.query_count,
-                                                                      )
+                     'FROM {table}, ({query_count}) subtable ' \
+            .format(
+                select_fields=query_substring,
+                table=form_type,
+                query_count=self.query_count,
+            )
 
         if temp_query_condition:
             self.query = self.query + 'WHERE ' + ' AND '.join(temp_query_condition)
@@ -99,18 +110,19 @@ class SearchQuery(object):
             elif search_input.field_type == SearchInput.FLOAT:
                 value_type_casted = float(value)
             elif search_input.field_type == SearchInput.BOOL:
-                value_type_casted = True if value else False
+                value_type_casted = 1 if value else 0
             else:
                 value_type_casted = value
         except (TypeError, ValueError):
             pass
 
-        operator = get_operator_by_input_type(search_input.input_type, index)
+        operator, field_operator = get_operator_by_input_type(search_input.input_type, index)
 
         self.database_search_parameters.append(
             dict(
                 table=table,
                 field=field,
+                field_operator=field_operator,
                 operator=operator,
                 value=value_type_casted,
             )
