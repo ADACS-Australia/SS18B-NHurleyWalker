@@ -165,13 +165,35 @@ def insert(apps, schema_editor):
             # update display order
             display_order += 1
 
-    # inserting select input options
+    # inserting select input options for status
     search_input_options_info = [
         ('status', 'unprocessed', 'Unprocessed'),
         ('status', 'downloaded', 'Downloaded'),
         ('status', 'calibrated', 'Calibrated'),
         ('status', 'imaged', 'Imaged'),
         ('status', 'archived', 'Archived'),
+    ]
+
+    display_order = 0
+
+    for search_input_option in search_input_options_info:
+        try:
+            SearchInputOption.objects.create(
+                search_input=SearchInput.objects.get(name=search_input_option[0]),
+                name=search_input_option[1],
+                display_name=search_input_option[2],
+                display_order=display_order,
+            )
+
+            # update display order
+            display_order += 1
+
+        except SearchInput.DoesNotExist:
+            continue
+
+    # inserting select input options for cenchan
+    search_input_options_info = [
+        ('cenchan', '121', '154 MHz'),
     ]
 
     display_order = 0
