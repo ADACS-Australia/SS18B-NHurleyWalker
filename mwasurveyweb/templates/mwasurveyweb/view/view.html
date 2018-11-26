@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block additional_styles %}
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/form.css' %}"/>
+{% endblock additional_styles %}
+
+{% block page_header %}
+    View {{ object_type }}
+{% endblock page_header %}
+
+
+{% block content %}
+    {{ block.super }}
+
+
+
+{% endblock content %}

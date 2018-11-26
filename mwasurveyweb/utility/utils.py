@@ -110,8 +110,11 @@ def get_operator_by_input_type(input_type, index=None, second_value=0):
     return operator, field_operator
 
 
-def get_search_page_type(path_info):
-    return path_info.replace('/', '').replace('search_', '')
+def get_page_type(path_info):
+    if 'search_' in path_info:
+        return list(filter(None, path_info.split('/')))[0].replace('search_', '')
+    elif 'view_' in path_info:
+        return list(filter(None, path_info.split('/')))[0].replace('view_', '')
 
 
 def get_search_results(query, query_values):

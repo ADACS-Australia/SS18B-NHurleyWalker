@@ -18,7 +18,7 @@ from ...forms.search import SearchForm
 from ...utility.search import SearchQuery
 from ...utility.utils import (
     get_search_results,
-    get_search_page_type,
+    get_page_type,
 )
 from ...models import (
     SearchInputGroup,
@@ -105,7 +105,7 @@ def search(request):
     :return: Rendered template
     """
 
-    form_type = get_search_page_type(request.path_info)
+    form_type = get_page_type(request.path_info)
 
     if request.method == 'GET':
 
@@ -192,5 +192,6 @@ def search(request):
             'search_results': search_results,
             'display_headers': display_headers,
             'paginator': paginator,
+            'view_page_link': 'view_' + form_type,
         }
     )

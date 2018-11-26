@@ -9,7 +9,6 @@
 
 {% block additional_javascript %}
     <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js" type="text/javascript"></script>
-
 {% endblock additional_javascript %}
 
 {% block page_header %}
@@ -85,13 +84,13 @@
                     <tr class="text-dark">
                         {% for item in result %}
                             {% if forloop.counter == 1 %}
-                                <th scope="col" class="job-name"><a href="">{{ item }}</a></th>
+                                <th scope="col" class="job-name"><a href="{% url view_page_link id=item %}">{{ item }}</a></th>
                             {% elif not forloop.last %}
                                 <td>{{ item }}</td>
                             {% endif %}
                         {% endfor %}
                         <td>
-                            <a href="">View</a>
+                            <a href="{% url view_page_link id=result.0 %}">View</a>
                         </td>
                     </tr>
                 {% endfor %}
