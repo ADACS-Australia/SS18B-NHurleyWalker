@@ -84,13 +84,13 @@
                     <tr class="text-dark">
                         {% for item in result %}
                             {% if forloop.counter == 1 %}
-                                <th scope="col" class="job-name"><a href="{% url view_page_link id=item %}">{{ item }}</a></th>
+                                <th scope="col" class="job-name"><a href="{% url view_page_link object_id=item %}">{{ item }}</a></th>
                             {% elif not forloop.last %}
                                 <td>{{ item }}</td>
                             {% endif %}
                         {% endfor %}
                         <td>
-                            <a href="{% url view_page_link id=result.0 %}">View</a>
+                            <a href="{% url view_page_link object_id=result.0 %}">View</a>
                         </td>
                     </tr>
                 {% endfor %}

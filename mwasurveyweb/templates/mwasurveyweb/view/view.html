@@ -14,6 +14,15 @@
 {% block content %}
     {{ block.super }}
 
+    <table>
 
+    {% for key, value in entity.entity_attributes.items %}
+        <tr>
+           <td>{{ key }}</td>
+           <td>{{ value }}</td>
+        </tr>
+    {% endfor %}
+
+    </table>
 
 {% endblock content %}
