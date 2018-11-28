@@ -146,6 +146,7 @@ def search(request):
                         'search_results': search_results,
                         'display_headers': display_headers,
                         'paginator': paginator,
+                        'view_page_link': 'view_' + form_type,
                     }
                 )
             except (KeyError, AttributeError):
