@@ -193,7 +193,11 @@ def insert(apps, schema_editor):
 
     # inserting select input options for cenchan
     search_input_options_info = [
+        ('cenchan', '69', '88 MHz'),
+        ('cenchan', '93', '119 MHz'),
         ('cenchan', '121', '154 MHz'),
+        ('cenchan', '145', '185 MHz'),
+        ('cenchan', '169', '216 MHz'),
     ]
 
     display_order = 0
