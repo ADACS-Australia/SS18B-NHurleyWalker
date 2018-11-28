@@ -109,3 +109,4 @@ venv.bak/
 mwasurvey/settings/local.py
 *.sqlite3
 *.sqlite
+static/images/plots/*
