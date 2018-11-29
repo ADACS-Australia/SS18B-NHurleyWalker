@@ -7,40 +7,42 @@
 {% endblock additional_styles %}
 
 {% block page_header %}
-    View {{ object_type }}
+    View Observation
 {% endblock page_header %}
 
 
 {% block content %}
     {{ block.super }}
 
-    <table>
-        {% for key, value in entity.entity_attributes.items %}
+    <table class="table table-striped">
+        <tbody>
+        {% for key, value in observation.attributes.items %}
             <tr>
                 <td>{{ key }}</td>
                 <td>{{ value }}</td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 
-    {% if entity.carousel_amplitude %}
+    {% if observation.carousel_amplitude %}
         <div id="carouselAmplitudeIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                {% for item in entity.carousel_amplitude %}
+                {% for item in observation.carousel_amplitude %}
                     <li data-target="#carouselAmplitudeIndicators" data-slide-to="{{ forloop.counter0 }}"
                             {% if forloop.counter0 == 0 %} class="active"{% endif %}></li>
                 {% endfor %}
             </ol>
             <div class="carousel-inner">
-                {% for item in entity.carousel_amplitude %}
+                {% for item in observation.carousel_amplitude %}
                     <div class="carousel-item{% if forloop.counter0 == 0 %} active{% endif %}">
                         <img class="d-block w-100"
                              src="{% static item %}"
-                             alt="{{ item }}" />
-{#                        <div class="carousel-caption d-none d-md-block">#}
-{#                            <h5>First Image</h5>#}
-{#                            <p>Subtitle of First Image</p>#}
-{#                        </div>#}
+                             alt="{{ item }}"/>
+                        {#                        <div class="carousel-caption d-none d-md-block">#}
+                        {#                            <h5>First Image</h5>#}
+                        {#                            <p>Subtitle of First Image</p>#}
+                        {#                        </div>#}
                     </div>
                 {% endfor %}
             </div>
@@ -55,24 +57,24 @@
         </div>
     {% endif %}
 
-    {% if entity.carousel_phase %}
+    {% if observation.carousel_phase %}
         <div id="carouselPhaseIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                {% for item in entity.carousel_phase %}
+                {% for item in observation.carousel_phase %}
                     <li data-target="#carouselPhaseIndicators" data-slide-to="{{ forloop.counter0 }}"
                             {% if forloop.counter0 == 0 %} class="active"{% endif %}></li>
                 {% endfor %}
             </ol>
             <div class="carousel-inner">
-                {% for item in entity.carousel_phase %}
+                {% for item in observation.carousel_phase %}
                     <div class="carousel-item{% if forloop.counter0 == 0 %} active{% endif %}">
                         <img class="d-block w-100"
                              src="{% static item %}"
-                             alt="{{ item }}" />
-{#                        <div class="carousel-caption d-none d-md-block">#}
-{#                            <h5>First Image</h5>#}
-{#                            <p>Subtitle of First Image</p>#}
-{#                        </div>#}
+                             alt="{{ item }}"/>
+                        {#                        <div class="carousel-caption d-none d-md-block">#}
+                        {#                            <h5>First Image</h5>#}
+                        {#                            <p>Subtitle of First Image</p>#}
+                        {#                        </div>#}
                     </div>
                 {% endfor %}
             </div>
@@ -86,5 +88,29 @@
             </a>
         </div>
     {% endif %}
+
+    <div class="job-list table-responsive">
+        <table class="table table-striped">
+            {% for processing_object in observation.processing_objects %}
+                {% if forloop.counter0 == 0 %}
+                    <thead>
+                    <tr>
+                        {% for key, value in processing_object.items %}
+                            <th>{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                {% endif %}
+                <tr>
+                    {% for key, value in processing_object.items %}
+
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock content %}
