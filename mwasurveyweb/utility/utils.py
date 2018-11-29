@@ -5,7 +5,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 import sqlite3
 
 from django.conf import settings
-from datetime import datetime
+from datetime import datetime, date, time
 
 from thirdparty import leapseconds
 
@@ -13,26 +13,18 @@ from ..constants import *
 from ..models import SearchInput
 
 
-def get_gps_time_from_date(date_string):
+def get_gps_time_from_date(datetime_object):
     """
     Finds the gps time from a date string. This uses a third-party library obtained from:
     https://gist.github.com/zed/92df922103ac9deb1a05#file-leapseconds-py
     which uses the system tzinfo for finding leapseconds.
-    :param date_string: string representation of the date. Must be in the following formats:
-        1.  %d/%m/%Y %H:%M:%S
-        2.  %d/%m/%YT%H:%M:%S
-        2.  %d/%m/%Y
-    :return: string (of gps time) or None if format is ambiguous.
+    :param datetime_object: datetime object
+    :return: string (of gps time)
     """
 
-    # creating datetime object from the string date
-    try:
-        datetime_object = datetime.strptime(date_string.replace('T', ' '), '%d/%m/%Y %H:%M:%S')
-    except ValueError:
-        try:
-            datetime_object = datetime.strptime(date_string, '%d/%m/%Y')
-        except ValueError:
-            return None
+    # converting date object to datetime object
+    if type(datetime_object) == date:
+        datetime_object = datetime.combine(datetime_object, time=time())
 
     # calculating gps time (which is a datetime object) using the leapseconds library
     gps_time = leapseconds.utc_to_gps(datetime_object)
@@ -75,6 +67,8 @@ def get_value_and_operators(value, search_input, search_form, input_properties):
             value_adjusted = float(value)
         elif search_input.field_type == SearchInput.BOOL:
             value_adjusted = 1 if value else 0
+        elif search_input.input_type in [DATE, DATE_RANGE, ]:
+            value_adjusted = get_gps_time_from_date(value)
         else:
             value_adjusted = value
     except (TypeError, ValueError):
@@ -134,6 +128,15 @@ def get_operator_by_input_type(input_type, index=None, second_value=0):
     elif input_type == MAX_ABSOLUTE_NUMBER:
         operator = '<='
         field_operator = 'ABS'
+
+    elif input_type == DATE:
+        operator = '='
+
+    elif input_type == DATE_RANGE:
+        if index == '0':
+            operator = '>='
+        if index == '1':
+            operator = '<='
 
     elif input_type == SELECT:
         operator = '='
