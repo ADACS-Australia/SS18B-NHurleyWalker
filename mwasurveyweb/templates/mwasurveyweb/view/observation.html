@@ -14,16 +14,29 @@
 {% block content %}
     {{ block.super }}
 
-    <table class="table table-striped">
-        <tbody>
-        {% for key, value in observation.attributes.items %}
+    <div class="job-list">
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ key }}</td>
-                <td>{{ value }}</td>
+                <th class="">Property</th>
+                <th>Value</th>
+                <th>Property</th>
+                <th>Value</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <tr>
+                {% for key, value in observation.attributes.items %}
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                    {% if forloop.counter|divisibleby:2 %}
+                        </tr>
+                        <tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {% if observation.carousel_amplitude %}
         <div id="carouselAmplitudeIndicators" class="carousel slide" data-ride="carousel">
