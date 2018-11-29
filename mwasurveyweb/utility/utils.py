@@ -5,9 +5,43 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 import sqlite3
 
 from django.conf import settings
+from datetime import datetime
+
+from thirdparty import leapseconds
 
 from ..constants import *
 from ..models import SearchInput
+
+
+def get_gps_time_from_date(date_string):
+    """
+    Finds the gps time from a date string. This uses a third-party library obtained from:
+    https://gist.github.com/zed/92df922103ac9deb1a05#file-leapseconds-py
+    which uses the system tzinfo for finding leapseconds.
+    :param date_string: string representation of the date. Must be in the following formats:
+        1.  %d/%m/%Y %H:%M:%S
+        2.  %d/%m/%YT%H:%M:%S
+        2.  %d/%m/%Y
+    :return: string (of gps time) or None if format is ambiguous.
+    """
+
+    # creating datetime object from the string date
+    try:
+        datetime_object = datetime.strptime(date_string.replace('T', ' '), '%d/%m/%Y %H:%M:%S')
+    except ValueError:
+        try:
+            datetime_object = datetime.strptime(date_string, '%d/%m/%Y')
+        except ValueError:
+            return None
+
+    # calculating gps time (which is a datetime object) using the leapseconds library
+    gps_time = leapseconds.utc_to_gps(datetime_object)
+
+    # finding the time delta from the gps time epoch.
+    delta = gps_time - datetime(1980, 1, 6)
+
+    # returning the string of the delta in seconds
+    return str(int(delta.total_seconds()))
 
 
 def check_forms_validity(search_forms):
