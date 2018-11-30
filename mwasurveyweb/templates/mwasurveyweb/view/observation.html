@@ -38,6 +38,23 @@
         </table>
     </div>
 
+    {% if observation.histogram %}
+        <div class="row">
+            <div class="col col-md-6">
+                <img src="{% static observation.histogram %}" />
+            </div>
+            <div class="col col-md-6">
+                {% for key, value in observation.histogram_attributes.items %}
+                    <div>{{ key }}: {{ value }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if observation.phase_map %}
+        <img src="{% static observation.phase_map %}" />
+    {% endif %}
+
     {% if observation.carousel_amplitude %}
         <div id="carouselAmplitudeIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">

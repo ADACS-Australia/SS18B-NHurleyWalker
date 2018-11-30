@@ -16,7 +16,6 @@ def dict_factory(cursor, row):
 
 
 class Observation(object):
-
     def __init__(self, observation_id):
         self.health_okay = True
 
@@ -34,9 +33,10 @@ class Observation(object):
         except sqlite3.Error:
             self.health_okay = False
 
-        self.attributes = self._populate_observation_info()
+        self.attributes, self.histogram_attributes = self._populate_observation_info()
         self.processing_objects = self._populate_processing_objects()
-        self.carousel_amplitude, self.carousel_phase = self._populate_carousels()
+        self.carousel_amplitude, self.carousel_phase, self.histogram, self.phase_map = \
+            self._populate_carousels_and_images()
 
     def _populate_observation_info(self):
 
@@ -66,7 +66,13 @@ class Observation(object):
 
         result = dict(self.cursor.execute(query, values).fetchone())
 
-        return result
+        histogram_attributes = dict(
+            ion_phs_med=result.pop('ion_phs_med', None),
+            ion_phs_peak=result.pop('ion_phs_peak', None),
+            ion_phs_std=result.pop('ion_phs_std', None),
+        )
+
+        return result, histogram_attributes
 
     def _populate_processing_objects(self):
 
@@ -93,9 +99,11 @@ class Observation(object):
 
         return processing_objects
 
-    def _populate_carousels(self):
+    def _populate_carousels_and_images(self):
         carousel_amplitude = []
         carousel_phase = []
+        histogram = None
+        phase_map = None
 
         image_path = os.path.join(settings.BASE_DIR, '..', 'static', 'images', 'plots', self.observation_id)
 
@@ -110,5 +118,9 @@ class Observation(object):
                 carousel_amplitude.append(os.path.join('images', 'plots', self.observation_id, file_name))
             elif file_name.endswith('_phase.png'):
                 carousel_phase.append(os.path.join('images', 'plots', self.observation_id, file_name))
+            elif file_name.endswith('_histogram.png'):
+                histogram = os.path.join('images', 'plots', self.observation_id, file_name)
+            elif file_name.endswith('_phasemap.png'):
+                phase_map = os.path.join('images', 'plots', self.observation_id, file_name)
 
-        return carousel_amplitude, carousel_phase
+        return carousel_amplitude, carousel_phase, histogram, phase_map
