@@ -41,7 +41,7 @@ class SearchInputGroup(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False, unique=True)
 
     # input group name to store the display title. ex: Search Parameters, Time Constraints, etc.
-    display_name = models.CharField(max_length=255, null=False, blank=False, unique=True)
+    display_name = models.CharField(max_length=255, null=False, blank=False)
 
     # just to store information about the input group to render in the UI template
     description = models.TextField(null=True, blank=True)

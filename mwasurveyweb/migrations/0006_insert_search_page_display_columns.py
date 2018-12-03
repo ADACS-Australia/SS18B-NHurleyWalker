@@ -35,6 +35,34 @@ def insert(apps, schema_editor):
         except SearchPage.DoesNotExist:
             continue
 
+    # processing table
+    initial_search_input_group_info = [
+        ('processing', 'processing', 'job_id', 'Job ID', ),
+        ('processing', 'processing', 'submission_time', 'Submission Time', ),
+        ('processing', 'processing', 'start_time', 'Start Time', ),
+        ('processing', 'processing', 'end_time', 'End Time', ),
+        ('processing', 'processing', 'task', 'Task', ),
+        ('processing', 'processing', 'user', 'User', ),
+        ('processing', 'processing', 'obs_id', 'Observation ID', ),
+        ('processing', 'processing', 'status', 'Status', ),
+    ]
+
+    display_order = 100
+
+    for search_page_display_column_info in initial_search_input_group_info:
+        try:
+            SearchPageDisplayColumn.objects.create(
+                search_page=SearchPage.objects.get(name=search_page_display_column_info[0]),
+                table_name=search_page_display_column_info[1],
+                field_name=search_page_display_column_info[2],
+                display_name=search_page_display_column_info[3],
+                display_order=display_order,
+            )
+
+            display_order += 1
+        except SearchPage.DoesNotExist:
+            continue
+
 
 def revert(apps, schema_editor):
     SearchPageDisplayColumn = apps.get_model('mwasurveyweb', 'SearchPageDisplayColumn')

@@ -139,6 +139,17 @@ def get_fields(search_input):
         })
         fields.append(input_properties_plus_minus)
 
+    elif search_input.input_type == DATE:
+        input_properties = dict()
+        input_properties.update({
+            'label': '',
+            'type': dynamic_field.DATE,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value,
+        })
+        fields.append(input_properties)
+
     elif search_input.input_type == DATE_RANGE:
         input_properties_min = dict()
         input_properties_min.update({

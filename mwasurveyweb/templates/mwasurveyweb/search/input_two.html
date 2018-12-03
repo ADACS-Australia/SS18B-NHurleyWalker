@@ -14,7 +14,8 @@
     {% if field|field_type == 'DateInput' %}
         <script>
           $('#{{ field.auto_id }}').datepicker({
-            uiLibrary: 'bootstrap4'
+            uiLibrary: 'bootstrap4',
+            format: 'dd/mm/yyyy'
           })
         </script>
     {% endif %}

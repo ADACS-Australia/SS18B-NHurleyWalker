@@ -11,10 +11,13 @@ def insert(apps, schema_editor):
     SearchPageInputGroup = apps.get_model('mwasurveyweb', 'SearchPageInputGroup')
 
     initial_search_input_group_info = [
-        ('observation', 'observation_info',),
-        ('observation', 'pointing',),
-        ('observation', 'time',),
-        ('observation', 'observing_mode',),
+        ('observation', 'observation_observation_info',),
+        ('observation', 'observation_pointing',),
+        ('observation', 'observation_time',),
+        ('observation', 'observation_observing_mode',),
+        ('processing', 'processing_processing_info',),
+        ('processing', 'processing_time',),
+        ('processing', 'processing_observation',),
     ]
 
     for search_page_input_group_info in initial_search_input_group_info:

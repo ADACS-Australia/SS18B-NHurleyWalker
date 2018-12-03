@@ -17,7 +17,7 @@ def insert(apps, schema_editor):
 
     # inserting the fields for Observation Info Constraints
     try:
-        info_group = SearchInputGroup.objects.get(name='observation_info')
+        info_group = SearchInputGroup.objects.get(name='observation_observation_info')
 
     except SearchInputGroup.DoesNotExist:
         pass
@@ -60,7 +60,7 @@ def insert(apps, schema_editor):
 
     # inserting the fields for Pointing Constraints
     try:
-        info_group = SearchInputGroup.objects.get(name='pointing')
+        info_group = SearchInputGroup.objects.get(name='observation_pointing')
 
     except SearchInputGroup.DoesNotExist:
         pass
@@ -97,7 +97,7 @@ def insert(apps, schema_editor):
 
     # inserting the fields for Time Constraints
     try:
-        info_group = SearchInputGroup.objects.get(name='time')
+        info_group = SearchInputGroup.objects.get(name='observation_time')
 
     except SearchInputGroup.DoesNotExist:
         pass
@@ -105,7 +105,6 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('start_time_gps', 'Starttime in GPS seconds', 'observation', 'starttime', SInput.TEXTTIME, RANGE, None, None, False, ''),
             ('start_time', 'Starttime in UTC', 'observation', 'starttime', SInput.TEXTTIME, DATE_RANGE, None, None, False, ''),
             ('obs_duration', 'Obs duration, in seconds', 'observation', 'duration_sec', SInput.INT, RANGE, None, None, False, ''),
         ]
@@ -133,7 +132,7 @@ def insert(apps, schema_editor):
 
     # inserting the fields for Observing Mode Constraints
     try:
-        info_group = SearchInputGroup.objects.get(name='observing_mode')
+        info_group = SearchInputGroup.objects.get(name='observation_observing_mode')
 
     except SearchInputGroup.DoesNotExist:
         pass
@@ -216,6 +215,117 @@ def insert(apps, schema_editor):
 
         except SearchInput.DoesNotExist:
             continue
+
+    # ################################
+    # # START PROCESSING FORM INPUTS #
+    # ################################
+
+    # inserting the fields for Processing Info Constraints
+    try:
+        info_group = SearchInputGroup.objects.get(name='processing_processing_info')
+
+    except SearchInputGroup.DoesNotExist:
+        pass
+
+    else:
+
+        initial_search_input_info = [
+            ('job_id', 'Job ID', 'processing', 'job_id', SInput.INT, NUMBER, None, None, False, ''),
+            ('task', 'Task', 'processing', 'task', SInput.TEXT, SELECT, None, None, False, ''),
+            ('user', 'User', 'processing', 'user', SInput.TEXT, SELECT, None, None, False, ''),
+            ('status', 'Status', 'processing', 'status', SInput.TEXT, SELECT, None, None, False, ''),
+        ]
+
+        display_order = 0
+
+        for search_input_info in initial_search_input_info:
+            SearchInput.objects.create(
+                search_input_group=info_group,
+                name=search_input_info[0],
+                display_name=search_input_info[1],
+                table_name=search_input_info[2],
+                field_name=search_input_info[3],
+                field_type=search_input_info[4],
+                input_type=search_input_info[5],
+                initial_value=search_input_info[6],
+                placeholder=search_input_info[7],
+                required=search_input_info[8],
+                input_info=search_input_info[9],
+                display_order=display_order,
+            )
+
+            # update display order
+            display_order += 1
+
+    # inserting the fields for Processing Time Constraints
+    try:
+        info_group = SearchInputGroup.objects.get(name='processing_time')
+
+    except SearchInputGroup.DoesNotExist:
+        pass
+
+    else:
+
+        initial_search_input_info = [
+            ('submission_time', 'Submission Time', 'processing', 'submission_time', SInput.INT, DATE, 'today', None, False, ''),
+            ('start_time', 'Start Time', 'processing', 'start_time', SInput.INT, DATE, 'today', None, False, ''),
+            ('end_time', 'End Time', 'processing', 'end_time', SInput.INT, DATE, 'today', None, False, ''),
+        ]
+
+        display_order = 0
+
+        for search_input_info in initial_search_input_info:
+            SearchInput.objects.create(
+                search_input_group=info_group,
+                name=search_input_info[0],
+                display_name=search_input_info[1],
+                table_name=search_input_info[2],
+                field_name=search_input_info[3],
+                field_type=search_input_info[4],
+                input_type=search_input_info[5],
+                initial_value=search_input_info[6],
+                placeholder=search_input_info[7],
+                required=search_input_info[8],
+                input_info=search_input_info[9],
+                display_order=display_order,
+            )
+
+            # update display order
+            display_order += 1
+
+    # inserting the fields for Processing Observation Constraints
+    try:
+        info_group = SearchInputGroup.objects.get(name='processing_observation')
+
+    except SearchInputGroup.DoesNotExist:
+        pass
+
+    else:
+
+        initial_search_input_info = [
+            ('obs_id', 'Observation ID', 'processing', 'obs_id', SInput.INT, NUMBER, None, None, False, ''),
+        ]
+
+        display_order = 0
+
+        for search_input_info in initial_search_input_info:
+            SearchInput.objects.create(
+                search_input_group=info_group,
+                name=search_input_info[0],
+                display_name=search_input_info[1],
+                table_name=search_input_info[2],
+                field_name=search_input_info[3],
+                field_type=search_input_info[4],
+                input_type=search_input_info[5],
+                initial_value=search_input_info[6],
+                placeholder=search_input_info[7],
+                required=search_input_info[8],
+                input_info=search_input_info[9],
+                display_order=display_order,
+            )
+
+            # update display order
+            display_order += 1
 
 
 def revert(apps, schema_editor):

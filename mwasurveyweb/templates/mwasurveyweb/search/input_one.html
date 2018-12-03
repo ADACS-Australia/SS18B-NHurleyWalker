@@ -1,3 +1,5 @@
+{% load template_filters %}
+
 <div class="row field {% if field.field.required %}required{% endif %} {% if field.errors %}error{% endif %} div-{{ field.name }}">
     <!-- Label -->
     <label class="col col-lg-4 col-md-4 col-sm-6 col-sx-6 col-12 control-label"
@@ -9,4 +11,12 @@
         {{ field }}
         {{ field.errors }}
     </div>
+    {% if field|field_type == 'DateInput' %}
+        <script>
+          $('#{{ field.auto_id }}').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'dd/mm/yyyy'
+          })
+        </script>
+    {% endif %}
 </div>

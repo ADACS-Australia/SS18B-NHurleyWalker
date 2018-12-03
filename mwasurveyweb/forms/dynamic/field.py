@@ -371,6 +371,7 @@ def get_date_input(label, required=False, initial=None, extra_class=None):
     :return: A date field
     """
     return forms.DateField(
+        input_formats=['%d/%m/%Y', ],
         label=label,
         required=required,
         initial=initial,
