@@ -152,10 +152,51 @@ class SearchInput(models.Model):
 
     @property
     def initial_value_adjusted(self):
+        now = timezone.localtime(timezone.now()).strftime('%d/%m/%Y')
+
         if self.input_type == DATE:
             if self.initial_value.lower() == 'today':
-                now = timezone.localtime(timezone.now())
-                return now.strftime('%d/%m/%Y')
+                return now
+
+        elif self.input_type == RANGE:
+            initial_values = ['', '']
+            try:
+                parts = self.initial_value.split(',')
+            except AttributeError:
+                return initial_values
+
+            for index, part in enumerate(parts):
+                initial_values.insert(index, part.strip())
+
+            return initial_values
+
+        elif self.input_type == RADIUS:
+            initial_values = ['', '']
+            try:
+                parts = self.initial_value.split(',')
+            except AttributeError:
+                return initial_values
+
+            for index, part in enumerate(parts):
+                initial_values.insert(index, part.strip())
+
+            return initial_values
+
+        elif self.input_type == DATE_RANGE:
+            initial_values = ['', '']
+            try:
+                parts = self.initial_value.split(',')
+            except AttributeError:
+                return initial_values
+
+            for index, part in enumerate(parts):
+                if part.strip().lower() == 'today':
+                    initial_values.insert(index, now)
+                else:
+                    initial_values.insert(index, part.strip())
+
+            return initial_values
+
         return self.initial_value
 
 

@@ -105,7 +105,8 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('start_time', 'Starttime in UTC', 'observation', 'starttime', SInput.TEXTTIME, DATE_RANGE, None, None, False, ''),
+            ('start_time', 'Starttime in UTC', 'observation', 'starttime', SInput.TEXTTIME, DATE_RANGE,
+             '01/01/2018,31/07/2018', None, False, ''),
             ('obs_duration', 'Obs duration, in seconds', 'observation', 'duration_sec', SInput.INT, RANGE, None, None, False, ''),
         ]
 
