@@ -428,7 +428,7 @@ def insert(apps, schema_editor):
 
         SearchInputOption.objects.filter(
             search_input__search_input_group__name='processing_processing_info',
-            name='user',
+            search_input__name='user',
         ).delete()
 
         display_order = 0
