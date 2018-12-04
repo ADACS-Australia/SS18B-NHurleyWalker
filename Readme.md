@@ -121,6 +121,10 @@ DATABASES = {
 The USER and PASSWORD should be in accordance with the information provided in the file `docker-compose.yml` 
 included at the root of the project repository.
 
+## Management Commands ##
+
+* ```./development-manage.py update_user_input_options``` (This will read the Gleam-X database, as provided in the 
+settings file and update the Users (SELECT input) options by finding distinct users from the `processing` table).
 
 ## License ##
 

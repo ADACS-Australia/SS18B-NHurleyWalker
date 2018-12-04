@@ -3,6 +3,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
 import sqlite3
+import os
 
 from django.conf import settings
 from django.core.management import BaseCommand
@@ -38,8 +39,8 @@ class Command(BaseCommand):
             for result in results:
                 search_input_options_info.append(('processing_processing_info', 'user', result[0], result[0]))
 
-        except sqlite3.Error:
-            pass
+        except sqlite3.Error as e:
+            print('{} in {}'.format(e, os.path.normpath(settings.GLEAM_DATABASE_PATH)))
 
         else:
 

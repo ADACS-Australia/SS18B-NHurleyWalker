@@ -3,6 +3,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
 import sqlite3
+import os
 
 from django.conf import settings
 from django.db import migrations
@@ -421,8 +422,8 @@ def insert(apps, schema_editor):
         for result in results:
             search_input_options_info.append(('processing_processing_info', 'user', result[0], result[0]))
 
-    except sqlite3.Error:
-        pass
+    except sqlite3.Error as e:
+        print('\n{} in {}'.format(e, os.path.normpath(settings.GLEAM_DATABASE_PATH)))
 
     else:
 
