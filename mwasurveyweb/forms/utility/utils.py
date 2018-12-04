@@ -39,7 +39,7 @@ def get_fields(search_input):
             'type': dynamic_field.TEXT,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties)
 
@@ -50,7 +50,7 @@ def get_fields(search_input):
             'type': dynamic_field.INTEGER,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties)
 
@@ -61,7 +61,7 @@ def get_fields(search_input):
             'type': dynamic_field.INTEGER,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties)
 
@@ -72,7 +72,7 @@ def get_fields(search_input):
             'type': dynamic_field.POSITIVE_INTEGER,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties)
 
@@ -81,7 +81,7 @@ def get_fields(search_input):
         input_properties.update({
             'label': '',
             'type': dynamic_field.CHECKBOX,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
             'required': search_input.required,
         })
         fields.append(input_properties)
@@ -91,7 +91,7 @@ def get_fields(search_input):
         input_properties.update({
             'label': '',
             'type': dynamic_field.SELECT,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
             'choices': get_choices_for_input(search_input),
             'required': search_input.required,
         })
@@ -104,7 +104,7 @@ def get_fields(search_input):
             'type': dynamic_field.FLOAT,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties_min)
 
@@ -114,7 +114,7 @@ def get_fields(search_input):
             'type': dynamic_field.FLOAT,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties_max)
 
@@ -125,7 +125,7 @@ def get_fields(search_input):
             'type': dynamic_field.FLOAT,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties_position)
 
@@ -135,7 +135,7 @@ def get_fields(search_input):
             'type': dynamic_field.POSITIVE_FLOAT,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties_plus_minus)
 
@@ -146,7 +146,7 @@ def get_fields(search_input):
             'type': dynamic_field.DATE,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties)
 
@@ -157,7 +157,7 @@ def get_fields(search_input):
             'type': dynamic_field.DATE,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties_min)
 
@@ -167,7 +167,7 @@ def get_fields(search_input):
             'type': dynamic_field.DATE,
             'required': search_input.required,
             'placeholder': search_input.placeholder,
-            'initial': search_input.initial_value,
+            'initial': search_input.initial_value_adjusted,
         })
         fields.append(input_properties_max)
 

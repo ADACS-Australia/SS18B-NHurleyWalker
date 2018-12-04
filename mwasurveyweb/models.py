@@ -3,6 +3,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
 from django.db import models
+from django.utils import timezone
 
 from .constants import *
 
@@ -148,6 +149,14 @@ class SearchInput(models.Model):
             display_name=self.display_name,
             active='Active' if self.active else 'Inactive'
         )
+
+    @property
+    def initial_value_adjusted(self):
+        if self.input_type == DATE:
+            if self.initial_value.lower() == 'today':
+                now = timezone.localtime(timezone.now())
+                return now.strftime('%d/%m/%Y')
+        return self.initial_value
 
 
 class SearchInputOption(models.Model):
