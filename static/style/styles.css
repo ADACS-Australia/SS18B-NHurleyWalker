@@ -126,6 +126,13 @@ body {
     font-size: 0.8rem;
 }
 
+.field.error .gj-datepicker-bootstrap [role=right-icon] button {
+    border: 1px solid darkred;
+    border-radius: 0 4px 0 0;
+    color: darkred;
+}
+
+
 /* non field errors */
 
 .non-field-error div {
