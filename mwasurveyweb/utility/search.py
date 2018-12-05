@@ -2,12 +2,15 @@
 Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
+from datetime import timedelta
+
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 
 from .utils import (
     check_forms_validity,
-    get_value_and_operators,
+    get_operator_by_input_type,
+    get_gps_time_from_date,
 )
 
 from ..models import (
@@ -17,6 +20,8 @@ from ..models import (
 
 from ..forms.search_parameter import SearchParameterForm
 from ..forms.search import SearchForm
+
+from ..constants import *
 
 
 class SearchQuery(object):
@@ -82,7 +87,59 @@ class SearchQuery(object):
         # add up search parameters here
         self.query = self.query + self.search_parameter_order_by + self.search_parameter_limit
 
+    def _update_database_search_parameter(self, value, search_input, search_form, input_properties):
+        try:
+            index = input_properties[2]
+        except IndexError:
+            index = None
+
+        value_adjusted = value
+
+        try:
+            if search_input.input_type in [DATE, DATE_RANGE, ]:
+                value_adjusted = get_gps_time_from_date(value_adjusted)
+
+            if search_input.field_type == SearchInput.INT:
+                value_adjusted = int(value_adjusted)
+            elif search_input.field_type == SearchInput.FLOAT:
+                value_adjusted = float(value_adjusted)
+            elif search_input.field_type == SearchInput.BOOL:
+                value_adjusted = 1 if value_adjusted else 0
+        except (TypeError, ValueError):
+            pass
+
+        radius_value = 0  # for Non RADIUS inputs it does not matter
+
+        # finding appropriate value for RADIUS input types
+        if search_input.input_type == RADIUS:
+            field_name = '__'.join(input_properties[:-1] + ['1' if input_properties[2] == '0' else '0'])
+
+            radius_value = search_form['form'].cleaned_data.get(field_name) \
+                if search_form['form'].cleaned_data.get(field_name) else 0
+
+            if search_input.field_type == SearchInput.INT:
+                radius_value_adjusted = int(radius_value)
+            elif search_input.field_type == SearchInput.FLOAT:
+                radius_value_adjusted = float(radius_value)
+            else:
+                radius_value_adjusted = radius_value
+
+            value_adjusted += radius_value_adjusted * (-1 if input_properties[2] == '0' else 1)
+
+        operator, field_operator = get_operator_by_input_type(search_input.input_type, index, second_value=radius_value)
+
+        self.database_search_parameters.append(
+            dict(
+                table=search_input.table_name,
+                field=search_input.field_name,
+                field_operator=field_operator,
+                operator=operator,
+                value=value_adjusted,
+            )
+        )
+
     def _enlist_database_search_parameter(self, key, value, search_form):
+
         input_properties = key.split('__')
 
         try:
@@ -94,25 +151,24 @@ class SearchQuery(object):
         except SearchInput.DoesNotExist:
             return
 
-        table = search_input.table_name
-        field = search_input.field_name
-
-        value_adjusted, operator, field_operator = get_value_and_operators(
+        self._update_database_search_parameter(
             value=value,
             search_input=search_input,
             search_form=search_form,
             input_properties=input_properties,
         )
 
-        self.database_search_parameters.append(
-            dict(
-                table=table,
-                field=field,
-                field_operator=field_operator,
-                operator=operator,
-                value=value_adjusted,
+        # Because a date is converted to a specific second (ex: 01/01/2008 is actually 01/01/2008 00:00:00:000),
+        # anything that has been on that day need be evaluated as a range, meaning for the above example:
+        # we should search for anything between 01/01/2008 00:00:00:000 to 02/01/2008 00:00:00:000. To achieve that,
+        # another query constraint is needed to be added with the index 1.
+        if search_input.input_type == DATE:
+            self._update_database_search_parameter(
+                value=value + timedelta(days=1),
+                search_input=search_input,
+                search_form=search_form,
+                input_properties=input_properties[:-1] + ['1'],
             )
-        )
 
     def _process_search_parameters(self, cleaned_data):
 
@@ -158,7 +214,12 @@ class SearchQuery(object):
         self.offset = 0
         self.database_search_parameters = []
         self.display_headers = []
-        self.search_parameter_order_by = ' ORDER BY obs_id {order_by}'
+
+        if form_type == 'observation':
+            self.search_parameter_order_by = ' ORDER BY obs_id {order_by}'
+        else:
+            self.search_parameter_order_by = ' ORDER BY job_id {order_by}'
+
         self.search_parameter_limit = ' LIMIT {limit} OFFSET {offset}'
 
         if check_forms_validity(search_forms):
