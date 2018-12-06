@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block page_header %}
-    About MWA Survey
+    About GLEAM-X
 {% endblock page_header %}
 
 {% block additional_styles %}
@@ -13,16 +13,188 @@
     <div class="about row">
         <div class="col-md-12">
             <div class="section text-center mwasurvey-logo">
-                <img src="{% static 'mwasurveyweb/images/mwasurvey_logo.png' %}"/>
+                <img src="{% static '/images/gleam-x-logo.png' %}"/>
             </div>
             <div class="section text-justify">
-                Welcome to MWA Survey
+                <div class="heading">Public Information</div>
+                <div class="content">GLEAM-X is still being observed and processed. Check back here for updates on
+                    survey progress as they come in! In the meantime, check out <a
+                            href="http://www.mwatelescope.org/gleam" target="_blank">the original GLEAM survey</a>.
+                </div>
             </div>
+
             <div class="section text-justify">
-                The MWA Survey
-                user interface was built by <a href='https://adacs.org.au/' target="_blank">ADACS: Astronomy Data and
-                Computing Services</a>.
+                <div class="heading">For Astronomers</div>
+                <div class="content">
+                    <p>As part of the MWA Collaboration policy on open access, the raw visibilities of each year of
+                        GLEAM-X observing are public 18 months after observing finishes.</p>
+                    <p>To join the team or work on pre-release GLEAM-X data, please contact Natasha Hurley-Walker via <a
+                            href="mailto:nhw@icrar.org">nhw@icrar.org</a>.</p>
+                    <div class="row">
+                        <div class="col col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>Pointing Declinations (deg)</td>
+                                    <td>-72, -55, -40.5, -26.7, -13, +1.6, +18.3</td>
+                                </tr>
+                                <tr>
+                                    <td>Pointing HAs (hours)</td>
+                                    <td>0, -1, 1</td>
+                                </tr>
+                                <tr>
+                                    <td>RA ranges (hours)</td>
+                                    <td>4 to 21 (2018-A); 17 to 8 (2019-B)</td>
+                                </tr>
+                                <tr>
+                                    <td>Central Frequencies (MHz)</td>
+                                    <td>87.68, 118.4, 154.24, 184.96, 215.68</td>
+                                </tr>
+                                <tr>
+                                    <td>Frequency resolution (kHz)</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>Time resolution (s)</td>
+                                    <td>0.5</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p>The GLEAM-X survey will cover the entire sky south of Dec +30, and will use the extended
+                        configuration of the MWA, which will be described in Wayth et al. in prep. A description of the
+                        science motivations and survey methodology for GLEAM will be found in Hurley-Walker et al. (in
+                        prep). As in the original GLEAM survey, the sky has been divided into seven strips in
+                        Declination and five frequency ranges as summarised below. The declinations are chosen such that
+                        the peak in the primary beam response for a given setting corresponds approximately to the half
+                        power point of the neighbouring beam along the meridian at 150 MHz. The instantaneous frequency
+                        coverage of the MWA is 30.72 MHz, so the frequency range between 72 and 231 MHz is divided into
+                        five bands that provide near contiguous coverage, but avoid the band around 137 MHz that is
+                        contaminated by satellite interference.</p>
+                    <p>The observing is executed as a series of four-week-long campaigns where a single Declination
+                        setting is observed in a night, covering a strip approximately 10 to 12 hours in length,
+                        depending on the time of year. The Sun can be bright and time-variable at MWA frequencies, so
+                        drift scan observations are only performed at night. Within a night, the observing is broken
+                        into a series of 120 s scans for each frequency, cycling through all five frequency settings
+                        over 10 minutes. Within a scan, typically 108 s of usable data are collected. Every 2 hours
+                        throughout the night, a calibration field is observed over all five frequency settings, again as
+                        a set of 120 s scans totalling 10 minutes. Each declination strip will receive two meridian
+                        drift scans (HA=0), one at HA=+1, and one at HA=-1, to improve (u,v)-coverage and
+                        sensitivity.</p>
+                </div>
             </div>
+
+            <div class="section text-justify">
+                <div class="heading">Comparison to other surveys</div>
+                <div class="content">
+                    <div class="row">
+                        <div class="col col-md-8 offset-md-2">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Survey Name</th>
+                                    <th>Frequency Range</th>
+                                    <th>Sensitivity</th>
+                                    <th>Angular resolution</th>
+                                    <th>Sky area</th>
+                                </tr>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>(MHz)</th>
+                                    <th>(mJy/beam)</th>
+                                    <th>(arcsec)</th>
+                                    <th>(sq deg)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>GLEAM-X</td>
+                                    <td>72 - 231</td>
+                                    <td>1 - 2</td>
+                                    <td>~45</td>
+                                    <td>30,000</td>
+                                </tr>
+                                <tr>
+                                    <td>GLEAM</td>
+                                    <td>72 - 231</td>
+                                    <td>6 - 10</td>
+                                    <td>~100</td>
+                                    <td>30,000</td>
+                                </tr>
+                                <tr>
+                                    <td>MSSS-LBA</td>
+                                    <td>30 - 74</td>
+                                    <td>~15</td>
+                                    <td>~100</td>
+                                    <td>20,000</td>
+                                </tr>
+                                <tr>
+                                    <td>VLSS</td>
+                                    <td>74</td>
+                                    <td>100</td>
+                                    <td>80</td>
+                                    <td>30,000</td>
+                                </tr>
+                                <tr>
+                                    <td>MSSS-HBA</td>
+                                    <td>120 - 160</td>
+                                    <td>~5</td>
+                                    <td>~45</td>
+                                    <td>20,000</td>
+                                </tr>
+                                <tr>
+                                    <td>TGSS</td>
+                                    <td>150</td>
+                                    <td>2 - 5</td>
+                                    <td>25</td>
+                                    <td>37,000</td>
+                                </tr>
+                                <tr>
+                                    <td>MWACS</td>
+                                    <td>120 - 180</td>
+                                    <td>50</td>
+                                    <td>~180</td>
+                                    <td>6,100</td>
+                                </tr>
+                                <tr>
+                                    <td>MRC</td>
+                                    <td>408</td>
+                                    <td>~150</td>
+                                    <td>~100</td>
+                                    <td>24,000</td>
+                                </tr>
+                                <tr>
+                                    <td>SUMSS</td>
+                                    <td>843</td>
+                                    <td>1</td>
+                                    <td>45</td>
+                                    <td>8,100</td>
+                                </tr>
+                                <tr>
+                                    <td>NVSS</td>
+                                    <td>1400</td>
+                                    <td>0.45</td>
+                                    <td>45</td>
+                                    <td>35,000</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="section text-justify">
+                <div class="heading">Survey progress</div>
+                <div class="content">
+                    GLEAM observing began in January 2018 and the first semester concluded in June
+                    2018. The second semester is planned for 2019-B, subject to the availability of the extended
+                    configuration in that proposal round.
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock content %}
