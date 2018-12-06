@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block additional_styles %}
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/styles.css' %}"/>
+{% endblock additional_styles %}
+
+{% block page_header %}
+    View Processing
+{% endblock page_header %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="job-list">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th class="">Property</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, value in processing.attributes.items %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

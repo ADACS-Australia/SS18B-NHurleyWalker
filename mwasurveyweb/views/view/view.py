@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from ...utility.utils import get_page_type
 from ...utility.observation import Observation
+from ...utility.processing import Processing
 
 
 @login_required
@@ -20,10 +20,17 @@ def view(request, object_id=None):
             request,
             "mwasurveyweb/view/observation.html",
             {
-                'search_forms': None,
                 'observation': observation,
             }
         )
 
     elif object_type == 'processing':
-        pass
+        processing = Processing(processing_id=object_id)
+
+        return render(
+            request,
+            "mwasurveyweb/view/processing.html",
+            {
+                'processing': processing,
+            }
+        )
