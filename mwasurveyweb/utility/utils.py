@@ -10,7 +10,55 @@ from datetime import datetime, date, time
 from thirdparty import leapseconds
 
 from ..constants import *
-from ..models import SearchInput
+
+
+def get_order_by_parts(order_by):
+    """
+    Extract the order by clause information. In future this could be used to update multiple column ordering.
+    :param order_by: the order by clause, for example: ' ORDER BY column_name ASC/DESC'
+    :return: order by field name, order by order. For example: column_name, ASC/DESC
+    """
+    order_by_parts = order_by.replace(' ORDER BY ', '').strip().split()
+
+    return order_by_parts[0], order_by_parts[1]
+
+
+def update_display_headers_order_by(display_headers, order_by):
+    """
+    Updates the current display headers according to the order by clause of the query. This is used to display
+    appropriate icon in the UI.
+
+    :param display_headers: A list of display headers where an item in the list is in the following format:
+    dict(
+        display=table_column.display_name, # this is the display text which will appear in the UI as a column header
+        field_name=table_column.field_name, # name of field used for creating the sort link, ex: ?sort=field_name
+        sort_order='', # the current sort order of the column, possible values:
+            '' --> No sort
+            '-up' --> ASC sort
+            '-down' --> DESC sort
+    )
+    :param order_by: String that defines the ORDER BY of the query. Format:
+    ' ORDER BY column_name ASC/DESC'
+    :return: updated display_headers with appropriate order by direction
+    """
+
+    order_by_field, oder_by_direction = get_order_by_parts(order_by)
+
+    for display_header in display_headers:
+
+        # default sort order
+        sort_order = ''
+
+        if display_header.get('field_name') == order_by_field:
+            # this field needs to be updated by order by
+            sort_order = '-up' if oder_by_direction == 'ASC' else '-down'
+
+        # update the display header
+        display_header.update({
+            'sort_order': sort_order,
+        })
+
+    return display_headers
 
 
 def get_gps_time_from_date(datetime_object):
@@ -112,7 +160,6 @@ def get_page_type(path_info):
 
 
 def get_search_results(query, query_values):
-
     try:
 
         conn = sqlite3.connect(settings.GLEAM_DATABASE_PATH)

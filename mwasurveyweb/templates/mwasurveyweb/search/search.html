@@ -70,11 +70,7 @@
                 <thead>
                 <tr>
                     {% for header in display_headers %}
-                        {% if forloop.counter == 1 %}
-                            <th scope="col">{{ header }}</th>
-                        {% else %}
-                            <th>{{ header }}</th>
-                        {% endif %}
+                        <th{% if forloop.counter == 1 %} scope="col"{% endif %}><a href="?sort={{ header.field_name }}"><i class="fas fa-sort{{ header.sort_order }}"></i> {{ header.display }}</a></th>
                     {% endfor %}
                     <th>Action(s)</th>
                 </tr>

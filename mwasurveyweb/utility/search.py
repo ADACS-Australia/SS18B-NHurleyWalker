@@ -66,16 +66,23 @@ class SearchQuery(object):
         query_substring = ''
 
         for table_column in table_columns:
-            self.display_headers.append(table_column.display_name)
+            self.display_headers.append(
+                dict(
+                    display=table_column.display_name,
+                    field_name=table_column.field_name,
+                    sort_order='',
+                )
+            )
+
             query_substring += '{table_name}.{field_name}, '.format(
                 table_name=table_column.table_name,
                 field_name=table_column.field_name,
             )
 
-        self.query = 'SELECT {select_fields}' \
-                     'subtable.total ' \
-                     'FROM {table}, ({query_count}) subtable ' \
-            .format(
+        self.query = \
+            'SELECT {select_fields}' \
+            'subtable.total ' \
+            'FROM {table}, ({query_count}) subtable '.format(
                 select_fields=query_substring,
                 table=form_type,
                 query_count=self.query_count,
@@ -203,7 +210,8 @@ class SearchQuery(object):
                         self._enlist_database_search_parameter(key, value, search_form)
 
     def get_query(self):
-        return self.query, self.query_values, self.limit, self.offset, self.display_headers
+        return self.query, self.query_values, self.search_parameter_order_by, self.limit, self.offset, \
+               self.display_headers
 
     def __init__(self, search_forms, form_type):
         self.search_forms = search_forms
