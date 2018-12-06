@@ -224,7 +224,7 @@ class SearchQuery(object):
         self.display_headers = []
 
         if form_type == 'observation':
-            self.search_parameter_order_by = ' ORDER BY obs_id {order_by}'
+            self.search_parameter_order_by = ' ORDER BY starttime {order_by}'
         else:
             self.search_parameter_order_by = ' ORDER BY job_id {order_by}'
 
