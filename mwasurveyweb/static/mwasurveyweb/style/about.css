@@ -1,3 +1,15 @@
+.about .slogan {
+    color: #006FBD;
+    font-weight: 600;
+    font-size: large;
+}
+
+.about span.highlight {
+    color: #dc3545;
+    font-weight: 600;
+    font-size: x-large;
+}
+
 .about .section {
     margin-bottom: 20px;
 }
