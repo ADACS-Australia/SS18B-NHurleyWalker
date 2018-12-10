@@ -26,3 +26,7 @@
     max-width:100%;
     height: auto;
 }
+
+.table tr.link {
+    color: #006FBD;
+}

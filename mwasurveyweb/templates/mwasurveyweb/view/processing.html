@@ -33,6 +33,10 @@
                         <td>{{ value }}</td>
                     </tr>
                 {% endfor %}
+                <tr class="link">
+                    <td><a href="{% url 'view_observation' processing.observation_attributes.obs_id %}">Observation</a></td>
+                    <td><a href="{% url 'view_observation' processing.observation_attributes.obs_id %}">{{ processing.observation_attributes.obs_id }}</a></td>
+                </tr>
                 </tbody>
             </table>
         </div>

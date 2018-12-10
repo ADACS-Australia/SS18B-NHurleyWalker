@@ -32,7 +32,7 @@ class Processing(object):
         except sqlite3.Error:
             self.health_okay = False
 
-        self.attributes = self._populate_processing_info()
+        self.attributes, self.observation_attributes = self._populate_processing_info()
 
     def _populate_processing_info(self):
 
@@ -51,4 +51,8 @@ class Processing(object):
 
         result = dict(self.cursor.execute(query, values).fetchone())
 
-        return result
+        observation_attributes = dict(
+            obs_id=result.pop('obs_id', None),
+        )
+
+        return result, observation_attributes
