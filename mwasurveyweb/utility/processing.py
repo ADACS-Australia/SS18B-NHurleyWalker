@@ -41,9 +41,14 @@ class Processing(object):
                 '{0}.submission_time, ' \
                 '{0}.start_time, ' \
                 '{0}.end_time, ' \
+                '{0}.task_id, ' \
                 '{0}.task, ' \
                 '{0}.user, ' \
                 '{0}.obs_id, ' \
+                '{0}.batch_file, ' \
+                '{0}.stderr, ' \
+                '{0}.stdout, ' \
+                '{0}.output_files, ' \
                 '{0}.status ' \
                 ' FROM {0} WHERE job_id = ?'.format('processing')
 
