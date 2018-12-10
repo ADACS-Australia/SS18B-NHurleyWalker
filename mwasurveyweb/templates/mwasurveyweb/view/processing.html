@@ -3,32 +3,38 @@
 
 {% block additional_styles %}
     <link rel="stylesheet" href="{% static 'mwasurveyweb/style/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/view.css' %}"/>
 {% endblock additional_styles %}
 
 {% block page_header %}
-    View Processing
+    Processing :: {{ processing.processing_id }}
 {% endblock page_header %}
 
 
 {% block content %}
     {{ block.super }}
 
-    <div class="job-list">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th class="">Property</th>
-                <th>Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for key, value in processing.attributes.items %}
+    <div class="section">
+        <div class="heading">
+            Processing Properties
+        </div>
+        <div class="job-list">
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td>{{ key }}</td>
-                    <td>{{ value }}</td>
+                    <th class="">Property</th>
+                    <th>Value</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for key, value in processing.attributes.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock content %}

@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-from ...utility.Paginator import Paginator
+from ...utility.paginator import Paginator
 from ...forms.search_parameter import SearchParameterForm
 from ...forms.search import SearchForm
 from ...utility.search import SearchQuery

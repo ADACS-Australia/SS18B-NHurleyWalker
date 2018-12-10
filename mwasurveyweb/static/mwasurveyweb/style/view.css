@@ -1,0 +1,28 @@
+.section .heading {
+    color: saddlebrown;
+    font-weight: bold;
+    border-bottom: 1px dotted saddlebrown;
+    margin: 5px 5px 10px 5px;
+}
+
+.section .table th {
+    border-top: none;
+}
+
+.histogram img {
+    max-width:100%;
+    height: auto;
+}
+
+.histogram-properties {
+    font-size: small;
+}
+
+.histogram-properties .key {
+    color: #006FBD;
+}
+
+.phase-map img {
+    max-width:100%;
+    height: auto;
+}
