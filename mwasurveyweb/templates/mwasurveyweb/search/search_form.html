@@ -1,28 +1,28 @@
 {% load template_filters %}
 
 {% for key, fieldset in form.fieldsets.items %}
-    <!-- start fieldset -->
-        {% if fieldset.fields|length == 1 %}
-            {% for field_name in fieldset.fields %}
-                {% for field in form %}
-                    {% if field_name == field.name %}
-                        {% include 'mwasurveyweb/search/input_one.html' %}
-                    {% endif %}
-                {% endfor %}
+    <!-- start fieldsets -->
+    {% if fieldset.fields|length == 1 %}
+        {% for field_name in fieldset.fields %}
+            {% for field in form %}
+                {% if field_name == field.name %}
+                    {% include 'mwasurveyweb/search/input_one.html' %}
+                {% endif %}
             {% endfor %}
-        {% elif fieldset.fields|length == 2 %}
-            <div class="row">
-                <div class="col col-lg-4 col-md-4 col-sm-12 col-sx-12 col-12">{{ fieldset.title }}</div>
+        {% endfor %}
+    {% elif fieldset.fields|length == 2 %}
+        <div class="row">
+            <div class="col col-lg-4 col-md-4 col-sm-4 col-sx-4 col-4">{{ fieldset.title }}</div>
+            <div class="col col-lg-8 col-md-8 col-sm-8 col-sx-8 col-8">
                 {% for field_name in fieldset.fields %}
                     {% for field in form %}
                         {% if field_name == field.name %}
-                            <div class="col col-lg-4 col-md-4 col-sm-12 col-sx-12 col-12">
-                                {% include 'mwasurveyweb/search/input_two.html' %}
-                            </div>
+                            {% include 'mwasurveyweb/search/input_two.html' %}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
             </div>
-        {% endif %}
-    <!-- end fieldset -->
+        </div>
+    {% endif %}
+    <!-- end fieldsets -->
 {% endfor %}
