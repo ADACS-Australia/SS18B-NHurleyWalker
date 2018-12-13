@@ -14,11 +14,15 @@
 {% block content %}
     <div class="section mwasurvey-logo row">
         <div class="col col-md-12 col-lg-12 col-sm-12 col-sx-12 col-12">
-            <div class="sky-plots">
-                <img src="{% static '/images/gleam-x-logo.png' %}"/>
-            </div>
-            <div class="sky-plots">
-                <img src="{% static '/images/gleam-x-logo.png' %}"/>
+            <div id="sky-plots" class="sky-plots">
+                <img src="{% static '/images/skyplots/blank.png' %}" hidden />
+                <img src="{% static '/images/skyplots/blue.png' %}" hidden />
+                <img src="{% static '/images/skyplots/yellow.png' %}" hidden />
+                <img src="{% static '/images/skyplots/light-grey.png' %}" hidden />
+                <img src="{% static '/images/skyplots/blue_yellow.png' %}" hidden/>
+                <img src="{% static '/images/skyplots/light-grey_yellow.png' %}" hidden/>
+                <img src="{% static '/images/skyplots/light-grey_blue.png' %}" hidden/>
+                <img src="{% static '/images/skyplots/blue_yellow_light-grey.png' %}" />
             </div>
         </div>
     </div>
