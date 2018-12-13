@@ -13,8 +13,13 @@
 
 {% block content %}
     <div class="section mwasurvey-logo row">
-        <div class="col col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-6 offset-sm-3 col-12">
-            <img src="{% static '/images/gleam-x-logo.png' %}" width="200px" height="auto"/>
+        <div class="col col-md-12 col-lg-12 col-sm-12 col-sx-12 col-12">
+            <div class="sky-plots">
+                <img src="{% static '/images/gleam-x-logo.png' %}"/>
+            </div>
+            <div class="sky-plots">
+                <img src="{% static '/images/gleam-x-logo.png' %}"/>
+            </div>
         </div>
     </div>
 {% endblock content %}
@@ -22,7 +27,7 @@
 {% block info-bar %}
     <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
         <div class="col col-md-3 button">
-            <input class="custom-switch-input" id="status_light-grey" name="status_light-grey" type="checkbox">
+            <input class="custom-switch-input" id="status_light-grey" name="status_light-grey" type="checkbox" checked/>
             <label class="custom-switch-btn" for="status_light-grey"></label>
         </div>
         <div class="col col-md-9 button-text light-grey">
@@ -31,7 +36,7 @@
     </div>
     <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
         <div class="col col-md-3 button">
-            <input class="custom-switch-input" id="status_yellow" name="status_yellow" type="checkbox">
+            <input class="custom-switch-input" id="status_yellow" name="status_yellow" type="checkbox" checked/>
             <label class="custom-switch-btn" for="status_yellow"></label>
         </div>
         <div class="col col-md-9 button-text yellow">
@@ -40,7 +45,7 @@
     </div>
     <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
         <div class="col col-md-3 button">
-            <input class="custom-switch-input" id="status_blue" name="status_blue" type="checkbox">
+            <input class="custom-switch-input" id="status_blue" name="status_blue" type="checkbox" checked/>
             <label class="custom-switch-btn" for="status_blue"></label>
         </div>
         <div class="col col-md-9 button-text blue">
