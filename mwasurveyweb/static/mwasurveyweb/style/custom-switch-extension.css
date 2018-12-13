@@ -1,0 +1,16 @@
+.custom-switch .button-text {
+    padding: 7px 0 0 5px;
+    font-size: small;
+}
+
+.custom-switch .button-text.blue {
+    color: #006FBD;
+}
+
+.custom-switch .button-text.light-grey {
+    color: grey;
+}
+
+.custom-switch .button-text.yellow {
+    color: darkorange;
+}

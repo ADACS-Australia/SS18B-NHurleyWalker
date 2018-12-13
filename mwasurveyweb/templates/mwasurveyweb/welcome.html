@@ -1,21 +1,50 @@
-{% extends 'base/base.html' %}
+{% extends 'base/base-two-columns.html' %}
 {% load static %}
+
+{% block additional_javascript %}
+    <script src="{% static 'mwasurveyweb/js/skyplots.js' %}"></script>
+{% endblock %}
 
 {% block additional_styles %}
     <link rel="stylesheet" href="{% static 'mwasurveyweb/style/welcome.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/component-custom-switch.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/custom-switch-extension.css' %}"/>
 {% endblock additional_styles %}
 
-{% block main_content %}
-    <div class="container">
-        <div class="welcome row">
-            <div class="col col-md-12">
-                <div class="section mwasurvey-logo row">
-                    <div class="col col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-6 offset-sm-3 col-12">
-                        <img src="{% static '/images/gleam-x-logo.png' %}"/>
-                    </div>
-                </div>
-
-            </div>
+{% block content %}
+    <div class="section mwasurvey-logo row">
+        <div class="col col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-6 offset-sm-3 col-12">
+            <img src="{% static '/images/gleam-x-logo.png' %}" width="200px" height="auto"/>
         </div>
     </div>
-{% endblock main_content %}
+{% endblock content %}
+
+{% block info-bar %}
+    <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
+        <div class="col col-md-3 button">
+            <input class="custom-switch-input" id="status_light-grey" name="status_light-grey" type="checkbox">
+            <label class="custom-switch-btn" for="status_light-grey"></label>
+        </div>
+        <div class="col col-md-9 button-text light-grey">
+            Show Unprocessed
+        </div>
+    </div>
+    <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
+        <div class="col col-md-3 button">
+            <input class="custom-switch-input" id="status_yellow" name="status_yellow" type="checkbox">
+            <label class="custom-switch-btn" for="status_yellow"></label>
+        </div>
+        <div class="col col-md-9 button-text yellow">
+            Show Downloaded, Calibrated, Imaged
+        </div>
+    </div>
+    <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
+        <div class="col col-md-3 button">
+            <input class="custom-switch-input" id="status_blue" name="status_blue" type="checkbox">
+            <label class="custom-switch-btn" for="status_blue"></label>
+        </div>
+        <div class="col col-md-9 button-text blue">
+            Show Archived
+        </div>
+    </div>
+{% endblock info-bar %}
