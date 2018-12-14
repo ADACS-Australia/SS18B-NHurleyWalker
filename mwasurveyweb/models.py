@@ -297,3 +297,38 @@ class SearchPageDisplayColumn(models.Model):
             field_name=self.field_name,
             active='Active' if self.active else 'Inactive'
         )
+
+
+class Colour(models.Model):
+    """
+    Defines colour and corresponding codes
+    """
+
+    # name
+    name = models.CharField(max_length=255, null=False, blank=False, unique=True)
+
+    # hexadecimal code for the colour
+    code = models.CharField(max_length=6, null=False, blank=False)
+
+    class Meta:
+        unique_together = (
+            ('name', 'code',)
+        )
+
+    def __str__(self):
+        return '{}({})'.format(self.name, self.code)
+
+
+class SkyPlotsConfiguration(models.Model):
+    """
+    Configures the sky plots generation
+    """
+
+    # observation status entry, must be present in the observation table
+    observation_status = models.CharField(max_length=255, null=False, blank=False, unique=True)
+
+    # colour for the status
+    colour = models.ForeignKey(Colour, on_delete=models.CASCADE, null=False, blank=True)
+
+    def __str__(self):
+        return '{} - {}'.format(self.observation_status, self.colour)
