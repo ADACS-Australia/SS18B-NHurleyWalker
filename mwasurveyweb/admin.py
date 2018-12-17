@@ -11,6 +11,8 @@ from .models import (
     SearchInputOption,
     SearchPageInputGroup,
     SearchPageDisplayColumn,
+    Colour,
+    SkyPlotsConfiguration,
 )
 
 
@@ -77,4 +79,20 @@ class SearchPageDisplayColumn(admin.ModelAdmin):
         'field_name',
         'display_order',
         'active',
+    )
+
+
+@admin.register(Colour)
+class Colour(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'code',
+    )
+
+
+@admin.register(SkyPlotsConfiguration)
+class SkyPlotsConfiguration(admin.ModelAdmin):
+    list_display = (
+        'observation_status',
+        'colour',
     )
