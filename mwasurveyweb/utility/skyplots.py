@@ -6,6 +6,7 @@ import os
 import itertools
 import sqlite3
 import astropy.units as u
+import logging
 
 from astropy.coordinates import SkyCoord
 
@@ -20,6 +21,9 @@ import matplotlib
 matplotlib.use('Agg')
 # now importing the pyplot
 import matplotlib.pyplot as plt
+
+
+logger = logging.getLogger(__name__)
 
 
 def generate_sky_plot_by_colour(colour_set, cursor):
@@ -81,6 +85,7 @@ def generate_sky_plots():
 
     except sqlite3.Error as ex:
         print('Could not generate plots due to SQLite error : ' + ex.__str__())
+        logger.info('Could not generate plots due to SQLite error : ' + ex.__str__())
     else:
         colours = Colour.objects.all().order_by('name')
 
