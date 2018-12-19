@@ -11,8 +11,13 @@ import logging
 from astropy.coordinates import SkyCoord
 
 from django.conf import settings
+from django.utils import timezone
 
-from ..models import SkyPlotsConfiguration, Colour
+from ..models import (
+    SkyPlotsConfiguration,
+    Colour,
+    SkyPlot,
+)
 
 import matplotlib
 
@@ -74,8 +79,18 @@ def generate_sky_plot_by_colour(colour_set, cursor):
     plt.savefig(file_path)
     plt.close()
 
+    SkyPlot.objects.update_or_create(
+        name='{}.png'.format(image_name),
+        defaults={
+            "generation_time": timezone.localtime(timezone.now())
+        }
+    )
+
 
 def generate_sky_plots():
+
+    now = timezone.localtime(timezone.now())
+
     # connect to gleam-x database
     try:
 
@@ -92,3 +107,6 @@ def generate_sky_plots():
         for L in range(0, len(colours) + 1):
             for subset in itertools.combinations(colours, L):
                 generate_sky_plot_by_colour(subset, cursor)
+
+    # clean up the image files
+    SkyPlot.objects.filter(generation_time__lt=now).delete()

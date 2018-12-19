@@ -13,6 +13,7 @@ from .models import (
     SearchPageDisplayColumn,
     Colour,
     SkyPlotsConfiguration,
+    SkyPlot,
 )
 
 
@@ -95,4 +96,12 @@ class SkyPlotsConfiguration(admin.ModelAdmin):
     list_display = (
         'observation_status',
         'colour',
+    )
+
+
+@admin.register(SkyPlot)
+class SkyPlot(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'generation_time',
     )

@@ -332,3 +332,16 @@ class SkyPlotsConfiguration(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.observation_status, self.colour)
+
+
+class SkyPlot(models.Model):
+    """
+    Storage for sky plots
+    """
+
+    name = models.CharField(max_length=255, null=False, blank=False)
+
+    generation_time = models.DateTimeField(null=False, blank=False, auto_now_add=True)
+
+    def __str__(self):
+        return '{} ({})'.format(self.name, self.generation_time)

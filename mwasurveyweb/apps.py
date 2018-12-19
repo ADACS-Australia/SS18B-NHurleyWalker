@@ -7,8 +7,12 @@ class MwasurveywebConfig(AppConfig):
     verbose_name = 'GLEAM-X Survey'
 
     def ready(self):
+        import mwasurveyweb.signals
 
-        # not generating the plots if it is a development server.
-        if not settings.DEBUG:
-            print('bingo...')
-        pass
+        # not generating the plots if they are already generated.
+        from mwasurveyweb.models import SkyPlot
+        from mwasurveyweb.utility.skyplots import generate_sky_plots
+
+        if not SkyPlot.objects.exists():
+            generate_sky_plots()
+
