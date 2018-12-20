@@ -16,7 +16,7 @@
         <div class="col col-md-12 col-lg-12 col-sm-12 col-sx-12 col-12">
             <div id="sky-plots" class="sky-plots">
                 {% for sky_plot in sky_plots %}
-                    <img src="{% static sky_plot.name %}" {% if not sky_plot.is_default %}hidden{% endif %} />
+                    <img src="{% static sky_plot.name %}" {% if not sky_plot.is_default %}hidden{% endif %}/>
                 {% endfor %}
             </div>
         </div>
@@ -24,31 +24,16 @@
 {% endblock content %}
 
 {% block info-bar %}
-    <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
-        <div class="col col-md-3 button">
-            <input class="custom-switch-input" id="status_light-grey" name="status_light-grey" type="checkbox" checked/>
-            <label class="custom-switch-btn" for="status_light-grey"></label>
+    {% for button in buttons %}
+        <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
+            <div class="col col-md-3 button">
+                <input class="custom-switch-input" id="{{ button.name }}" name="{{ button.name }}" type="checkbox"
+                       checked/>
+                <label class="custom-switch-btn" for="{{ button.name }}"></label>
+            </div>
+            <div class="col col-md-9 button-text {{ button.colour.name }}" style="color:#{{ button.colour.code }}">
+                Show {{ button.display_text }}
+            </div>
         </div>
-        <div class="col col-md-9 button-text light-grey">
-            Show Unprocessed
-        </div>
-    </div>
-    <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
-        <div class="col col-md-3 button">
-            <input class="custom-switch-input" id="status_yellow" name="status_yellow" type="checkbox" checked/>
-            <label class="custom-switch-btn" for="status_yellow"></label>
-        </div>
-        <div class="col col-md-9 button-text yellow">
-            Show Downloaded, Calibrated, Imaged
-        </div>
-    </div>
-    <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
-        <div class="col col-md-3 button">
-            <input class="custom-switch-input" id="status_blue" name="status_blue" type="checkbox" checked/>
-            <label class="custom-switch-btn" for="status_blue"></label>
-        </div>
-        <div class="col col-md-9 button-text blue">
-            Show Archived
-        </div>
-    </div>
+    {% endfor %}
 {% endblock info-bar %}
