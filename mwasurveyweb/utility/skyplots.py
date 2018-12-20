@@ -27,7 +27,6 @@ matplotlib.use('Agg')
 # now importing the pyplot
 import matplotlib.pyplot as plt
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -70,11 +69,11 @@ def generate_sky_plot_by_colour(colour_set, cursor, is_default=False):
         image_name = 'blank'
 
     file_path = os.path.join(
-            settings.BASE_DIR,
-            '..',
-            'static/images/skyplots/',
-            '{}.png'.format(image_name),
-        )
+        settings.BASE_DIR,
+        '..',
+        'static/images/skyplots/',
+        '{}.png'.format(image_name),
+    )
 
     plt.savefig(file_path)
     plt.close()
@@ -89,7 +88,6 @@ def generate_sky_plot_by_colour(colour_set, cursor, is_default=False):
 
 
 def generate_sky_plots():
-
     now = timezone.localtime(timezone.now())
 
     # connect to gleam-x database
