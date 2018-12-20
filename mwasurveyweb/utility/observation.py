@@ -42,14 +42,14 @@ class Observation(object):
 
         query = 'SELECT ' \
                 '{0}.obsname, ' \
-                '{0}.ra_pointing, ' \
-                '{0}.dec_pointing, ' \
-                '{0}.azimuth_pointing, ' \
-                '{0}.elevation_pointing, ' \
                 'cenchan || " (" || CAST(1.28 * {0}.cenchan AS INT) || " MHz)" cenchan, ' \
+                '{0}.ra_pointing, ' \
                 '{0}.delays, ' \
+                '{0}.dec_pointing, ' \
                 'CASE WHEN {0}.calibration = 0 THEN \'False\' ELSE \'True\' END calibration, ' \
+                '{0}.azimuth_pointing, ' \
                 '{0}.cal_obs_id, ' \
+                '{0}.elevation_pointing, ' \
                 '{0}.calibrators, ' \
                 '{0}.peelsrcs, ' \
                 '{0}.flags, ' \
