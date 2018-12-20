@@ -46,9 +46,9 @@ class Observation(object):
                 '{0}.dec_pointing, ' \
                 '{0}.azimuth_pointing, ' \
                 '{0}.elevation_pointing, ' \
-                'CAST(1.28 * {0}.cenchan AS INT) || " MHz" cenchan, ' \
+                'cenchan || " (" || CAST(1.28 * {0}.cenchan AS INT) || " MHz)" cenchan, ' \
                 '{0}.delays, ' \
-                '{0}.calibration, ' \
+                'CASE WHEN {0}.calibration = 0 THEN \'False\' ELSE \'True\' END calibration, ' \
                 '{0}.cal_obs_id, ' \
                 '{0}.calibrators, ' \
                 '{0}.peelsrcs, ' \
@@ -57,7 +57,7 @@ class Observation(object):
                 '{0}.ion_phs_med, ' \
                 '{0}.ion_phs_peak, ' \
                 '{0}.ion_phs_std, ' \
-                '{0}.archived, ' \
+                'CASE WHEN {0}.archived = 0 THEN \'False\' ELSE \'True\' END archived, ' \
                 '{0}.nfiles, ' \
                 '{0}.status ' \
                 ' FROM {0} WHERE obs_id = ?'.format('observation')
