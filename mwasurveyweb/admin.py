@@ -104,4 +104,5 @@ class SkyPlot(admin.ModelAdmin):
     list_display = (
         'name',
         'generation_time',
+        'is_default',
     )

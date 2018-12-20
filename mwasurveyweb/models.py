@@ -343,5 +343,7 @@ class SkyPlot(models.Model):
 
     generation_time = models.DateTimeField(null=False, blank=False, auto_now_add=True)
 
+    is_default = models.BooleanField(default=False)
+
     def __str__(self):
-        return '{} ({})'.format(self.name, self.generation_time)
+        return '{} ({})'.format(self.name, self.generation_time) + ' :: default' if self.is_default else ''

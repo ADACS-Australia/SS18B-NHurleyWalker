@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 logger = logging.getLogger(__name__)
 
 
-def generate_sky_plot_by_colour(colour_set, cursor):
+def generate_sky_plot_by_colour(colour_set, cursor, is_default=False):
     query = 'SELECT ra_pointing, dec_pointing FROM observation WHERE status = ?'
 
     # figure/plot configuration
@@ -80,9 +80,10 @@ def generate_sky_plot_by_colour(colour_set, cursor):
     plt.close()
 
     SkyPlot.objects.update_or_create(
-        name='{}.png'.format(image_name),
+        name='/images/skyplots/{}.png'.format(image_name),
         defaults={
-            "generation_time": timezone.localtime(timezone.now())
+            "generation_time": timezone.localtime(timezone.now()),
+            "is_default": is_default,
         }
     )
 
@@ -106,7 +107,7 @@ def generate_sky_plots():
 
         for L in range(0, len(colours) + 1):
             for subset in itertools.combinations(colours, L):
-                generate_sky_plot_by_colour(subset, cursor)
+                generate_sky_plot_by_colour(subset, cursor, is_default=(L == len(colours)))
 
     # clean up the image files
     SkyPlot.objects.filter(generation_time__lt=now).delete()

@@ -4,6 +4,11 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 
 from django.shortcuts import render
 
+from ..models import (
+    SkyPlotsConfiguration,
+    SkyPlot,
+)
+
 
 def index(request):
     """
@@ -11,9 +16,15 @@ def index(request):
     :param request: Django request object.
     :return: Rendered template
     """
+
+    sky_plots = SkyPlot.objects.all()
+
     return render(
         request,
         "mwasurveyweb/welcome.html",
+        {
+            'sky_plots': sky_plots,
+        }
     )
 
 
