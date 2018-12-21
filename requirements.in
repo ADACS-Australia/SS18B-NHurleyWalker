@@ -1,6 +1,4 @@
 Django==2.1.2
 
-numpy
-bokeh==0.12.15
 matplotlib==2.2.2
 astropy

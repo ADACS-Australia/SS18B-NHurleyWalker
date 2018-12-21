@@ -5,18 +5,12 @@
 #    pip-compile --output-file requirements.txt requirements.in
 #
 astropy==3.1
-bokeh==0.12.15
 cycler==0.10.0            # via matplotlib
 django==2.1.2
-jinja2==2.10              # via bokeh
 kiwisolver==1.0.1         # via matplotlib
-markupsafe==1.1.0         # via jinja2
 matplotlib==2.2.2
-numpy==1.15.4
-packaging==18.0           # via bokeh
-pyparsing==2.3.0          # via matplotlib, packaging
-python-dateutil==2.7.5    # via bokeh, matplotlib
+numpy==1.15.4             # via astropy, matplotlib
+pyparsing==2.3.0          # via matplotlib
+python-dateutil==2.7.5    # via matplotlib
 pytz==2018.7              # via django, matplotlib
-pyyaml==3.13              # via bokeh
-six==1.12.0               # via bokeh, cycler, matplotlib, packaging, python-dateutil
-tornado==5.1.1            # via bokeh
+six==1.12.0               # via cycler, matplotlib, python-dateutil
