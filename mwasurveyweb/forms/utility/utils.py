@@ -139,7 +139,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties_plus_minus)
 
-    elif search_input.input_type == DATE:
+    elif search_input.input_type in [DATE_GPS, DATE_UNIX, ]:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -150,7 +150,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.input_type == DATE_RANGE:
+    elif search_input.input_type in [DATE_GPS_RANGE, DATE_UNIX_RANGE, ]:
         input_properties_min = dict()
         input_properties_min.update({
             'label': 'From',

@@ -11,6 +11,7 @@ from .utils import (
     check_forms_validity,
     get_operator_by_input_type,
     get_gps_time_from_date,
+    get_unix_time_from_date,
 )
 
 from ..models import (
@@ -103,8 +104,11 @@ class SearchQuery(object):
         value_adjusted = value
 
         try:
-            if search_input.input_type in [DATE, DATE_RANGE, ]:
+            if search_input.input_type in [DATE_GPS, DATE_GPS_RANGE, ]:
                 value_adjusted = get_gps_time_from_date(value_adjusted)
+
+            if search_input.input_type in [DATE_UNIX, DATE_UNIX_RANGE]:
+                value_adjusted = get_unix_time_from_date(value_adjusted)
 
             if search_input.field_type == SearchInput.INT:
                 value_adjusted = int(value_adjusted)
@@ -169,7 +173,7 @@ class SearchQuery(object):
         # anything that has been on that day need be evaluated as a range, meaning for the above example:
         # we should search for anything between 01/01/2008 00:00:00:000 to 02/01/2008 00:00:00:000. To achieve that,
         # another query constraint is needed to be added with the index 1.
-        if search_input.input_type == DATE:
+        if search_input.input_type in [DATE_GPS, DATE_UNIX, ]:
             self._update_database_search_parameter(
                 value=value + timedelta(days=1),
                 search_input=search_input,

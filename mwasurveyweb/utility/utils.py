@@ -3,6 +3,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
 import sqlite3
+import pytz
 
 from django.conf import settings
 from datetime import datetime, date, time, timedelta
@@ -59,6 +60,28 @@ def update_display_headers_order_by(display_headers, order_by):
         })
 
     return display_headers
+
+
+def get_unix_time_from_date(date_object):
+    """
+    Finds the unix timestamp from a date string
+    :param date_object: datetime object
+    :return: string (of unix timestamp)
+    """
+
+    # converting date object to datetime object
+    if type(date_object) == date:
+
+        datetime_utc_object = datetime(
+            year=date_object.year,
+            month=date_object.month,
+            day=date_object.day,
+            tzinfo=pytz.utc,
+        )
+
+        return datetime_utc_object.timestamp()
+
+    return None
 
 
 def get_gps_time_from_date(datetime_object):
@@ -154,13 +177,13 @@ def get_operator_by_input_type(input_type, index=None, second_value=0):
         operator = '<='
         field_operator = 'ABS'
 
-    elif input_type == DATE:
+    elif input_type in [DATE_GPS, DATE_UNIX, ]:
         if index == '0':
             operator = '>='
         if index == '1':
             operator = '<='
 
-    elif input_type == DATE_RANGE:
+    elif input_type in [DATE_GPS_RANGE, DATE_UNIX_RANGE, ]:
         if index == '0':
             operator = '>='
         if index == '1':

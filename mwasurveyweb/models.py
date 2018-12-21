@@ -115,8 +115,10 @@ class SearchInput(models.Model):
         (RADIUS, RADIUS_DISPLAY),
         (RANGE, RANGE_DISPLAY),
         (SELECT, SELECT_DISPLAY),
-        (DATE, DATE_DISPLAY),
-        (DATE_RANGE, DATE_RANGE_DISPLAY),
+        (DATE_GPS, DATE_GPS_DISPLAY),
+        (DATE_GPS_RANGE, DATE_GPS_RANGE_DISPLAY),
+        (DATE_UNIX, DATE_UNIX_DISPLAY),
+        (DATE_UNIX_RANGE, DATE_UNIX_RANGE_DISPLAY),
     ]
 
     # input type to define how the input will be rendered in the UI
@@ -154,7 +156,7 @@ class SearchInput(models.Model):
     def initial_value_adjusted(self):
         now = timezone.localtime(timezone.now()).strftime('%d/%m/%Y')
 
-        if self.input_type == DATE:
+        if self.input_type in [DATE_GPS, DATE_UNIX]:
             if self.initial_value.lower() == 'today':
                 return now
 
@@ -182,7 +184,7 @@ class SearchInput(models.Model):
 
             return initial_values
 
-        elif self.input_type == DATE_RANGE:
+        elif self.input_type in [DATE_GPS_RANGE, DATE_UNIX_RANGE]:
             initial_values = ['', '']
             try:
                 parts = self.initial_value.split(',')

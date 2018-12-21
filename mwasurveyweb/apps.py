@@ -11,10 +11,14 @@ class MwasurveywebConfig(AppConfig):
         import mwasurveyweb.signals
 
         if not settings.TESTING:
-            # not generating the plots if they are already generated.
-            from mwasurveyweb.models import SkyPlot
-            from mwasurveyweb.utility.skyplots import generate_sky_plots
 
-            if not SkyPlot.objects.exists():
-                generate_sky_plots()
+            try:
+                # not generating the plots if they are already generated.
+                from mwasurveyweb.models import SkyPlot
+                from mwasurveyweb.utility.skyplots import generate_sky_plots
+
+                if not SkyPlot.objects.exists():
+                    generate_sky_plots()
+            except:
+                pass
 

@@ -45,7 +45,7 @@ def revert(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mwasurveyweb', '0007_auto_20181217_1841'),
+        ('mwasurveyweb', '0006_insert_search_page_display_columns'),
     ]
 
     operations = [

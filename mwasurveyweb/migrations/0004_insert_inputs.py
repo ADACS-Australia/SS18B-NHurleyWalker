@@ -116,7 +116,7 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('start_time', 'Starttime in UTC', 'observation', 'starttime', SInput.TEXTTIME, DATE_RANGE,
+            ('start_time', 'Starttime in UTC', 'observation', 'starttime', SInput.TEXTTIME, DATE_GPS_RANGE,
              '01/01/2018,31/07/2018', None, False, ''),
             ('obs_duration', 'Obs duration, in seconds', 'observation', 'duration_sec', SInput.INT, RANGE, None, None,
              False, ''),
@@ -286,10 +286,10 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('submission_time', 'Submission Time', 'processing', 'submission_time', SInput.INT, DATE, 'today', None,
-             False, ''),
-            ('start_time', 'Start Time', 'processing', 'start_time', SInput.INT, DATE, 'today', None, False, ''),
-            ('end_time', 'End Time', 'processing', 'end_time', SInput.INT, DATE, 'today', None, False, ''),
+            ('submission_time', 'Submission Time', 'processing', 'submission_time', SInput.INT, DATE_UNIX, 'today',
+             None, False, ''),
+            ('start_time', 'Start Time', 'processing', 'start_time', SInput.INT, DATE_UNIX, 'today', None, False, ''),
+            ('end_time', 'End Time', 'processing', 'end_time', SInput.INT, DATE_UNIX, 'today', None, False, ''),
         ]
 
         display_order = 0
