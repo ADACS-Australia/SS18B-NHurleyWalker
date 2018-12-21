@@ -7,6 +7,8 @@ import sqlite3
 
 from django.conf import settings
 
+from ..utility.utils import get_date_from_gps_time
+
 
 def dict_factory(cursor, row):
     d = {}
@@ -58,7 +60,7 @@ class Observation(object):
                 '{0}.ion_phs_peak, ' \
                 '{0}.ion_phs_std, ' \
                 'CASE WHEN {0}.archived = 0 THEN \'False\' ELSE \'True\' END archived, ' \
-                '{0}.nfiles, ' \
+                'obs_id "UTC date-obs", ' \
                 '{0}.status ' \
                 ' FROM {0} WHERE obs_id = ?'.format('observation')
 
@@ -71,6 +73,11 @@ class Observation(object):
             ion_phs_peak=result.pop('ion_phs_peak', None),
             ion_phs_std=result.pop('ion_phs_std', None),
         )
+
+        # converting gps time to UTC date
+        result.update({
+            "UTC date-obs": get_date_from_gps_time(result.get('UTC date-obs')),
+        })
 
         return result, histogram_attributes
 

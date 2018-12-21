@@ -193,5 +193,6 @@ ROOT_SUBDIRECTORY_PATH = ''
 
 SITE_URL = ''
 
+TESTING = False
 
 GLEAM_DATABASE_PATH = os.path.join(BASE_DIR, '..', 'GLEAM-X.sqlite')

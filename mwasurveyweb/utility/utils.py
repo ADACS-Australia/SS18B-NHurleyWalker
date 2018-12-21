@@ -5,7 +5,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 import sqlite3
 
 from django.conf import settings
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 
 from thirdparty import leapseconds
 
@@ -82,6 +82,29 @@ def get_gps_time_from_date(datetime_object):
 
     # returning the string of the delta in seconds
     return str(int(delta.total_seconds()))
+
+
+def get_date_from_gps_time(gps_time):
+    """
+    Finds the date from a gps time. This uses a third-party library obtained from:
+    https://gist.github.com/zed/92df922103ac9deb1a05#file-leapseconds-py
+    which uses the system tzinfo for finding leapseconds.
+    :param gps_time: gps time text/integer
+    :return: date_object: date time object
+    """
+
+    # converting date object to datetime object
+    if type(gps_time) != int:
+        try:
+            gps_time = int(gps_time)
+        except (ValueError, TypeError, AttributeError):
+            return None
+
+    # calculating date (which is a datetime object) using the leapseconds library
+    date_object = leapseconds.gps_to_utc(datetime(1980, 1, 6) + timedelta(seconds=gps_time))
+
+    # returning the date object
+    return date_object
 
 
 def check_forms_validity(search_forms):
