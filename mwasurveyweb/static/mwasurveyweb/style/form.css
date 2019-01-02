@@ -23,3 +23,27 @@ ul.search-forms {
 li.search-form {
     margin-bottom: 10px;
 }
+
+.input-field {
+    width: calc(100% - 25px);
+    float: left;
+    margin-right: 5px;
+}
+
+.input-field.input-checkbox {
+    width: auto;
+    float: left;
+    margin-right: 5px;
+}
+
+.input-tooltip {
+    float: right;
+}
+
+.input-tooltip.input-checkbox {
+    float: left;
+}
+
+.input-tooltip a {
+    color: #343a40;
+}
