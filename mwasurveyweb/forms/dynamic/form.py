@@ -61,6 +61,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     validators=properties.get('validators', ()),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == TEXT_AREA:
@@ -69,6 +70,7 @@ class DynamicForm(forms.Form):
                     placeholder=properties.get('placeholder', None),
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == POSITIVE_FLOAT:
@@ -78,6 +80,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     validators=properties.get('validators', ()),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == ZERO_TO_HUNDRED:
@@ -87,6 +90,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     validators=properties.get('validators', ()),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == ZERO_TO_PI:
@@ -96,6 +100,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     validators=properties.get('validators', ()),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == ZERO_TO_2PI:
@@ -105,6 +110,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     validators=properties.get('validators', ()),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == INTEGER:
@@ -114,6 +120,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     validators=properties.get('validators', ()),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == POSITIVE_INTEGER:
@@ -123,6 +130,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     validators=properties.get('validators', ()),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == FLOAT:
@@ -132,6 +140,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     validators=properties.get('validators', ()),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == SELECT:
@@ -140,6 +149,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     choices=properties.get('choices'),
                     extra_class=properties.get('extra_class', None),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == CHECKBOX:
@@ -147,6 +157,7 @@ class DynamicForm(forms.Form):
                     label=properties.get('label', name),
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == MULTIPLE_CHOICES:
@@ -155,6 +166,7 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     choices=properties.get('choices'),
+                    help_text=properties.get('help_text', ''),
                 )
 
             elif properties.get('type') == DATE:
@@ -163,4 +175,5 @@ class DynamicForm(forms.Form):
                     initial=properties.get('initial', None),
                     required=properties.get('required', False),
                     extra_class=properties.get('extra_class', 'date-picker'),
+                    help_text=properties.get('help_text', ''),
                 )

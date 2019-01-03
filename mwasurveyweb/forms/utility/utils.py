@@ -40,6 +40,7 @@ def get_fields(search_input):
             'required': search_input.required,
             'placeholder': search_input.placeholder,
             'initial': search_input.initial_value_adjusted,
+            'help_text': search_input.input_info,
         })
         fields.append(input_properties)
 
@@ -51,6 +52,7 @@ def get_fields(search_input):
             'required': search_input.required,
             'placeholder': search_input.placeholder,
             'initial': search_input.initial_value_adjusted,
+            'help_text': search_input.input_info,
         })
         fields.append(input_properties)
 
@@ -62,6 +64,7 @@ def get_fields(search_input):
             'required': search_input.required,
             'placeholder': search_input.placeholder,
             'initial': search_input.initial_value_adjusted,
+            'help_text': search_input.input_info,
         })
         fields.append(input_properties)
 
@@ -73,6 +76,7 @@ def get_fields(search_input):
             'required': search_input.required,
             'placeholder': search_input.placeholder,
             'initial': search_input.initial_value_adjusted,
+            'help_text': search_input.input_info,
         })
         fields.append(input_properties)
 
@@ -83,6 +87,7 @@ def get_fields(search_input):
             'type': dynamic_field.CHECKBOX,
             'initial': search_input.initial_value_adjusted,
             'required': search_input.required,
+            'help_text': search_input.input_info,
         })
         fields.append(input_properties)
 
@@ -94,6 +99,7 @@ def get_fields(search_input):
             'initial': search_input.initial_value_adjusted,
             'choices': get_choices_for_input(search_input),
             'required': search_input.required,
+            'help_text': search_input.input_info,
         })
         fields.append(input_properties)
 
@@ -147,6 +153,7 @@ def get_fields(search_input):
             'required': search_input.required,
             'placeholder': search_input.placeholder,
             'initial': search_input.initial_value_adjusted,
+            'help_text': search_input.input_info,
         })
         fields.append(input_properties)
 

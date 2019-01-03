@@ -40,7 +40,7 @@ class CustomCharField(forms.CharField):
 
     description = "A custom text field"
 
-    def __init__(self, placeholder=None, **kwargs):
+    def __init__(self, placeholder=None, help_text='', **kwargs):
 
         super(CustomCharField, self).__init__(**kwargs)
 
@@ -52,9 +52,10 @@ class CustomCharField(forms.CharField):
 
         self.widget = forms.TextInput()
         self.widget.attrs.update(extra_attrs)
+        self.help_text = help_text
 
 
-def get_text_input(label, required, placeholder=None, initial=None, validators=()):
+def get_text_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
     """
     Method to get a custom text field
     :param label: String label of the field
@@ -62,6 +63,7 @@ def get_text_input(label, required, placeholder=None, initial=None, validators=(
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
     :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
     :return: A custom text field
     """
     return CustomCharField(
@@ -70,6 +72,7 @@ def get_text_input(label, required, placeholder=None, initial=None, validators=(
         initial=initial,
         placeholder=placeholder,
         validators=validators,
+        help_text=help_text,
     )
 
 
@@ -80,7 +83,7 @@ class CustomFloatField(forms.FloatField):
 
     description = "A custom float field"
 
-    def __init__(self, placeholder=None, **kwargs):
+    def __init__(self, placeholder=None, help_text='', **kwargs):
 
         super(CustomFloatField, self).__init__(**kwargs)
 
@@ -92,9 +95,10 @@ class CustomFloatField(forms.FloatField):
 
         self.widget = forms.TextInput()
         self.widget.attrs.update(extra_attrs)
+        self.help_text = help_text
 
 
-def get_float_input(label, required, placeholder=None, initial=None, validators=()):
+def get_float_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
     """
     Method to get a custom float field
     :param label: String label of the field
@@ -102,6 +106,7 @@ def get_float_input(label, required, placeholder=None, initial=None, validators=
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
     :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
     :return: A custom floating number field
     """
     return CustomFloatField(
@@ -110,10 +115,11 @@ def get_float_input(label, required, placeholder=None, initial=None, validators=
         initial=initial,
         placeholder=placeholder,
         validators=validators,
+        help_text=help_text,
     )
 
 
-def get_positive_float_input(label, required, placeholder=None, initial=None, validators=()):
+def get_positive_float_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
     """
     Method to get a custom positive float number field
     :param label: String label of the field
@@ -121,6 +127,7 @@ def get_positive_float_input(label, required, placeholder=None, initial=None, va
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
     :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
     :return: A custom floating number field that accepts only number that is greater than zero
     """
     default_validators = [validate_positive_float, ]
@@ -131,10 +138,11 @@ def get_positive_float_input(label, required, placeholder=None, initial=None, va
         initial=initial,
         placeholder=placeholder,
         validators=list(itertools.chain(default_validators, validators)),
+        help_text=help_text,
     )
 
 
-def get_zero_to_hundred_input(label, required, placeholder=None, initial=None, validators=()):
+def get_zero_to_hundred_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
     """
     Method to get a custom positive float number field
     :param label: String label of the field
@@ -142,6 +150,7 @@ def get_zero_to_hundred_input(label, required, placeholder=None, initial=None, v
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
     :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
     :return: A custom floating number field that accepts only number that is greater than zero and less than 100
     """
     default_validators = [validate_positive_float, validate_less_than_equal_hundred, ]
@@ -152,10 +161,11 @@ def get_zero_to_hundred_input(label, required, placeholder=None, initial=None, v
         initial=initial,
         placeholder=placeholder,
         validators=list(itertools.chain(default_validators, validators)),
+        help_text=help_text,
     )
 
 
-def get_zero_to_pi_input(label, required, placeholder=None, initial=None, validators=()):
+def get_zero_to_pi_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
     """
     Method to get a custom positive float number field
     :param label: String label of the field
@@ -163,6 +173,7 @@ def get_zero_to_pi_input(label, required, placeholder=None, initial=None, valida
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
     :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
     :return: A custom floating number field that accepts only number that is greater than zero and less than pi(Math.pi)
     """
     default_validators = [validate_positive_float, validate_less_than_pi, ]
@@ -173,10 +184,11 @@ def get_zero_to_pi_input(label, required, placeholder=None, initial=None, valida
         initial=initial,
         placeholder=placeholder,
         validators=list(itertools.chain(default_validators, validators)),
+        help_text=help_text,
     )
 
 
-def get_zero_to_2pi_input(label, required, placeholder=None, initial=None, validators=()):
+def get_zero_to_2pi_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
     """
     Method to get a custom positive float number field
     :param label: String label of the field
@@ -184,6 +196,7 @@ def get_zero_to_2pi_input(label, required, placeholder=None, initial=None, valid
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
     :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
     :return: A custom floating number field that accepts only numbers greater than zero and less than 2pi(Math.pi)
     """
     default_validators = [validate_positive_float, validate_less_than_2pi, ]
@@ -194,6 +207,7 @@ def get_zero_to_2pi_input(label, required, placeholder=None, initial=None, valid
         initial=initial,
         placeholder=placeholder,
         validators=list(itertools.chain(default_validators, validators)),
+        help_text=help_text,
     )
 
 
@@ -204,7 +218,7 @@ class CustomTextAreaField(forms.CharField):
 
     description = "A custom text-area field"
 
-    def __init__(self, placeholder=None, **kwargs):
+    def __init__(self, placeholder=None, help_text='', **kwargs):
 
         super(CustomTextAreaField, self).__init__(**kwargs)
 
@@ -216,15 +230,17 @@ class CustomTextAreaField(forms.CharField):
 
         self.widget = forms.Textarea()
         self.widget.attrs.update(extra_attrs)
+        self.help_text = help_text
 
 
-def get_text_area_input(label, required, placeholder=None, initial=None):
+def get_text_area_input(label, required, placeholder=None, initial=None, help_text=''):
     """
     Method to get a custom text-area field
     :param label: String label of the field
     :param required: Boolean to define whether the field is required or not
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
+    :param help_text: tooltip for the input
     :return: A custom text-area field
     """
     return CustomTextAreaField(
@@ -232,6 +248,7 @@ def get_text_area_input(label, required, placeholder=None, initial=None):
         placeholder=placeholder,
         required=required,
         initial=initial,
+        help_text=help_text,
     )
 
 
@@ -242,7 +259,7 @@ class CustomIntegerField(forms.IntegerField):
 
     description = "A custom integer field"
 
-    def __init__(self, placeholder=None, **kwargs):
+    def __init__(self, placeholder=None, help_text='', **kwargs):
 
         super(CustomIntegerField, self).__init__(**kwargs)
 
@@ -254,9 +271,10 @@ class CustomIntegerField(forms.IntegerField):
 
         self.widget = forms.TextInput()
         self.widget.attrs.update(extra_attrs)
+        self.help_text = help_text
 
 
-def get_integer_input(label, required, placeholder=None, initial=None, validators=()):
+def get_integer_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
     """
     Method to get a custom positive integer field
     :param label: String label of the field
@@ -264,6 +282,7 @@ def get_integer_input(label, required, placeholder=None, initial=None, validator
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
     :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
     :return: A custom positive integer field accepts inputs greater than zero
     """
     default_validators = [validate_integer, ]
@@ -274,10 +293,11 @@ def get_integer_input(label, required, placeholder=None, initial=None, validator
         initial=initial,
         placeholder=placeholder,
         validators=list(itertools.chain(default_validators, validators)),
+        help_text=help_text,
     )
 
 
-def get_positive_integer_input(label, required, placeholder=None, initial=None, validators=()):
+def get_positive_integer_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
     """
     Method to get a custom positive integer field
     :param label: String label of the field
@@ -285,6 +305,7 @@ def get_positive_integer_input(label, required, placeholder=None, initial=None, 
     :param placeholder: Placeholder to appear in the field
     :param initial: Default input value for the field
     :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
     :return: A custom positive integer field accepts inputs greater than zero
     """
     default_validators = [validate_positive_integer, ]
@@ -295,10 +316,11 @@ def get_positive_integer_input(label, required, placeholder=None, initial=None, 
         initial=initial,
         placeholder=placeholder,
         validators=list(itertools.chain(default_validators, validators)),
+        help_text=help_text,
     )
 
 
-def get_select_input(label, choices=None, initial=None, required=None, extra_class=None):
+def get_select_input(label, choices=None, initial=None, required=None, extra_class=None, help_text=''):
     """
     Method to get a choice field with bootstrap theme
     :param label: String label of the field
@@ -306,6 +328,7 @@ def get_select_input(label, choices=None, initial=None, required=None, extra_cla
     :param initial: Default input value for the field
     :param required: Boolean to define whether the field is required or not
     :param extra_class: extra css class for styling
+    :param help_text: tooltip for the input
     :return: A custom select field
     """
 
@@ -319,16 +342,18 @@ def get_select_input(label, choices=None, initial=None, required=None, extra_cla
         choices=choices if choices else [],
         initial=initial,
         required=required,
+        help_text=help_text,
     )
 
 
-def get_checkbox_input(label, required=False, initial=None, extra_class=None):
+def get_checkbox_input(label, required=False, initial=None, extra_class=None, help_text=''):
     """
     Method to get a checkbox
     :param label: String label of the field
     :param required: Boolean to define whether the input is required or not
     :param initial: Default input value for the field (checked or not)
     :param extra_class: extra css class for styling
+    :param help_text: tooltip for the input
     :return: A custom select field
     """
     return forms.BooleanField(
@@ -340,16 +365,18 @@ def get_checkbox_input(label, required=False, initial=None, extra_class=None):
         ),
         required=required,
         initial=initial,
+        help_text=help_text,
     )
 
 
-def get_multiple_choices_input(label, required, choices=None, initial=None):
+def get_multiple_choices_input(label, required, choices=None, initial=None, help_text=''):
     """
     Method to get a multiple checkbox field
     :param label: String label of the field
     :param required: Boolean to define whether the input is required or not
     :param initial: Default input value for the field (checked or not)
     :param choices: List of choices to be rendered with the field
+    :param help_text: tooltip for the input
     :return: A multiple checkbox field
     """
     return forms.MultipleChoiceField(
@@ -358,16 +385,18 @@ def get_multiple_choices_input(label, required, choices=None, initial=None):
         choices=choices,
         initial=initial,
         required=required,
+        help_text=help_text,
     )
 
 
-def get_date_input(label, required=False, initial=None, extra_class=None):
+def get_date_input(label, required=False, initial=None, extra_class=None, help_text=''):
     """
     Method to get a date field
     :param label: String label of the field
     :param required: Boolean to define whether the input is required or not
     :param initial: Default input value for the field (checked or not)
     :param extra_class: extra css class for styling
+    :param help_text: tooltip for the input
     :return: A date field
     """
     return forms.DateField(
@@ -380,4 +409,5 @@ def get_date_input(label, required=False, initial=None, extra_class=None):
                 'class': extra_class if extra_class else '',
             }
         ),
+        help_text=help_text,
     )

@@ -23,6 +23,7 @@ SEARCH_PARAMETER_FIELD_PROPERTIES = OrderedDict([
         'label': '',
         'initial': False,
         'required': False,
+        'help_text': 'Check to sort initially in reverse order',
     }),
 ])
 
