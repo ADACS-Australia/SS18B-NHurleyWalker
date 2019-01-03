@@ -8,7 +8,7 @@ import os
 from django.conf import settings
 from django.db import migrations
 
-from mwasurveyweb.constants import *
+from mwasurveyweb import constants
 from mwasurveyweb.models import SearchInput as SInput
 
 
@@ -29,21 +29,23 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('observation_name', 'Observation Name', 'observation', 'obsname', SInput.TEXT, TEXT, None, None, False,
-             ''),
-            ('creator', 'Creator', 'observation', 'creator', SInput.TEXT, TEXT, None, None, False, ''),
-            ('calibration', 'Calibration', 'observation', 'calibration', SInput.BOOL, CHECKBOX, None, None, False,
-             'Check to find observations flagged as calibrators.'),
-            ('calibrators', 'Calibrators', 'observation', 'calibrators', SInput.TEXT, TEXT, None, None, False, ''),
-            ('cal_obs_id', 'Calibration Observation ID', 'observation', 'cal_obs_id', SInput.INT, NUMBER, None, None,
+            ('observation_name', 'Observation Name', 'observation', 'obsname', SInput.TEXT, constants.TEXT, None, None,
              False, ''),
-            ('peelsrcs', 'Peel Sources', 'observation', 'peelsrcs', SInput.TEXT, TEXT, None, None, False, ''),
+            ('creator', 'Creator', 'observation', 'creator', SInput.TEXT, constants.TEXT, None, None, False, ''),
+            ('calibration', 'Calibration', 'observation', 'calibration', SInput.BOOL, constants.CHECKBOX, None, None,
+             False, 'Check to find observations flagged as calibrators.'),
+            ('calibrators', 'Calibrators', 'observation', 'calibrators', SInput.TEXT, constants.TEXT, None, None, False,
+             ''),
+            ('cal_obs_id', 'Calibration Observation ID', 'observation', 'cal_obs_id', SInput.INT, constants.NUMBER,
+             None, None, False, ''),
+            ('peelsrcs', 'Peel Sources', 'observation', 'peelsrcs', SInput.TEXT, constants.TEXT, None, None, False, ''),
             ('ion_phs_peak', 'Ionosphere Phase Peak (Absolute)', 'observation', 'ion_phs_peak', SInput.INT,
-             MAX_ABSOLUTE_NUMBER, '20', None, False, ''),
-            ('ion_phs_std', 'Ionosphere Phase Standard', 'observation', 'ion_phs_std', SInput.INT, MAX_NUMBER, '90',
-             None, False, ''),
-            ('archived', 'Archived?', 'observation', 'archived', SInput.BOOL, CHECKBOX, None, None, False, ''),
-            ('status', 'Status', 'observation', 'status', SInput.TEXT, SELECT, None, None, False, ''),
+             constants.MAX_ABSOLUTE_NUMBER, '20', None, False, ''),
+            ('ion_phs_std', 'Ionosphere Phase Standard', 'observation', 'ion_phs_std', SInput.INT, constants.MAX_NUMBER,
+             '90', None, False, ''),
+            ('archived', 'Archived?', 'observation', 'archived', SInput.BOOL, constants.CHECKBOX, None, None, False,
+             ''),
+            ('status', 'Status', 'observation', 'status', SInput.TEXT, constants.SELECT, None, None, False, ''),
         ]
 
         display_order = 0
@@ -77,12 +79,12 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('ra', 'RA in deg', 'observation', 'ra_pointing', SInput.FLOAT, RADIUS, None, None, False, ''),
-            ('dec', 'Dec in deg', 'observation', 'dec_pointing', SInput.FLOAT, RADIUS, None, None, False, ''),
-            ('elevation', 'Elevation in deg', 'observation', 'elevation_pointing', SInput.FLOAT, RANGE, None, None,
+            ('ra', 'RA in deg', 'observation', 'ra_pointing', SInput.FLOAT, constants.RADIUS, None, None, False, ''),
+            ('dec', 'Dec in deg', 'observation', 'dec_pointing', SInput.FLOAT, constants.RADIUS, None, None, False, ''),
+            ('elevation', 'Elevation in deg', 'observation', 'elevation_pointing', SInput.FLOAT, constants.RANGE, None,
+             None, False, ''),
+            ('azimuth', 'Azimuth in deg', 'observation', 'azimuth_pointing', SInput.FLOAT, constants.RANGE, None, None,
              False, ''),
-            ('azimuth', 'Azimuth in deg', 'observation', 'azimuth_pointing', SInput.FLOAT, RANGE, None, None, False,
-             ''),
         ]
 
         display_order = 0
@@ -116,10 +118,10 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('start_time', 'Starttime in UTC', 'observation', 'starttime', SInput.TEXTTIME, DATE_GPS_RANGE,
+            ('start_time', 'Starttime in UTC', 'observation', 'starttime', SInput.TEXTTIME, constants.DATE_GPS_RANGE,
              '01/01/2018,31/07/2018', None, False, ''),
-            ('obs_duration', 'Obs duration, in seconds', 'observation', 'duration_sec', SInput.INT, RANGE, None, None,
-             False, ''),
+            ('obs_duration', 'Obs duration, in seconds', 'observation', 'duration_sec', SInput.INT, constants.RANGE,
+             None, None, False, ''),
         ]
 
         display_order = 0
@@ -153,7 +155,8 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('cenchan', 'Central Channel Number', 'observation', 'cenchan', SInput.INT, SELECT, '121', None, False, ''),
+            ('cenchan', 'Central Channel Number', 'observation', 'cenchan', SInput.INT, constants.SELECT, '121', None,
+             False, ''),
         ]
 
         display_order = 0
@@ -249,10 +252,10 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('job_id', 'Job ID', 'processing', 'job_id', SInput.INT, NUMBER, None, None, False, ''),
-            ('task', 'Task', 'processing', 'task', SInput.TEXT, SELECT, None, None, False, ''),
-            ('user', 'User', 'processing', 'user', SInput.TEXT, SELECT, None, None, False, ''),
-            ('status', 'Status', 'processing', 'status', SInput.TEXT, SELECT, None, None, False, ''),
+            ('job_id', 'Job ID', 'processing', 'job_id', SInput.INT, constants.NUMBER, None, None, False, ''),
+            ('task', 'Task', 'processing', 'task', SInput.TEXT, constants.SELECT, None, None, False, ''),
+            ('user', 'User', 'processing', 'user', SInput.TEXT, constants.SELECT, None, None, False, ''),
+            ('status', 'Status', 'processing', 'status', SInput.TEXT, constants.SELECT, None, None, False, ''),
         ]
 
         display_order = 0
@@ -286,10 +289,12 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('submission_time', 'Submission Time', 'processing', 'submission_time', SInput.INT, DATE_UNIX, 'today',
-             None, False, ''),
-            ('start_time', 'Start Time', 'processing', 'start_time', SInput.INT, DATE_UNIX, 'today', None, False, ''),
-            ('end_time', 'End Time', 'processing', 'end_time', SInput.INT, DATE_UNIX, 'today', None, False, ''),
+            ('submission_time', 'Submission Time', 'processing', 'submission_time', SInput.INT, constants.DATE_UNIX,
+             'today', None, False, ''),
+            ('start_time', 'Start Time', 'processing', 'start_time', SInput.INT, constants.DATE_UNIX, 'today', None,
+             False, ''),
+            ('end_time', 'End Time', 'processing', 'end_time', SInput.INT, constants.DATE_UNIX, 'today', None, False,
+             ''),
         ]
 
         display_order = 0
@@ -323,7 +328,7 @@ def insert(apps, schema_editor):
     else:
 
         initial_search_input_info = [
-            ('obs_id', 'Observation ID', 'processing', 'obs_id', SInput.INT, NUMBER, None, None, False, ''),
+            ('obs_id', 'Observation ID', 'processing', 'obs_id', SInput.INT, constants.NUMBER, None, None, False, ''),
         ]
 
         display_order = 0

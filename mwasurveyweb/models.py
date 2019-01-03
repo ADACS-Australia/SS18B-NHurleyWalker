@@ -5,7 +5,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 from django.db import models
 from django.utils import timezone
 
-from .constants import *
+from . import constants
 
 
 class SearchPage(models.Model):
@@ -106,19 +106,19 @@ class SearchInput(models.Model):
 
     # input type choices
     INPUT_TYPE_CHOICES = [
-        (TEXT, TEXT_DISPLAY),
-        (NUMBER, NUMBER_DISPLAY),
-        (MIN_NUMBER, MIN_NUMBER_DISPLAY),
-        (MAX_NUMBER, MAX_NUMBER_DISPLAY),
-        (MAX_ABSOLUTE_NUMBER, MAX_ABSOLUTE_NUMBER_DISPLAY),
-        (CHECKBOX, CHECKBOX_DISPLAY),
-        (RADIUS, RADIUS_DISPLAY),
-        (RANGE, RANGE_DISPLAY),
-        (SELECT, SELECT_DISPLAY),
-        (DATE_GPS, DATE_GPS_DISPLAY),
-        (DATE_GPS_RANGE, DATE_GPS_RANGE_DISPLAY),
-        (DATE_UNIX, DATE_UNIX_DISPLAY),
-        (DATE_UNIX_RANGE, DATE_UNIX_RANGE_DISPLAY),
+        (constants.TEXT, constants.TEXT_DISPLAY),
+        (constants.NUMBER, constants.NUMBER_DISPLAY),
+        (constants.MIN_NUMBER, constants.MIN_NUMBER_DISPLAY),
+        (constants.MAX_NUMBER, constants.MAX_NUMBER_DISPLAY),
+        (constants.MAX_ABSOLUTE_NUMBER, constants.MAX_ABSOLUTE_NUMBER_DISPLAY),
+        (constants.CHECKBOX, constants.CHECKBOX_DISPLAY),
+        (constants.RADIUS, constants.RADIUS_DISPLAY),
+        (constants.RANGE, constants.RANGE_DISPLAY),
+        (constants.SELECT, constants.SELECT_DISPLAY),
+        (constants.DATE_GPS, constants.DATE_GPS_DISPLAY),
+        (constants.DATE_GPS_RANGE, constants.DATE_GPS_RANGE_DISPLAY),
+        (constants.DATE_UNIX, constants.DATE_UNIX_DISPLAY),
+        (constants.DATE_UNIX_RANGE, constants.DATE_UNIX_RANGE_DISPLAY),
     ]
 
     # input type to define how the input will be rendered in the UI
@@ -156,11 +156,11 @@ class SearchInput(models.Model):
     def initial_value_adjusted(self):
         now = timezone.localtime(timezone.now()).strftime('%d/%m/%Y')
 
-        if self.input_type in [DATE_GPS, DATE_UNIX]:
+        if self.input_type in [constants.DATE_GPS, constants.DATE_UNIX]:
             if self.initial_value.lower() == 'today':
                 return now
 
-        elif self.input_type == RANGE:
+        elif self.input_type == constants.RANGE:
             initial_values = ['', '']
             try:
                 parts = self.initial_value.split(',')
@@ -172,7 +172,7 @@ class SearchInput(models.Model):
 
             return initial_values
 
-        elif self.input_type == RADIUS:
+        elif self.input_type == constants.RADIUS:
             initial_values = ['', '']
             try:
                 parts = self.initial_value.split(',')
@@ -184,7 +184,7 @@ class SearchInput(models.Model):
 
             return initial_values
 
-        elif self.input_type in [DATE_GPS_RANGE, DATE_UNIX_RANGE]:
+        elif self.input_type in [constants.DATE_GPS_RANGE, constants.DATE_UNIX_RANGE]:
             initial_values = ['', '']
             try:
                 parts = self.initial_value.split(',')

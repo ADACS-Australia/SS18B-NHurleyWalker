@@ -4,7 +4,7 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 
 from collections import OrderedDict
 
-from ...constants import *
+from ... import constants
 from ..dynamic import field as dynamic_field
 
 from ...models import (
@@ -32,7 +32,7 @@ def get_choices_for_input(search_input):
 def get_fields(search_input):
     fields = []
 
-    if search_input.input_type == TEXT:
+    if search_input.input_type == constants.TEXT:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -43,7 +43,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.input_type == NUMBER:
+    elif search_input.input_type == constants.NUMBER:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -54,7 +54,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.input_type == MAX_NUMBER:
+    elif search_input.input_type == constants.MAX_NUMBER:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -65,7 +65,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.input_type == MAX_ABSOLUTE_NUMBER:
+    elif search_input.input_type == constants.MAX_ABSOLUTE_NUMBER:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -76,7 +76,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.input_type == CHECKBOX:
+    elif search_input.input_type == constants.CHECKBOX:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -86,7 +86,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.input_type == SELECT:
+    elif search_input.input_type == constants.SELECT:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -97,7 +97,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.input_type == RANGE:
+    elif search_input.input_type == constants.RANGE:
         input_properties_min = dict()
         input_properties_min.update({
             'label': 'Min',
@@ -118,7 +118,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties_max)
 
-    elif search_input.input_type == RADIUS:
+    elif search_input.input_type == constants.RADIUS:
         input_properties_position = dict()
         input_properties_position.update({
             'label': 'Position',
@@ -139,7 +139,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties_plus_minus)
 
-    elif search_input.input_type in [DATE_GPS, DATE_UNIX, ]:
+    elif search_input.input_type in [constants.DATE_GPS, constants.DATE_UNIX, ]:
         input_properties = dict()
         input_properties.update({
             'label': '',
@@ -150,7 +150,7 @@ def get_fields(search_input):
         })
         fields.append(input_properties)
 
-    elif search_input.input_type in [DATE_GPS_RANGE, DATE_UNIX_RANGE, ]:
+    elif search_input.input_type in [constants.DATE_GPS_RANGE, constants.DATE_UNIX_RANGE, ]:
         input_properties_min = dict()
         input_properties_min.update({
             'label': 'From',

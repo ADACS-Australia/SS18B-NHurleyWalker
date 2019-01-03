@@ -10,7 +10,7 @@ from datetime import datetime, date, time, timedelta
 
 from thirdparty import leapseconds
 
-from ..constants import *
+from .. import constants
 
 
 def get_order_by_parts(order_by):
@@ -149,50 +149,50 @@ def get_operator_by_input_type(input_type, index=None, second_value=0):
     operator = None
     field_operator = None
 
-    if input_type == TEXT:
+    if input_type == constants.TEXT:
         operator = 'LIKE'
 
-    elif input_type == NUMBER:
+    elif input_type == constants.NUMBER:
         operator = '='
 
-    elif input_type == RANGE:
+    elif input_type == constants.RANGE:
         if index == '0':
             operator = '>='
         if index == '1':
             operator = '<='
 
-    elif input_type == RADIUS:
+    elif input_type == constants.RADIUS:
         if index == '0':
             operator = '>=' if second_value else '='
         if index == '1':
             operator = '<='
 
-    elif input_type == MIN_NUMBER:
+    elif input_type == constants.MIN_NUMBER:
         operator = '>='
 
-    elif input_type == MAX_NUMBER:
+    elif input_type == constants.MAX_NUMBER:
         operator = '<='
 
-    elif input_type == MAX_ABSOLUTE_NUMBER:
+    elif input_type == constants.MAX_ABSOLUTE_NUMBER:
         operator = '<='
         field_operator = 'ABS'
 
-    elif input_type in [DATE_GPS, DATE_UNIX, ]:
+    elif input_type in [constants.DATE_GPS, constants.DATE_UNIX, ]:
         if index == '0':
             operator = '>='
         if index == '1':
             operator = '<='
 
-    elif input_type in [DATE_GPS_RANGE, DATE_UNIX_RANGE, ]:
+    elif input_type in [constants.DATE_GPS_RANGE, constants.DATE_UNIX_RANGE, ]:
         if index == '0':
             operator = '>='
         if index == '1':
             operator = '<='
 
-    elif input_type == SELECT:
+    elif input_type == constants.SELECT:
         operator = '='
 
-    elif input_type == CHECKBOX:
+    elif input_type == constants.CHECKBOX:
         operator = '='
 
     return operator, field_operator

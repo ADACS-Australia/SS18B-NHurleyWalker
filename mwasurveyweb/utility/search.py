@@ -22,7 +22,7 @@ from ..models import (
 from ..forms.search_parameter import SearchParameterForm
 from ..forms.search import SearchForm
 
-from ..constants import *
+from .. import constants
 
 
 class SearchQuery(object):
@@ -104,10 +104,10 @@ class SearchQuery(object):
         value_adjusted = value
 
         try:
-            if search_input.input_type in [DATE_GPS, DATE_GPS_RANGE, ]:
+            if search_input.input_type in [constants.DATE_GPS, constants.DATE_GPS_RANGE, ]:
                 value_adjusted = get_gps_time_from_date(value_adjusted)
 
-            if search_input.input_type in [DATE_UNIX, DATE_UNIX_RANGE]:
+            if search_input.input_type in [constants.DATE_UNIX, constants.DATE_UNIX_RANGE]:
                 value_adjusted = get_unix_time_from_date(value_adjusted)
 
             if search_input.field_type == SearchInput.INT:
@@ -122,7 +122,7 @@ class SearchQuery(object):
         radius_value = 0  # for Non RADIUS inputs it does not matter
 
         # finding appropriate value for RADIUS input types
-        if search_input.input_type == RADIUS:
+        if search_input.input_type == constants.RADIUS:
             field_name = '__'.join(input_properties[:-1] + ['1' if input_properties[2] == '0' else '0'])
 
             radius_value = search_form['form'].cleaned_data.get(field_name) \
@@ -173,7 +173,7 @@ class SearchQuery(object):
         # anything that has been on that day need be evaluated as a range, meaning for the above example:
         # we should search for anything between 01/01/2008 00:00:00:000 to 02/01/2008 00:00:00:000. To achieve that,
         # another query constraint is needed to be added with the index 1.
-        if search_input.input_type in [DATE_GPS, DATE_UNIX, ]:
+        if search_input.input_type in [constants.DATE_GPS, constants.DATE_UNIX, ]:
             self._update_database_search_parameter(
                 value=value + timedelta(days=1),
                 search_input=search_input,
