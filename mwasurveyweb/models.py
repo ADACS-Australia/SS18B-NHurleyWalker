@@ -77,7 +77,8 @@ class SearchInput(models.Model):
     display_name = models.CharField(max_length=255, null=False, blank=False)
 
     # to appear as help text or can be used for extra description for checkboxes
-    input_info = models.TextField(null=True, blank=True)
+    input_info = models.TextField(null=True, blank=True,
+                                  help_text='For multiple inputs(ex: RADIUS) use #$# as separators.')
 
     # table name in the actual database for searching
     table_name = models.CharField(max_length=255, null=False, blank=False)
@@ -200,6 +201,30 @@ class SearchInput(models.Model):
             return initial_values
 
         return self.initial_value
+
+    @property
+    def help_text_adjusted(self):
+
+        if self.input_type in [
+            constants.RANGE,
+            constants.RADIUS,
+            constants.DATE_GPS_RANGE,
+            constants.DATE_UNIX_RANGE,
+        ]:
+
+            help_texts = ['', '']
+
+            try:
+                parts = self.input_info.split('#$#')
+            except AttributeError:
+                return help_texts
+
+            for index, part in enumerate(parts):
+                help_texts.insert(index, part.strip())
+
+            return help_texts
+        else:
+            return self.input_info.strip()
 
 
 class SearchInputOption(models.Model):

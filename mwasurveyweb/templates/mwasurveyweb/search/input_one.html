@@ -7,7 +7,7 @@
         {{ fieldset.title }}{{ field.label }}
     </label>
     <!-- Field -->
-    <div class="col col-lg-8 col-md-8 col-sm-6 col-sx-6 col-12 input-wrapper">
+    <div class="col col-lg-8 col-md-8 col-sm-6 col-sx-6 col-12">
         <div class="input-field {% if field.field.widget.input_type == 'checkbox' %}input-checkbox{% endif %}">
             {{ field }}{{ field.errors }}</div>
         <div class="input-tooltip {% if field.field.widget.input_type == 'checkbox' %}input-checkbox{% endif %}">

@@ -8,8 +8,15 @@
     </label>
     <!-- Field -->
     <div class="col col-lg-8 col-md-8 col-sm-6 col-sx-6 col-12">
-        {{ field }}
-        {{ field.errors }}
+        <div class="input-field {% if field.field.widget.input_type == 'checkbox' %}input-checkbox{% endif %}">
+            {{ field }}{{ field.errors }}</div>
+        <div class="input-tooltip {% if field.field.widget.input_type == 'checkbox' %}input-checkbox{% endif %}">
+            {% if field.help_text %}
+                <a href="#" data-toggle="tooltip" title="{{ field.help_text }}" data-placement="bottom"><i
+                        class="far fa-question-circle"></i>
+                </a>
+            {% endif %}
+        </div>
     </div>
     {% if field|field_type == 'DateInput' %}
         <script>
