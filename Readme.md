@@ -1,8 +1,8 @@
 Project Overview
 ================
 
-This project serves as a user-interface and job controller for the MWA Survey. The UI is responsible for controlling
-and managing user input, retrieve and represent information.
+This project serves as a user-interface for searching the GLEAM-X Survey. The UI is responsible for controlling
+and managing user input, retrieving and representing information.
 
 Prerequisites
 =============
@@ -125,6 +125,10 @@ included at the root of the project repository.
 
 * ```./development-manage.py update_user_input_options``` (This will read the Gleam-X database, as provided in the 
 settings file and update the Users (SELECT input) options by finding distinct users from the `processing` table).
+
+* ```./development-manage.py update_skyplots``` (This will update the skyplots that are shown in the landing page.
+This is required if you are changing skyplots configuration. Note: During startup, the skyplots configurations will
+be checked and skyplots will be generated if required. In this case, startup may take some additional time.
 
 ## License ##
 
