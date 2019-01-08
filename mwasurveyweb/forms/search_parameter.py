@@ -30,7 +30,9 @@ SEARCH_PARAMETER_FIELD_PROPERTIES = OrderedDict([
 
 class SearchParameterForm(DynamicForm):
     """
-    Defines the search form from the database
+    Defines the search parameter form. It currently has two input fields:
+    1. Results per page
+    2. Descending order
     """
 
     # An Ordered Dictionary to render the fields in order in the template
