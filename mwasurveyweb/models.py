@@ -67,7 +67,8 @@ class SearchInput(models.Model):
     """
 
     # determines under which group the input will be rendered,
-    # null = True would put it to others
+    # null = True would put it to others, however that is not currently the case, therefore, no search input
+    # can be present without a group.
     search_input_group = models.ForeignKey(SearchInputGroup, on_delete=models.CASCADE, null=False, blank=False)
 
     # name of the input
@@ -155,6 +156,14 @@ class SearchInput(models.Model):
 
     @property
     def initial_value_adjusted(self):
+        """
+        This defines the initial value for a search input. For multiple and dependent inputs, we need to recalculate
+        the initial values. For example, for a range input, initial values are stored in initial_value as a comma-
+        separated one. If it is a,b: then first input would have the initial value of a and second one would have b.
+        This is also used to interpret the human readable strings to actual values like 'today' to be converted to
+        an actual date for date type fields.
+        :return: initial value for the search input
+        """
         now = timezone.localtime(timezone.now()).strftime('%d/%m/%Y')
 
         if self.input_type in [constants.DATE_GPS, constants.DATE_UNIX]:
@@ -204,6 +213,13 @@ class SearchInput(models.Model):
 
     @property
     def help_text_adjusted(self):
+        """
+        Finds the help text for multiple inputs. For multiple inputs help-text can be in one line separated by #$#.
+        This function splits the help text and forms an array for those inputs and returns it so that help texts can be
+        displayed in the UI properly. This also means that, for multiple inputs, we can have different help texts for
+        different inputs.
+        :return: array of help text or string of help text.
+        """
 
         if self.input_type in [
             constants.RANGE,
@@ -328,7 +344,7 @@ class SearchPageDisplayColumn(models.Model):
 
 class Colour(models.Model):
     """
-    Defines colour and corresponding codes
+    Defines colour and corresponding codes, required for sky-plots.
     """
 
     # name
@@ -366,10 +382,13 @@ class SkyPlot(models.Model):
     Storage for sky plots
     """
 
+    # actual image name for the sky-plot. it may be a sub-path to static
     name = models.CharField(max_length=255, null=False, blank=False)
 
+    # generation time of the sky-plot.
     generation_time = models.DateTimeField(null=False, blank=False, auto_now_add=True)
 
+    # defines which sky-plot would be shown at the beginning.
     is_default = models.BooleanField(default=False)
 
     def __str__(self):
