@@ -14,15 +14,25 @@ from ...models import (
 
 
 def get_choices_for_input(search_input):
+    """
+    Lists the choices for a search input. This is mainly used for select box and radios.
+    :param search_input: search input object
+    :return: list of choices.
+    """
+
     choices = []
 
+    # if search_input is not required there should be an option to leave it empty.
+    # therefore the first input would be '' (empty string) with display 'None'
     if not search_input.required:
         choices.append(
             ['', 'None'],
         )
 
+    # finding the options for the search input
     options = SearchInputOption.objects.filter(search_input=search_input)
 
+    # appending the options to the list
     for option in options:
         choices.append([option.name, option.display_name])
 
@@ -30,6 +40,14 @@ def get_choices_for_input(search_input):
 
 
 def get_fields(search_input):
+    """
+    Forms the field properties for a search input based on the input type and properties stored in the database.
+    For some types it returns a list with only one field for which the label is empty. Because it takes the label of
+    its fieldsets while rendering. For others, it returns a list of multiple fields, where each of them can have own
+    label. Each of them also gets their corresponding initial value and help texts set up.
+    :param search_input: instance of search input
+    :return: a list of fields for that search input
+    """
     fields = []
 
     if search_input.input_type == constants.TEXT:
@@ -195,15 +213,19 @@ def get_field_properties(group_name):
     field_properties = OrderedDict()
     fieldsets = OrderedDict()
 
+    # finds the search inputs that belong to the group and are currently active.
     search_inputs = SearchInput.objects.filter(active=True, search_input_group__name=group_name) \
         .order_by('display_order')
 
     for search_input in search_inputs:
+
+        # get the fields for the search input. See function definition for details.
         fields = get_fields(search_input)
 
         # fieldsets fields
         fieldsets_fields = []
 
+        # for each field in the fields generating a name and updating the field_properties by that name
         for index, field in enumerate(fields):
             field_name = '{group_name}__{input_name}__{number}'.format(
                 group_name=group_name,
@@ -217,6 +239,7 @@ def get_field_properties(group_name):
 
             fieldsets_fields.append(field_name)
 
+        # finally updating the fieldsets
         fieldsets.update({
             search_input.name: dict({
                 'title': search_input.display_name,
