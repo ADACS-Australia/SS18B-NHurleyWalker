@@ -8,6 +8,10 @@ from ...utility.skyplots import generate_sky_plots
 
 
 class Command(BaseCommand):
+    """
+    Django management command class to update skyplots when configuration changes occur.
+    """
+
     help = 'Generates sky plots based on the current configuration and removes any obsolete ones before finishes'
 
     def add_arguments(self, parser):

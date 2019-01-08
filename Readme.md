@@ -160,6 +160,7 @@ included at the root of the project repository.
 
 * ```./development-manage.py update_user_input_options``` (This will read the Gleam-X database, as provided in the 
 settings file and update the Users (SELECT input) options by finding distinct users from the `processing` table).
+Each time the GLEAM-X database is updated, this command should be run to keep the user list up to date.
 
 * ```./development-manage.py update_skyplots``` (This will update the skyplots that are shown in the landing page.
 This is required if you are changing skyplots configuration. Note: During startup, the skyplots configurations will

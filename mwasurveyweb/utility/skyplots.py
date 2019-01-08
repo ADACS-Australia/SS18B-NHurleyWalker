@@ -88,6 +88,11 @@ def generate_sky_plot_by_colour(colour_set, cursor, is_default=False):
 
 
 def generate_sky_plots():
+    """
+    Generates sky plots based on the information stored in the GLEAM-X database and application's default database.
+    """
+
+    # finding the current time.
     now = timezone.localtime(timezone.now())
 
     # connect to gleam-x database
@@ -101,6 +106,8 @@ def generate_sky_plots():
         print('Could not generate plots due to SQLite error : ' + ex.__str__())
         logger.info('Could not generate plots due to SQLite error : ' + ex.__str__())
     else:
+
+        # find out the colours, in order, so that names would be consistent
         colours = Colour.objects.all().order_by('name')
 
         for L in range(0, len(colours) + 1):
