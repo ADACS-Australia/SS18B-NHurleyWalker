@@ -7,10 +7,16 @@ import sqlite3
 
 from django.conf import settings
 
-from ..utility.utils import get_date_from_gps_time
+from .utils import get_date_from_gps_time
 
 
 def dict_factory(cursor, row):
+    """
+    Factory function to convert a sqlite3 result row in a dictionary
+    :param cursor: cursor object
+    :param row: a row object
+    :return: dictionary representation of the row object
+    """
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
@@ -18,7 +24,15 @@ def dict_factory(cursor, row):
 
 
 class Observation(object):
+    """
+    Class to define a single observation
+    """
+
     def __init__(self, observation_id):
+        """
+        Initializing observation class from the observation id
+        :param observation_id: number representing observation id
+        """
         self.health_okay = True
 
         self.observation_id = observation_id
@@ -35,6 +49,7 @@ class Observation(object):
         except sqlite3.Error:
             self.health_okay = False
 
+        # collecting information in groups for an observation.
         self.attributes, self.histogram_attributes = self._populate_observation_info()
         self.processing_objects = self._populate_processing_objects()
         self.carousel_amplitude, self.carousel_phase, self.histogram, self.phase_map = \
@@ -50,7 +65,13 @@ class Observation(object):
             pass
 
     def _populate_observation_info(self):
+        """
+        Populates observation attributes. These are used in template.
+        :return: result and histogram attributes as dictionaries.
+        """
 
+        # query to collect observation attributes. Ordered in a way so that two column can have the required format.
+        # For example: ra_pointing, dec_pointing are in the same column.
         query = 'SELECT ' \
                 '{0}.obsname, ' \
                 'cenchan || " (" || CAST(1.28 * {0}.cenchan AS INT) || " MHz)" cenchan, ' \
@@ -77,6 +98,7 @@ class Observation(object):
 
         result = dict(self.cursor.execute(query, values).fetchone())
 
+        # separating the histogram attributes as they are to be displayed near the histogram.
         histogram_attributes = dict(
             ion_phs_med=result.pop('ion_phs_med', None),
             ion_phs_peak=result.pop('ion_phs_peak', None),
@@ -91,7 +113,12 @@ class Observation(object):
         return result, histogram_attributes
 
     def _populate_processing_objects(self):
+        """
+        Populate processing object information for the observation.
+        :return: list of processing objects.
+        """
 
+        # query to extract processing information
         query = 'SELECT ' \
                 '{0}.start_time, ' \
                 '{0}.submission_time, ' \
@@ -116,11 +143,16 @@ class Observation(object):
         return processing_objects
 
     def _populate_carousels_and_images(self):
+        """
+        Collects the images for carousels (amplitude and phase), histogram and phase map.
+        :return: lists of carousel images, histogram and phase map images.
+        """
         carousel_amplitude = []
         carousel_phase = []
         histogram = None
         phase_map = None
 
+        # constructing the path for image store for this observation
         image_path = os.path.join(settings.BASE_DIR, '..', 'static', 'images', 'plots', self.observation_id)
 
         files = []
@@ -129,6 +161,7 @@ class Observation(object):
 
         files = sorted(files)
 
+        # categorising each file based on the name suffix.
         for file_name in files:
             if file_name.endswith('_amp.png'):
                 carousel_amplitude.append(os.path.join('images', 'plots', self.observation_id, file_name))
