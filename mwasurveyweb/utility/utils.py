@@ -215,7 +215,15 @@ def get_search_results(query, query_values):
         # to handle subquery for total object count, values need to be duplicated in order
         values = query_values + query_values
 
-        return cursor.execute(query, values).fetchall(),
+        results = cursor.execute(query, values).fetchall(),
 
     except sqlite3.Error:
         return [[]]
+    else:
+
+        try:
+            conn.close()
+        except sqlite3.Error:
+            pass
+
+        return results

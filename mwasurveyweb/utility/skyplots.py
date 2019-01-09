@@ -110,9 +110,15 @@ def generate_sky_plots():
         # find out the colours, in order, so that names would be consistent
         colours = Colour.objects.all().order_by('name')
 
+        # for each combination of colour, a sky plot is generated
         for L in range(0, len(colours) + 1):
             for subset in itertools.combinations(colours, L):
                 generate_sky_plot_by_colour(subset, cursor, is_default=(L == len(colours)))
+
+        try:
+            conn.close()
+        except sqlite3.Error:
+            pass
 
     # clean up the image files
     SkyPlot.objects.filter(generation_time__lt=now).delete()

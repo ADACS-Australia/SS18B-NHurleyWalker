@@ -457,6 +457,11 @@ def insert(apps, schema_editor):
             except (SearchInputGroup.DoesNotExist, SearchInput.DoesNotExist):
                 continue
 
+        try:
+            conn.close()
+        except sqlite3.Error:
+            pass
+
 
 def revert(apps, schema_editor):
     SearchInput = apps.get_model('mwasurveyweb', 'SearchInput')

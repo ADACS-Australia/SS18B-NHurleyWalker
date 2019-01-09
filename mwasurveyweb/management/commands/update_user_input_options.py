@@ -80,3 +80,8 @@ class Command(BaseCommand):
 
                 except (SearchInputGroup.DoesNotExist, SearchInput.DoesNotExist):
                     continue
+
+            try:
+                conn.close()
+            except sqlite3.Error:
+                pass

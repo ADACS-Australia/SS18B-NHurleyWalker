@@ -14,23 +14,24 @@ def view(request, object_id=None):
 
     if object_type == 'observation':
 
-        observation = Observation(observation_id=object_id)
+        with Observation(observation_id=object_id) as observation:
 
-        return render(
-            request,
-            "mwasurveyweb/view/observation.html",
-            {
-                'observation': observation,
-            }
-        )
+            return render(
+                request,
+                "mwasurveyweb/view/observation.html",
+                {
+                    'observation': observation,
+                }
+            )
 
     elif object_type == 'processing':
-        processing = Processing(processing_id=object_id)
 
-        return render(
-            request,
-            "mwasurveyweb/view/processing.html",
-            {
-                'processing': processing,
-            }
-        )
+        with Processing(processing_id=object_id) as processing:
+
+            return render(
+                request,
+                "mwasurveyweb/view/processing.html",
+                {
+                    'processing': processing,
+                }
+            )

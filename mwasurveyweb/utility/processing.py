@@ -23,16 +23,25 @@ class Processing(object):
 
         # creating the connection and cursor
         try:
-            conn = sqlite3.connect(settings.GLEAM_DATABASE_PATH)
+            self.conn = sqlite3.connect(settings.GLEAM_DATABASE_PATH)
 
-            conn.row_factory = dict_factory
+            self.conn.row_factory = dict_factory
 
-            self.cursor = conn.cursor()
+            self.cursor = self.conn.cursor()
 
         except sqlite3.Error:
             self.health_okay = False
 
         self.attributes, self.observation_attributes = self._populate_processing_info()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        try:
+            self.conn.close()
+        except sqlite3.Error:
+            pass
 
     def _populate_processing_info(self):
 
