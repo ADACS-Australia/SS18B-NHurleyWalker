@@ -13,6 +13,19 @@ from thirdparty import leapseconds
 from .. import constants
 
 
+def dict_factory(cursor, row):
+    """
+    Factory function to convert a sqlite3 result row in a dictionary
+    :param cursor: cursor object
+    :param row: a row object
+    :return: dictionary representation of the row object
+    """
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+
 def get_order_by_parts(order_by):
     """
     Extract the order by clause information. In future this could be used to update multiple column ordering.

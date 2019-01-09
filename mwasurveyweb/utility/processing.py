@@ -6,20 +6,22 @@ import sqlite3
 
 from django.conf import settings
 
-
-def dict_factory(cursor, row):
-    d = {}
-    for idx, col in enumerate(cursor.description):
-        d[col[0]] = row[idx]
-    return d
+from .utils import dict_factory
 
 
 class Processing(object):
+    """
+    Class to define a single processing
+    """
+
     def __init__(self, processing_id):
+        """
+        Initializing processing class from the processing id
+        :param processing_id: number representing the processing id
+        """
         self.health_okay = True
 
         self.processing_id = processing_id
-        self.observation = None
 
         # creating the connection and cursor
         try:
@@ -32,6 +34,7 @@ class Processing(object):
         except sqlite3.Error:
             self.health_okay = False
 
+        # collecting information about processing attributes
         self.attributes, self.observation_attributes = self._populate_processing_info()
 
     def __enter__(self):
@@ -44,7 +47,12 @@ class Processing(object):
             pass
 
     def _populate_processing_info(self):
+        """
+        Populates processing attributes. These are rendered in the template (UI).
+        :return: result and observation attributes dictionaries.
+        """
 
+        # query to extract processing information.
         query = 'SELECT ' \
                 '{0}.job_id, ' \
                 '{0}.submission_time, ' \
@@ -65,6 +73,7 @@ class Processing(object):
 
         result = dict(self.cursor.execute(query, values).fetchone())
 
+        # separating the observation attributes.
         observation_attributes = dict(
             obs_id=result.pop('obs_id', None),
         )

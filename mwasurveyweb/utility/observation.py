@@ -7,20 +7,10 @@ import sqlite3
 
 from django.conf import settings
 
-from .utils import get_date_from_gps_time
-
-
-def dict_factory(cursor, row):
-    """
-    Factory function to convert a sqlite3 result row in a dictionary
-    :param cursor: cursor object
-    :param row: a row object
-    :return: dictionary representation of the row object
-    """
-    d = {}
-    for idx, col in enumerate(cursor.description):
-        d[col[0]] = row[idx]
-    return d
+from .utils import (
+    get_date_from_gps_time,
+    dict_factory,
+)
 
 
 class Observation(object):
