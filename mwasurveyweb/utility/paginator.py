@@ -6,6 +6,12 @@ import math
 
 
 class Paginator(object):
+    """
+    Paginator class to facilitate pagination. This is doing something similar to Django pagination. However, we required
+    to write a new one because Django pagination is available for django models. The GLEAM-X database is not modelled in
+    this project. As a result, the necessity to have this class evolved.
+    """
+
     def __init__(self, start_index, total, per_page):
         self.start_index = start_index
         self.total = total
