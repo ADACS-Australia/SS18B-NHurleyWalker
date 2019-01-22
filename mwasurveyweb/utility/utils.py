@@ -84,7 +84,6 @@ def get_unix_time_from_date(date_object):
 
     # converting date object to datetime object
     if type(date_object) == date:
-
         datetime_utc_object = datetime(
             year=date_object.year,
             month=date_object.month,
@@ -159,6 +158,17 @@ def check_forms_validity(search_forms):
 
 
 def get_operator_by_input_type(input_type, index=None, second_value=0):
+    """
+    calculate operator and field operator for an input type. Given: a query clause count(a.b) > c
+        'count' is the field_operator
+        '>' is the operator
+    Based on the input type the operator and field operator are determined.
+    :param input_type: string determining the type of input.
+    :param index: integer defining the index of the input for multiple inputs.
+    :param second_value: value on which the operator may be dependent. For multiple inputs second value determines the
+    operator.
+    :return: operator and field operator string
+    """
     operator = None
     field_operator = None
 
@@ -212,6 +222,11 @@ def get_operator_by_input_type(input_type, index=None, second_value=0):
 
 
 def get_page_type(path_info):
+    """
+    Returns the page type from the django path information
+    :param path_info: string - django path information
+    :return: string defining the type of page. For example: 'observation' or 'processing'
+    """
     if 'search_' in path_info:
         return list(filter(None, path_info.split('/')))[0].replace('search_', '')
     elif 'view_' in path_info:
@@ -219,6 +234,12 @@ def get_page_type(path_info):
 
 
 def get_search_results(query, query_values):
+    """
+    Performs the query and returns the search result.
+    :param query: The query string
+    :param query_values: list of query values to replace the ?s in the query string
+    :return: list of search result
+    """
     try:
 
         conn = sqlite3.connect(settings.GLEAM_DATABASE_PATH)
