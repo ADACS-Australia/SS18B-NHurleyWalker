@@ -8,7 +8,12 @@ from ...utility.processing import Processing
 
 @login_required
 def view(request, object_id=None):
-
+    """
+    View to view a single observation or processing
+    :param request: django request object
+    :param object_id: id of processing or observation
+    :return: rendered template
+    """
     # finding the type of the object
     object_type = get_page_type(request.path_info)
 

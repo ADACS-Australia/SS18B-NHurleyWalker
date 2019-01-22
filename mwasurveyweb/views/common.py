@@ -18,20 +18,26 @@ def index(request):
     :return: Rendered template
     """
 
+    # finding the sky plots
     sky_plots = SkyPlot.objects.all()
 
+    # finding the colours, this is to render the text according to the sky plot colours
     colours = Colour.objects.all()
 
+    # buttons to be rendered in the UI
     buttons = []
 
     for colour in colours:
         labels = []
 
+        # gettting the skyplot configurations for the colour
         sky_plot_configurations = SkyPlotsConfiguration.objects.filter(colour=colour)
 
+        # generating button labels for the sky plot configuration
         for sky_plot_configuration in sky_plot_configurations:
             labels.append(sky_plot_configuration.observation_status.capitalize())
 
+        # listing the buttons
         buttons.append(
             dict(
                 colour=colour,
