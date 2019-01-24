@@ -1,0 +1,189 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block additional_styles %}
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/view.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/carousel.css' %}"/>
+{% endblock additional_styles %}
+
+{% block page_header %}
+    Observation :: {{ observation.observation_id }}
+{% endblock page_header %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="section">
+        <div class="heading">
+            Observation Properties
+        </div>
+        <div class="job-list table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="">Property</th>
+                    <th>Value</th>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for key, value in observation.attributes.items %}
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                        {% if forloop.counter|divisibleby:2 %}
+                            </tr>
+                            <tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if observation.histogram or observation.phase_map %}
+        <div class="section">
+            <div class="heading">
+                Histogram and Phase Map
+            </div>
+            <div class="row">
+                <div class="histogram col col-lg-6 col-md-6 col-sm-12 col-sx-12 col-12">
+                    <div class="histogram-image">
+                        <img src="{% static observation.histogram %}"/>
+                    </div>
+                    <div class="histogram-properties row">
+                        <div class="col col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-6 offset-sm-3 col-sx-6 offset-sx-3 col-6 offset-3">
+                            {% for key, value in observation.histogram_attributes.items %}
+                                <div><span class="key">{{ key }}:</span> <span class="value">{{ value }}</span></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="phase-map col col-lg-6 col-md-6 col-sm-12 col-sx-12 col-12">
+                    <img src="{% static observation.phase_map %}"/>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if observation.carousel_amplitude %}
+        <div class="section">
+            <div class="heading">
+                Plots (Amplitude)
+            </div>
+            <div class="row content">
+                <div class="col col-md-6 offset-md-3">
+                    <div id="carouselAmplitudeIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            {% for item in observation.carousel_amplitude %}
+                                <li data-target="#carouselAmplitudeIndicators" data-slide-to="{{ forloop.counter0 }}"
+                                        {% if forloop.counter0 == 0 %} class="active"{% endif %}></li>
+                            {% endfor %}
+                        </ol>
+                        <div class="carousel-inner">
+                            {% for item in observation.carousel_amplitude %}
+                                <div class="carousel-item{% if forloop.counter0 == 0 %} active{% endif %}">
+                                    <img class="d-block w-100"
+                                         src="{% static item %}"
+                                         alt="{{ item }}"/>
+                                    {#                        <div class="carousel-caption d-none d-md-block">#}
+                                    {#                            <h5>First Image</h5>#}
+                                    {#                            <p>Subtitle of First Image</p>#}
+                                    {#                        </div>#}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselAmplitudeIndicators" role="button"
+                           data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselAmplitudeIndicators" role="button"
+                           data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if observation.carousel_phase %}
+        <div class="section">
+            <div class="heading">
+                Plots (Phase)
+            </div>
+            <div class="row content">
+                <div class="col col-md-6 offset-md-3">
+                    <div id="carouselPhaseIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            {% for item in observation.carousel_phase %}
+                                <li data-target="#carouselPhaseIndicators" data-slide-to="{{ forloop.counter0 }}"
+                                        {% if forloop.counter0 == 0 %} class="active"{% endif %}></li>
+                            {% endfor %}
+                        </ol>
+                        <div class="carousel-inner">
+                            {% for item in observation.carousel_phase %}
+                                <div class="carousel-item{% if forloop.counter0 == 0 %} active{% endif %}">
+                                    <img class="d-block w-100"
+                                         src="{% static item %}"
+                                         alt="{{ item }}"/>
+                                    {#                        <div class="carousel-caption d-none d-md-block">#}
+                                    {#                            <h5>First Image</h5>#}
+                                    {#                            <p>Subtitle of First Image</p>#}
+                                    {#                        </div>#}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselPhaseIndicators" role="button"
+                           data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselPhaseIndicators" role="button"
+                           data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if observation.processing_objects %}
+        <div class="section">
+            <div class="heading">
+                Associated Processing
+            </div>
+            <div class="job-list table-responsive">
+                <table class="table table-striped">
+                    {% for processing_object in observation.processing_objects %}
+                        {% if forloop.counter0 == 0 %}
+                            <thead>
+                            <tr>
+                                {% for key, value in processing_object.items %}
+                                    <th>{{ key }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                        {% endif %}
+                        <tr>
+                            {% for key, value in processing_object.items %}
+
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock content %}

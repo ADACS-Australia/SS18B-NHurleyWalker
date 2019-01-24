@@ -1,8 +1,29 @@
+.about .slogan {
+    color: #006FBD;
+    font-weight: 600;
+    font-size: large;
+}
+
+.about span.highlight {
+    color: #dc3545;
+    font-weight: 600;
+    font-size: x-large;
+}
+
 .about .section {
     margin-bottom: 20px;
+}
+
+.about .section .heading {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: saddlebrown;
 }
 
 .about .section.mwasurvey-logo img {
     max-width: 50%;
 }
 
+.table {
+   margin: auto;
+}

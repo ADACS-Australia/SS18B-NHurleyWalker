@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block additional_styles %}
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/styles.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/view.css' %}"/>
+{% endblock additional_styles %}
+
+{% block page_header %}
+    Processing :: {{ processing.processing_id }}
+{% endblock page_header %}
+
+
+{% block content %}
+    {{ block.super }}
+
+    <div class="section">
+        <div class="heading">
+            Processing Properties
+        </div>
+        <div class="job-list table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="">Property</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, value in processing.attributes.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="link">
+                    <td><a href="{% url 'view_observation' processing.observation_attributes.obs_id %}">Observation</a></td>
+                    <td><a href="{% url 'view_observation' processing.observation_attributes.obs_id %}">{{ processing.observation_attributes.obs_id }}</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

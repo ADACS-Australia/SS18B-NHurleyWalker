@@ -1,32 +1,22 @@
 {% load static %}
 <div class="container">
     <nav class="navbar navbar-expand-md navbar-dark">
-        <a class="navbar-brand" href="{% url 'index' %}"><img class="logo" alt="MWA Survey Logo"
-                                                              src="{% static 'images/mwasurvey-logo.png' %}"/></a>
+        <a class="navbar-brand" href="{% url 'index' %}"><img class="logo" alt="Gleam-X Logo"
+                                                              src="{% static 'images/gleam-x-logo.png' %}"/></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}">New Job</a>
-                </li>
-                {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownJobsLink" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">My Jobs</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownJobsLink">
-                            <a class="dropdown-item" href="{% url 'index' %}">Launched Jobs</a>
-                            <a class="dropdown-item" href="{% url 'index' %}">Draft Jobs</a>
-                            <a class="dropdown-item" href="{% url 'index' %}">Deleted Jobs</a>
-                        </div>
-                    </li>
+            {% if SEARCH_MENU %}
+                <ul class="navbar-nav">
+                    {% for menu in SEARCH_MENU %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">Public Jobs</a>
+                        <a class="nav-link" href="{{ menu.link }}">{{ menu.display }}</a>
                     </li>
-                {% endif %}
-            </ul>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'about' %}">About</a>

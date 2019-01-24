@@ -1,1 +1,4 @@
-Django==2.1.2
+Django==2.1.5
+
+matplotlib==2.2.2
+astropy

@@ -25,7 +25,7 @@ SECRET_KEY = 'yilnxv9u@6^32jzcscfir3thlre_awe&%vh&4tb1d)_o83$#=&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', ]
 
 
 # Application definition
@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'mwasurveyweb.context_processors.search_menu',
             ],
         },
     },
@@ -188,6 +189,14 @@ LOGGING = {
     },
 }
 
+# Configure it for production if required
 ROOT_SUBDIRECTORY_PATH = ''
 
+# Configure it for production if required
 SITE_URL = ''
+
+# Only to be true when testing, eg: from test settings
+TESTING = False
+
+# Update it if you have a different name or want to store the database in some other directory.
+GLEAM_DATABASE_PATH = os.path.join(BASE_DIR, '..', 'GLEAM-X.sqlite')

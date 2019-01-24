@@ -1,0 +1,31 @@
+"""
+Distributed under the MIT License. See LICENSE.txt for more info.
+"""
+
+# type of fields
+TEXT = 'text'
+TEXT_DISPLAY = 'Text'
+NUMBER = 'number'
+NUMBER_DISPLAY = 'Number (Int)'
+MIN_NUMBER = 'min_number'
+MIN_NUMBER_DISPLAY = 'Min Number (Int)'
+MAX_NUMBER = 'max_number'
+MAX_NUMBER_DISPLAY = 'Max Number (Int)'
+MAX_ABSOLUTE_NUMBER = 'max_absolute_number'
+MAX_ABSOLUTE_NUMBER_DISPLAY = 'Max Absolute Number (Int)'
+CHECKBOX = 'checkbox'
+CHECKBOX_DISPLAY = 'Checkbox'
+RADIUS = 'radius'
+RADIUS_DISPLAY = 'RADIUS (Point, +/-)'
+RANGE = 'range'
+RANGE_DISPLAY = 'Range (Min, Max)'
+SELECT = 'select'
+SELECT_DISPLAY = 'Select'
+DATE_GPS = 'gps_datetime'
+DATE_GPS_DISPLAY = 'GPS Date Time'
+DATE_GPS_RANGE = 'gps_datetime_range'
+DATE_GPS_RANGE_DISPLAY = 'GPS Date Range (Start, End)'
+DATE_UNIX = 'unix_datetime'
+DATE_UNIX_DISPLAY = 'UNIX Date Time'
+DATE_UNIX_RANGE = 'unix_datetime_range'
+DATE_UNIX_RANGE_DISPLAY = 'UNIX Date Range (Start, End)'

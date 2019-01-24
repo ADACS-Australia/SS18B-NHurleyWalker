@@ -1,23 +1,39 @@
-{% extends 'base/base.html' %}
+{% extends 'base/base-two-columns.html' %}
 {% load static %}
+
+{% block additional_javascript %}
+    <script src="{% static 'mwasurveyweb/js/skyplots.js' %}"></script>
+{% endblock %}
 
 {% block additional_styles %}
     <link rel="stylesheet" href="{% static 'mwasurveyweb/style/welcome.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/component-custom-switch.css' %}"/>
+    <link rel="stylesheet" href="{% static 'mwasurveyweb/style/custom-switch-extension.css' %}"/>
 {% endblock additional_styles %}
 
-{% block main_content %}
-    <div class="container">
-        <div class="welcome row">
-            <div class="col col-md-12">
-                <div class="section mwasurvey-logo row">
-                    <div class="col col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-6 offset-sm-3 col-12">
-                        <img src="{% static 'mwasurveyweb/images/mwasurvey_logo.png' %}"/>
-                    </div>
-                </div>
-                <div class="slogan text-center">
-                    Welcome to MWA Survey: The user-friendly Bayesian inference library for gravitational-wave astronomy.
-                </div>
+{% block content %}
+    <div class="section mwasurvey-logo row">
+        <div class="col col-md-12 col-lg-12 col-sm-12 col-sx-12 col-12">
+            <div id="sky-plots" class="sky-plots">
+                {% for sky_plot in sky_plots %}
+                    <img src="{% static sky_plot.name %}" {% if not sky_plot.is_default %}hidden{% endif %}/>
+                {% endfor %}
             </div>
         </div>
     </div>
-{% endblock main_content %}
+{% endblock content %}
+
+{% block info-bar %}
+    {% for button in buttons %}
+        <div class="custom-switch custom-switch-label-yesno custom-switch-sm row">
+            <div class="col col-md-3 button">
+                <input class="custom-switch-input" id="{{ button.name }}" name="{{ button.name }}" type="checkbox"
+                       checked/>
+                <label class="custom-switch-btn" for="{{ button.name }}"></label>
+            </div>
+            <div class="col col-md-9 button-text {{ button.colour.name }}" style="color:#{{ button.colour.code }}">
+                Show {{ button.display_text }}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock info-bar %}
