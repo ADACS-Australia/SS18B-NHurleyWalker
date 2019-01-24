@@ -1,3 +1,7 @@
+"""
+Distributed under the MIT License. See LICENSE.txt for more info.
+"""
+
 from django.apps import AppConfig
 
 from django.conf import settings

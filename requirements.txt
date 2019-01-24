@@ -6,7 +6,7 @@
 #
 astropy==3.1
 cycler==0.10.0            # via matplotlib
-django==2.1.2
+django==2.1.5
 kiwisolver==1.0.1         # via matplotlib
 matplotlib==2.2.2
 numpy==1.15.4             # via astropy, matplotlib

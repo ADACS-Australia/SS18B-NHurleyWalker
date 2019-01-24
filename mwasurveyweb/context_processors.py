@@ -1,3 +1,7 @@
+"""
+Distributed under the MIT License. See LICENSE.txt for more info.
+"""
+
 from django.db.models import Q
 from django.urls import reverse
 
@@ -9,6 +13,11 @@ from .models import (
 
 
 def search_menu(request):
+    """
+    Generates search menu from the database.
+    :param request: django request object which is not in use currently.
+    :return: search menu as an element of a dictionary
+    """
     input_groups = SearchInput.objects.values('search_input_group') \
         .filter(Q(active=True), ) \
         .distinct()

@@ -1,3 +1,7 @@
+"""
+Distributed under the MIT License. See LICENSE.txt for more info.
+"""
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
