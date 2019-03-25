@@ -228,9 +228,11 @@ def get_page_type(path_info):
     :return: string defining the type of page. For example: 'observation' or 'processing'
     """
     if 'search_' in path_info:
-        return list(filter(None, path_info.split('/')))[0].replace('search_', '')
+        return list(filter(None, path_info.replace(settings.ROOT_SUBDIRECTORY_PATH, '').split('/')))[0]\
+            .replace('search_', '')
     elif 'view_' in path_info:
-        return list(filter(None, path_info.split('/')))[0].replace('view_', '')
+        return list(filter(None, path_info.replace(settings.ROOT_SUBDIRECTORY_PATH, '').split('/')))[0]\
+            .replace('view_', '')
 
 
 def get_search_results(query, query_values):
