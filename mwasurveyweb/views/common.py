@@ -1,6 +1,7 @@
 """
 Distributed under the MIT License. See LICENSE.txt for more info.
 """
+import time
 
 from django.shortcuts import render
 
@@ -46,12 +47,15 @@ def index(request):
             )
         )
 
+    now = int(time.time())
+
     return render(
         request,
         "mwasurveyweb/welcome.html",
         {
             'sky_plots': sky_plots,
             'buttons': buttons,
+            'now': now
         }
     )
 
