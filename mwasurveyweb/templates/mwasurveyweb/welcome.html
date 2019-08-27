@@ -16,7 +16,7 @@
         <div class="col col-md-12 col-lg-12 col-sm-12 col-sx-12 col-12">
             <div id="sky-plots" class="sky-plots">
                 {% for sky_plot in sky_plots %}
-                    <img src="{% static sky_plot.name %}" {% if not sky_plot.is_default %}hidden{% endif %}/>
+                    <img src="{% static sky_plot.name %}?q={{ now }}" {% if not sky_plot.is_default %}hidden{% endif %}/>
                 {% endfor %}
             </div>
         </div>
