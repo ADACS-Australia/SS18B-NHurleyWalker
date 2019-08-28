@@ -78,7 +78,7 @@ def generate_sky_plot_by_colour(colour_set, cursor, is_default=False):
             dec_rad = c.dec.radian
 
             # plot ra and dec in the graph
-            plt.plot(ra_rad, dec_rad, 'o', markersize=3, alpha=1, color='#{}'.format(colour.code))
+            plt.plot(ra_rad, dec_rad, 'o', markersize=40, alpha=0.1, color='#{}'.format(colour.code))
 
         colours.append(colour.name)
 
