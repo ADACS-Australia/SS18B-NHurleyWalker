@@ -23,15 +23,15 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "../accounts/static/"),
 ]
 
-ROOT_SUBDIRECTORY_PATH = 'projects/gleam-x/live/'
+ROOT_SUBDIRECTORY_PATH = 'projects/live/gleam/'
 
-LOGIN_REDIRECT_URL = '/' + ROOT_SUBDIRECTORY_PATH + 'jobs'
+LOGIN_REDIRECT_URL = '/' + ROOT_SUBDIRECTORY_PATH
 LOGOUT_REDIRECT_URL = '/' + ROOT_SUBDIRECTORY_PATH
 LOGIN_URL = '/' + ROOT_SUBDIRECTORY_PATH + 'accounts/login'
 
 
 STATIC_URL = '/' + ROOT_SUBDIRECTORY_PATH + 'static/'
-SITE_URL = 'https://supercomputing.swin.edu.au/projects/gleam-x/live'
+SITE_URL = 'https://supercomputing.swin.edu.au/projects/live/gleam'
 
 DATABASES = {
     'default': {

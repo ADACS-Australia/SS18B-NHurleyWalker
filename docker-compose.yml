@@ -5,11 +5,11 @@ services:
     image: nginx:latest
     container_name: ng_gleam
     ports:
-      - "8000:8000"
-      - "8001:8001"
+      - "8030:8000"
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./static:/static
+      - /var/www/gleam_home/plots/:/static/images/plots/
     depends_on:
       - web
   web:
@@ -26,3 +26,5 @@ services:
     volumes:
       - ./:/code
       - ./static:/static
+      - /var/www/gleam_home/:/gleam_home/
+      - /var/www/gleam_home/plots/:/code/static/images/plots/
