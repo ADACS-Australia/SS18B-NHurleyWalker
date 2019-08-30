@@ -8,6 +8,7 @@ from django import forms
 
 from ..utility.validators import (
     validate_integer,
+    validate_non_negative_integer,
     validate_positive_integer,
     validate_positive_float,
     validate_less_than_pi,
@@ -17,6 +18,7 @@ from ..utility.validators import (
 
 # field types
 INTEGER = 'integer'
+INTEGER_NON_NEGATIVE = 'integer-non-negative'
 POSITIVE_INTEGER = 'positive-integer'
 TEXT = 'text'
 FLOAT = 'float'
@@ -309,6 +311,29 @@ def get_positive_integer_input(label, required, placeholder=None, initial=None, 
     :return: A custom positive integer field accepts inputs greater than zero
     """
     default_validators = [validate_positive_integer, ]
+
+    return CustomIntegerField(
+        label=label,
+        required=required,
+        initial=initial,
+        placeholder=placeholder,
+        validators=list(itertools.chain(default_validators, validators)),
+        help_text=help_text,
+    )
+
+
+def get_integer_non_negative_input(label, required, placeholder=None, initial=None, validators=(), help_text=''):
+    """
+    Method to get a custom positive integer field
+    :param label: String label of the field
+    :param required: Boolean to define whether the field is required or not
+    :param placeholder: Placeholder to appear in the field
+    :param initial: Default input value for the field
+    :param validators: validators that should be attached with the field
+    :param help_text: tooltip for the input
+    :return: A custom non-negative integer field accepts inputs greater than or equal to zero
+    """
+    default_validators = [validate_non_negative_integer, ]
 
     return CustomIntegerField(
         label=label,

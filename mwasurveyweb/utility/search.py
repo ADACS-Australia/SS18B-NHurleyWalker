@@ -286,8 +286,10 @@ class SearchQuery(object):
             # handling database search forms (dynamic forms)
             if type(form) is SearchForm:
                 for key, value in cleaned_data.items():
-                    if value:
-                        self._enlist_database_search_parameter(key, value, search_form)
+                    if value == '' or value is None:
+                        continue
+
+                    self._enlist_database_search_parameter(key, value, search_form)
 
     def get_query(self):
         """

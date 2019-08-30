@@ -144,6 +144,52 @@ def get_fields(search_input):
         })
         fields.append(input_properties_max)
 
+    elif search_input.input_type == constants.RANGE_INT:
+        input_properties_min = dict()
+        input_properties_min.update({
+            'label': 'Min',
+            'type': dynamic_field.INTEGER,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value_adjusted[0],
+            'help_text': search_input.help_text_adjusted[0],
+        })
+        fields.append(input_properties_min)
+
+        input_properties_max = dict()
+        input_properties_max.update({
+            'label': 'Max',
+            'type': dynamic_field.INTEGER,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value_adjusted[1],
+            'help_text': search_input.help_text_adjusted[1],
+        })
+        fields.append(input_properties_max)
+
+    elif search_input.input_type == constants.RANGE_NON_NEG_INT:
+        input_properties_min = dict()
+        input_properties_min.update({
+            'label': 'Min',
+            'type': dynamic_field.INTEGER_NON_NEGATIVE,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value_adjusted[0],
+            'help_text': search_input.help_text_adjusted[0],
+        })
+        fields.append(input_properties_min)
+
+        input_properties_max = dict()
+        input_properties_max.update({
+            'label': 'Max',
+            'type': dynamic_field.INTEGER_NON_NEGATIVE,
+            'required': search_input.required,
+            'placeholder': search_input.placeholder,
+            'initial': search_input.initial_value_adjusted[1],
+            'help_text': search_input.help_text_adjusted[1],
+        })
+        fields.append(input_properties_max)
+
     elif search_input.input_type == constants.RADIUS:
         input_properties_position = dict()
         input_properties_position.update({
