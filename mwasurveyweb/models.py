@@ -116,6 +116,8 @@ class SearchInput(models.Model):
         (constants.CHECKBOX, constants.CHECKBOX_DISPLAY),
         (constants.RADIUS, constants.RADIUS_DISPLAY),
         (constants.RANGE, constants.RANGE_DISPLAY),
+        (constants.RANGE_INT, constants.RANGE_INT_DISPLAY),
+        (constants.RANGE_NON_NEG_INT, constants.RANGE_NON_NEG_INT_DISPLAY),
         (constants.SELECT, constants.SELECT_DISPLAY),
         (constants.DATE_GPS, constants.DATE_GPS_DISPLAY),
         (constants.DATE_GPS_RANGE, constants.DATE_GPS_RANGE_DISPLAY),
@@ -170,7 +172,7 @@ class SearchInput(models.Model):
             if self.initial_value.lower() == 'today':
                 return now
 
-        elif self.input_type == constants.RANGE:
+        elif self.input_type in [constants.RANGE, constants.RANGE_INT, constants.RANGE_NON_NEG_INT]:
             initial_values = ['', '']
             try:
                 parts = self.initial_value.split(',')
@@ -223,6 +225,8 @@ class SearchInput(models.Model):
 
         if self.input_type in [
             constants.RANGE,
+            constants.RANGE_INT,
+            constants.RANGE_NON_NEG_INT,
             constants.RADIUS,
             constants.DATE_GPS_RANGE,
             constants.DATE_UNIX_RANGE,
