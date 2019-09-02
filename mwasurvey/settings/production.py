@@ -31,7 +31,7 @@ LOGIN_URL = '/' + ROOT_SUBDIRECTORY_PATH + 'accounts/login'
 
 
 STATIC_URL = '/' + ROOT_SUBDIRECTORY_PATH + 'static/'
-SITE_URL = 'https://supercomputing.swin.edu.au/projects/live/gleam'
+SITE_URL = 'https://supercomputing.swin.edu.au'
 
 DATABASES = {
     'default': {
