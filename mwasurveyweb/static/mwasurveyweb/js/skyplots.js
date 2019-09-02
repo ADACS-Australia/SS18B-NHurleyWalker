@@ -40,7 +40,7 @@ function show_image(colours) {
     $(this).attr('hidden', true)
 
     var name = $(this).attr('src').split('/')
-    name = name[name.length - 1]
+    name = name[name.length - 1].split('?')[0]
 
     if (is_colours_there(colours, name) && only_these_colours(colours, name)) {
       $(this).attr('hidden', false)

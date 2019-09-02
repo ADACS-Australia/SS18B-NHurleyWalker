@@ -49,6 +49,20 @@ def validate_positive_integer(value):
         raise ValidationError(_("Must be a number"))
 
 
+def validate_non_negative_integer(value):
+    """
+    Validates a value whether it is a positive integer number
+    :param value: value to validate
+    :return: Nothing
+    """
+    try:
+        int_val = int(value)
+        if int_val < 0 or int_val != value:
+            raise ValidationError(_("Must not be less than 0 and whole number"))
+    except ValueError:
+        raise ValidationError(_("Must be a number"))
+
+
 def validate_less_than_equal_hundred(value):
     """
     Validates a value whether it is a floating number that is less than or equal to 100.0

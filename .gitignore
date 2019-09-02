@@ -53,8 +53,8 @@ coverage.xml
 *.pot
 
 # Django stuff:
-logs/
 *.log
+*.log.*
 local_settings.py
 
 # Flask stuff:

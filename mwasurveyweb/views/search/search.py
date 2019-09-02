@@ -102,7 +102,6 @@ def build_search_forms(request, form_type):
         .order_by('display_order')
 
     for input_group in input_groups:
-
         # checking whether active search page input group is there for this input group.
         if not SearchPageInputGroup.objects.filter(
                 search_page__name=form_type,

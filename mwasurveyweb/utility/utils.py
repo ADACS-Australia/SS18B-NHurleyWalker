@@ -178,7 +178,7 @@ def get_operator_by_input_type(input_type, index=None, second_value=0):
     elif input_type == constants.NUMBER:
         operator = '='
 
-    elif input_type == constants.RANGE:
+    elif input_type in [constants.RANGE, constants.RANGE_INT, constants.RANGE_NON_NEG_INT]:
         if index == '0':
             operator = '>='
         if index == '1':
