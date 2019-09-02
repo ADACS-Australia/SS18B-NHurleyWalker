@@ -26,10 +26,11 @@ def get_email_verification_expiry():
         return constants.EMAIL_VERIFICATION_EXPIRY
 
 
-def get_absolute_site_url(request=None):
+def get_absolute_site_url(protocol=None, site_name=None):
     """
     Finds the site url that will be used to generate links
-    :param request: A Django request object
+    :param protocol: protocol defined in the request object
+    :param site_name: site_name defined in the request object
     :return: String of the absolute url
     """
 
@@ -37,15 +38,10 @@ def get_absolute_site_url(request=None):
     if settings.SITE_URL != '':
         return settings.SITE_URL
 
-    # If no request, an absolute url cannot be generated
-    if not request:
+    if not site_name:
         return None
 
-    # find the site name and protocol
-    site_name = request.get_host()
-    if request.is_secure():
-        protocol = 'https'
-    else:
+    if protocol != 'https':
         try:
             # Look for protocol forcefully defined in the settings
             protocol = settings.HTTP_PROTOCOL

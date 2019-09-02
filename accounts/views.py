@@ -40,10 +40,13 @@ def registration(request):
             form.save()
 
             # generating verification link
-            verification_link = utility.get_absolute_site_url(request) + '/accounts/verify?code=' + utility.get_token(
-                                    information='type=user&username={}'.format(data.get('username')),
-                                    validity=utility.get_email_verification_expiry(),
-                                )
+            verification_link = \
+                utility.get_absolute_site_url(request.scheme, request.get_host()) + reverse('verify_account') + \
+                '?code=' + \
+                utility.get_token(
+                    information='type=user&username={}'.format(data.get('username')),
+                    validity=utility.get_email_verification_expiry(),
+                )
 
             # Sending email to the potential user to verify the email address
             actions.email_verify_request(
@@ -155,10 +158,10 @@ def verify(request):
                         message='The requested user account to verify does not exist',
                     )
         except ValueError as e:
-                data.update(
-                    success=False,
-                    message=e if e else 'Invalid verification code',
-                )
+            data.update(
+                success=False,
+                message=e if e else 'Invalid verification code',
+            )
     else:
         data.update(
             success=False,
