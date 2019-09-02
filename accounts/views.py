@@ -41,8 +41,8 @@ def registration(request):
 
             # generating verification link
             verification_link = \
-                utility.get_absolute_site_url(request.scheme, request.get_host()) + reverse('verify_account') + \
-                '?code=' + \
+                utility.get_absolute_site_url(request.scheme, request.get_host()) + \
+                '/accounts/verify/?code=' + \
                 utility.get_token(
                     information='type=user&username={}'.format(data.get('username')),
                     validity=utility.get_email_verification_expiry(),
