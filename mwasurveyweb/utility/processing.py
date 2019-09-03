@@ -3,7 +3,9 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 """
 
 import sqlite3
+from datetime import datetime
 
+import pytz
 from django.conf import settings
 
 from .utils import dict_factory
@@ -72,6 +74,33 @@ class Processing(object):
         values = [self.processing_id]
 
         result = dict(self.cursor.execute(query, values).fetchone())
+
+        utc_tz = pytz.timezone('UTC')
+        perth_tz = pytz.timezone('Australia/Perth')
+
+        unix_time = result.get('submission_time')
+        if unix_time:
+            utc_time = utc_tz.localize(datetime.fromtimestamp(unix_time))
+            awst_time = utc_time.astimezone(perth_tz)
+            result.update({
+                'submission_time': awst_time.strftime('%d/%m/%Y %H:%M:%S (%Z)'),
+            })
+
+        unix_time = result.get('start_time')
+        if unix_time:
+            utc_time = utc_tz.localize(datetime.fromtimestamp(unix_time))
+            awst_time = utc_time.astimezone(perth_tz)
+            result.update({
+                'start_time': awst_time.strftime('%d/%m/%Y %H:%M:%S (%Z)'),
+            })
+
+        unix_time = result.get('end_time')
+        if unix_time:
+            utc_time = utc_tz.localize(datetime.fromtimestamp(unix_time))
+            awst_time = utc_time.astimezone(perth_tz)
+            result.update({
+                'end_time': awst_time.strftime('%d/%m/%Y %H:%M:%S (%Z)'),
+            })
 
         # separating the observation attributes.
         observation_attributes = dict(

@@ -4,7 +4,9 @@ Distributed under the MIT License. See LICENSE.txt for more info.
 
 import os
 import sqlite3
+from datetime import datetime
 
+import pytz
 from django.conf import settings
 
 from .utils import (
@@ -127,8 +129,29 @@ class Observation(object):
 
         processing_objects = []
 
+        utc_tz = pytz.timezone('UTC')
+        perth_tz = pytz.timezone('Australia/Perth')
+
         for result in results:
-            processing_objects.append(dict(result))
+            processing_dict = dict(result)
+
+            unix_time = result.get('submission_time')
+            if unix_time:
+                utc_time = utc_tz.localize(datetime.fromtimestamp(unix_time))
+                awst_time = utc_time.astimezone(perth_tz)
+                processing_dict.update({
+                    'submission_time': awst_time.strftime('%d/%m/%Y %H:%M:%S (%Z)'),
+                })
+
+            unix_time = result.get('start_time')
+            if unix_time:
+                utc_time = utc_tz.localize(datetime.fromtimestamp(unix_time))
+                awst_time = utc_time.astimezone(perth_tz)
+                processing_dict.update({
+                    'start_time': awst_time.strftime('%d/%m/%Y %H:%M:%S (%Z)'),
+                })
+
+            processing_objects.append(processing_dict)
 
         return processing_objects
 
